@@ -12,3 +12,6 @@ app.listen(API_PORT, function(){
     console.log("LISTENING ON PORT ",API_PORT);
 })
 
+app.get('/', function(req, res){
+    return res.json({success: true, message: "You just connected to the social seekers API, welcome :D"})
+})
