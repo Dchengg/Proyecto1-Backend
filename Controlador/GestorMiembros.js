@@ -1,16 +1,18 @@
 import Miembro from "../Modelo/Miembro";
 
-class GestorMiembros{
+export default class GestorMiembros{
     constructor(){
         this.miembros = new Map();
     }
 
     crearMiembro(idMiembro, nombre, celular, email, provincia, canton, distrito, senas, posible_monitor) {
         try{
-            this.miembros.set(idMiembro, new Miembro(nombre, celular, email, provincia, canton, distrito, senas, posible_monitor));
+            const miembro =  new Miembro(nombre, celular, email, provincia, canton, distrito, senas, posible_monitor)
+            this.miembros.set(idMiembro, miembro);
         }
         catch(err) {
-            console.log("ERROR (GestorMiembro) : " + err)
+            console.log(err);
+            throw {message: "Error a la hora de agregar el miembro"};
         }
     }
 }

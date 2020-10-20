@@ -1,4 +1,4 @@
-class Miembro{
+export default class Miembro{
     constructor(nombre, celular, email, provincia, canton, distrito, senas, posible_monitor){
         this.nombre = nombre;
         this.celular = celular;
