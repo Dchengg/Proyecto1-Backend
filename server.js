@@ -1,15 +1,35 @@
-//var config = require('./config.json');
 const express = require('express');
-const app = express();
+const cors = require('cors')
+const logger = require('morgan');
+const bodyParser = require('body-parser');
 const pool = require("./db")
 const {Client}=require("pg");
+import Controlador from './Controlador/Controlador';
+var app = express();
+app.use(cors());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+app.use(logger('dev'));
+
+//The local port is 3001
+const API_PORT = process.env.PORT || 3001
+app.listen(API_PORT, function(){
+    console.log("LISTENING ON PORT ",API_PORT);
+})
+
+var controlador = new Controlador();
+
+app.get('/', function(req, res){
+    return res.json({success: true, message: "You just connected to the social seekers API, welcome :D"})
+})
+
 process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = 0;
 app.get("/all",async(req, res) =>{
     try{
         await pool.connect();
-        //const results = await pool.query("select * from Miembro")
-        //console.table(results.rows)
-        //res.send(results.rows);
+        const results = await pool.query("select * from Miembro")
+        console.table(results.rows)
+        res.send(results.rows);
         pool.end();
     }catch(err){
         console.log("Error:");
@@ -17,6 +37,43 @@ app.get("/all",async(req, res) =>{
     }
 });
 
-app.listen(5432, () =>{
-    console.log("server is listening on port 5432")
-});
+app.get('/crear-miembro', function(req, res){
+    //const {idMiembro, nombre, celular, email, provincia, canton,distrito, senas, posible_monitor, idZona, idRama, idGrupo} = req.body;
+    var idMiembro = "123";
+    var nombre = "Diego";
+    var celular = "12324";
+    var email = "email";
+    var provincia = "San José";
+    var canton = "Santa Ana";
+    var distrito = "brasil";
+    try{
+        controlador.crearMiembro(idMiembro, nombre, celular, email, provincia, canton,distrito);
+        return res.json({success: true})
+    }
+    catch(err){
+        console.log(err);
+        return res.json({success: false, error: err})
+    }
+})
+
+app.post('/crear-zona', function(req,res){
+    const { nombre } = req.body
+    try{
+        
+    }catch(err){
+        console.log(err);
+        return res.json({success: false, error: err})
+    }
+})
+
+app.post('/consultar-miembro', function(req, res){
+    const { idMiembro } = req.body;
+    //var idMiembro = "123";
+    try{
+        var miembro = controlador.consultarMiembro(idMiembro)
+        return res.json({success: true, miembro: miembro})
+    }catch(err){
+        console.log(err);
+        return res.json({success: false, error: err})
+    }
+})
