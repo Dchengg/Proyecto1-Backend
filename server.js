@@ -42,14 +42,71 @@ app.get('/crear-miembro', function(req, res){
 })
 
 app.post('/crear-zona', function(req,res){
-    const { nombre } = req.body
+    const { idZona, nombre } = req.body
     try{
-        
+        controlador.crearZona(idZona, nombre)
+        return res.json({ success: true})
     }catch(err){
         console.log(err);
         return res.json({success: false, error: err})
     }
 })
+
+app.post('/crear-rama', function(req,res){
+    const { idZona, idRama, nombre } = req.body
+    try{
+        controlador.crearRama(idZona, idRama, nombre)
+        return res.json({ success: true})
+    }catch(err){
+        console.log(err);
+        return res.json({success: false, error: err})
+    }
+})
+
+app.post('/crear-grupo', function(req,res){
+    const { idZona, idRama, idGrupo, nombre } = req.body
+    try{
+        controlador.crearGrupo(idZona, idRama, idGrupo, nombre)
+        return res.json({ success: true})
+    }catch(err){
+        console.log(err);
+        return res.json({success: false, error: err})
+    }
+})
+
+app.post('/consultar-zona', function(req, res){
+    const { idZona } = req.body;
+    try{
+        var zona = controlador.consultarZona(idZona)
+        return res.json({ success: true, zona, hijos: Object.fromEntries(zona.composites)})
+    }catch(err){
+        console.log(err);
+        return res.json({ success: false, error: err})
+    }
+})
+
+app.post('/consultar-rama', function(req,res){
+    const { idZona, idRama } = req.body
+    try{
+        var rama = controlador.consultarRama(idZona, idRama)
+        return res.json({ success: true ,rama, hijos: JSON.stringify(rama.composites)})
+    }catch(err){
+        console.log(err);
+        return res.json({success: false, error: err})
+    }
+})
+
+app.post('/consultar-grupo', function(req,res){
+    const { idZona, idRama, idGrupo } = req.body
+    try{
+        var grupo = controlador.consultarGrupo(idZona, idRama, idGrupo)
+        return res.json({ success: true ,grupo, hijos: Object.fromEntries(grupo.composites)})
+    }catch(err){
+        console.log(err);
+        return res.json({success: false, error: err})
+    }
+})
+
 
 app.post('/consultar-miembro', function(req, res){
     const { idMiembro } = req.body;
