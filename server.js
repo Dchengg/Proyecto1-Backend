@@ -22,7 +22,7 @@ app.get('/', function(req, res){
     return res.json({success: true, message: "You just connected to the social seekers API, welcome :D"})
 })
 
-app.get('/crearMiembro', function(req, res){
+app.get('/crear-miembro', function(req, res){
     //const {idMiembro, nombre, celular, email, provincia, canton,distrito, senas, posible_monitor, idZona, idRama, idGrupo} = req.body;
     var idMiembro = "123";
     var nombre = "Diego";
@@ -36,6 +36,28 @@ app.get('/crearMiembro', function(req, res){
         return res.json({success: true})
     }
     catch(err){
+        console.log(err);
+        return res.json({success: false, error: err})
+    }
+})
+
+app.post('/crear-zona', function(req,res){
+    const { nombre } = req.body
+    try{
+        
+    }catch(err){
+        console.log(err);
+        return res.json({success: false, error: err})
+    }
+})
+
+app.post('/consultar-miembro', function(req, res){
+    const { idMiembro } = req.body;
+    //var idMiembro = "123";
+    try{
+        var miembro = controlador.consultarMiembro(idMiembro)
+        return res.json({success: true, miembro: miembro})
+    }catch(err){
         console.log(err);
         return res.json({success: false, error: err})
     }
