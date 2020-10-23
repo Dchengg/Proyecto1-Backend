@@ -11,6 +11,7 @@ export default class GestorMiembros{
         }
         const miembro =  new Miembro(nombre, celular, email, provincia, canton, distrito, senas, posible_monitor)
         this.miembros.set(idMiembro, miembro);
+        return miembro;
     }
 
     getMiembro(idMiembro){

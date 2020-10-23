@@ -8,6 +8,7 @@ var app = express();
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+//quitar en producción
 app.use(logger('dev'));
 
 //The local port is 3001
@@ -22,6 +23,10 @@ app.get('/', function(req, res){
     return res.json({success: true, message: "You just connected to the social seekers API, welcome :D"})
 })
 
+//////////////////////////////
+///   CREATIONS
+//////////////////////////////
+
 app.get('/crear-miembro', function(req, res){
     //const {idMiembro, nombre, celular, email, provincia, canton,distrito, senas, posible_monitor, idZona, idRama, idGrupo} = req.body;
     var idMiembro = "123";
@@ -31,8 +36,11 @@ app.get('/crear-miembro', function(req, res){
     var provincia = "San José";
     var canton = "Santa Ana";
     var distrito = "brasil";
+    var idZona = "1";
+    var idRama = "1";
+    var idGrupo = "1";
     try{
-        controlador.crearMiembro(idMiembro, nombre, celular, email, provincia, canton,distrito);
+        controlador.crearMiembro(idMiembro, nombre, celular, email, provincia, canton,distrito, "", "", idZona, idRama, idGrupo);
         return res.json({success: true})
     }
     catch(err){
@@ -74,10 +82,17 @@ app.post('/crear-grupo', function(req,res){
     }
 })
 
-app.post('/consultar-zona', function(req, res){
+
+//////////////////////////////
+///   GETTERS
+///   Returns a single value
+//////////////////////////////
+
+
+app.post('/get-zona', function(req, res){
     const { idZona } = req.body;
     try{
-        var zona = controlador.consultarZona(idZona)
+        var zona = controlador.getZona(idZona)
         return res.json({ success: true, zona, hijos: Object.fromEntries(zona.composites)})
     }catch(err){
         console.log(err);
@@ -85,21 +100,21 @@ app.post('/consultar-zona', function(req, res){
     }
 })
 
-app.post('/consultar-rama', function(req,res){
+app.post('/get-rama', function(req,res){
     const { idZona, idRama } = req.body
     try{
-        var rama = controlador.consultarRama(idZona, idRama)
-        return res.json({ success: true ,rama, hijos: JSON.stringify(rama.composites)})
+        var rama = controlador.getRama(idZona, idRama)
+        return res.json({ success: true ,rama, hijos: Object.fromEntries(rama.composites)})
     }catch(err){
         console.log(err);
         return res.json({success: false, error: err})
     }
 })
 
-app.post('/consultar-grupo', function(req,res){
+app.post('/get-grupo', function(req,res){
     const { idZona, idRama, idGrupo } = req.body
     try{
-        var grupo = controlador.consultarGrupo(idZona, idRama, idGrupo)
+        var grupo = controlador.getGrupo(idZona, idRama, idGrupo)
         return res.json({ success: true ,grupo, hijos: Object.fromEntries(grupo.composites)})
     }catch(err){
         console.log(err);
@@ -107,15 +122,69 @@ app.post('/consultar-grupo', function(req,res){
     }
 })
 
-
-app.post('/consultar-miembro', function(req, res){
-    const { idMiembro } = req.body;
-    //var idMiembro = "123";
+app.post('/get-miembros-grupo', function(req, res){
+    const { idZona, idRama, idGrupo } = req.body;
     try{
-        var miembro = controlador.consultarMiembro(idMiembro)
+
+    }catch(err){
+        console.log(err);
+        return res.json({sucess: false, error: err})
+    }
+})
+
+
+//////////////////////////////
+///   CONSULTS
+///   Returns an array of values
+//////////////////////////////
+
+app.get('/consultar-zonas',function(req,res){
+    try{
+        var zonas = controlador.consultarZonas();
+        return res.json({ success: true, zonas: Object.fromEntries(zonas)});
+    }catch(err){
+        return res.json({success: false, error: err});
+    }
+})
+
+app.post('/consultar-ramas',function(req, res){
+    const { idZona } = req.body;
+    try{
+        var ramas = controlador.consultarRamas(idZona);
+        return res.json({ success: true, ramas: Object.fromEntries(ramas)});
+    }catch(err){
+        console.log(err);
+        return res.json({success: false, error: err});
+    }
+})
+
+app.post('/consultar-grupos',function(req, res){
+    const { idZona, idRama} = req.body;
+    try{
+        var grupos = controlador.consultarGrupos(idZona, idRama);
+        return res.json({ success: true, grupos: Object.fromEntries(grupos)});
+    }catch(err){
+        console.log(err);
+        return res.json({success: false, error: err});
+    }
+})
+
+app.post('/consultar-miembros-grupo', function(req, res){
+    const { idZona, idRama, idGrupo, idMiembro } = req.body;
+    var idMiembro = "123";
+    try{
+        var miembro = controlador.getMiembro(idMiembro)
         return res.json({success: true, miembro: miembro})
     }catch(err){
         console.log(err);
         return res.json({success: false, error: err})
     }
 })
+
+
+var idZona = "1";
+var idRama = "1";
+var idGrupo = "1";
+controlador.crearZona(idZona, "Caribe");
+controlador.crearRama(idZona, idRama, "Juvenil");
+controlador.crearGrupo(idZona, idRama, idGrupo, "SCOUTS");

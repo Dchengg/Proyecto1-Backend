@@ -17,6 +17,11 @@ export default class GestorNodos{
         zona.agregar(new Nodo(idRama, nombre));
     }
 
+    agregarMiembro(idZona, idRama, idGrupo, miembro){
+        var grupo = this.getGrupo(idZona, idRama, idGrupo);
+        grupo.agregar(miembro); 
+    }
+
     crearGrupo(idZona, idRama, idGrupo, nombre){
         var rama = this.getRama(idZona, idRama)
         rama.agregar(new Nodo(idGrupo, nombre));
@@ -40,5 +45,15 @@ export default class GestorNodos{
         var grupo = rama.buscar(idGrupo);
         if(grupo == null) throw { message: "No existe el grupo consultado"}
         return grupo;
+    }
+
+    consultarRamas(idZona){
+        var zona = this.getZona(idZona);
+        return zona.composites;
+        
+    }
+    consultarGrupos(idZona, idRama){
+        var rama = this.getRama(idZona, idRama);
+        return rama.composites;
     }
 }
