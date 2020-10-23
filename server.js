@@ -171,7 +171,7 @@ app.post('/consultar-grupos',function(req, res){
 
 app.post('/consultar-miembros-grupo', function(req, res){
     const { idZona, idRama, idGrupo, idMiembro } = req.body;
-    var idMiembro = "123";
+    //var idMiembro = "123";
     try{
         var miembro = controlador.getMiembro(idMiembro)
         return res.json({success: true, miembro: miembro})
