@@ -9,8 +9,22 @@ export default class GestorMiembros{
         if(this.miembros.has(idMiembro)){
             throw { message: "Ya hay un miembro con esa cedula"}
         }
-        const miembro =  new Miembro(nombre, celular, email, provincia, canton, distrito, senas, posible_monitor)
+        const miembro =  new Miembro(idMiembro , nombre, celular, email, provincia, canton, distrito, senas, posible_monitor)
         this.miembros.set(idMiembro, miembro);
+        return miembro;
+    }
+
+    modificarMiembro(idMiembro, nombre, celular, email, provincia, canton, distrito, senas, posible_monitor) {
+        const miembro =  this.miembros.get(idMiembro);
+        if(miembro == null) throw { message: "no existe el miembro "+ idMiembro }
+        miembro.nombre = nombre;
+        miembro.celular = celular;
+        miembro.email = email;
+        miembro.provincia = provincia;
+        miembro.canton =canton;
+        miembro.distrito = distrito;
+        miembro.senas = senas;
+        miembro.posible_monitor = posible_monitor;
         return miembro;
     }
 

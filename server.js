@@ -3,6 +3,7 @@ const cors = require('cors')
 const logger = require('morgan');
 const bodyParser = require('body-parser');
 import Controlador from './Controlador/Controlador';
+import { json } from 'body-parser';
 
 var app = express();
 app.use(cors());
@@ -82,6 +83,21 @@ app.post('/crear-grupo', function(req,res){
     }
 })
 
+//////////////////////////////
+///   MODIFY
+//////////////////////////////
+
+app.post('/modificar-miembro', function(req, res){
+    const {idMiembro, nombre, celular, email, provincia, canton,distrito, senas, posible_monitor, idZona, idRama, idGrupo} = req.body;
+    try{
+        controlador.modificarMiembro(idMiembro, nombre, celular, email, provincia, canton, distrito, senas, posible_monitor, idZona, idRama, idGrupo)
+        return res.json({success: true})
+    }catch(err){
+        console.log(err);
+        return res.json({success: false, error: err})
+    }
+})
+
 
 //////////////////////////////
 ///   GETTERS
@@ -122,16 +138,9 @@ app.post('/get-grupo', function(req,res){
     }
 })
 
-app.post('/get-miembros-grupo', function(req, res){
-    const { idZona, idRama, idGrupo } = req.body;
-    try{
-
-    }catch(err){
-        console.log(err);
-        return res.json({sucess: false, error: err})
-    }
+app.post('/get-miembro', function(req, res){
+    
 })
-
 
 //////////////////////////////
 ///   CONSULTS
@@ -170,11 +179,11 @@ app.post('/consultar-grupos',function(req, res){
 })
 
 app.post('/consultar-miembros-grupo', function(req, res){
-    const { idZona, idRama, idGrupo, idMiembro } = req.body;
+    const { idZona, idRama, idGrupo} = req.body;
     //var idMiembro = "123";
     try{
-        var miembro = controlador.getMiembro(idMiembro)
-        return res.json({success: true, miembro: miembro})
+        var miembros = controlador.consultarMiembrosGrupo(idZona, idRama, idGrupo)
+        return res.json({success: true, miembros: Object.fromEntries(miembros)})
     }catch(err){
         console.log(err);
         return res.json({success: false, error: err})

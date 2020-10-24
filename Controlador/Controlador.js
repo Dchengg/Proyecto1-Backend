@@ -6,17 +6,7 @@ export default class Controlador{
         this.movimientos = new Map();
         this.movimientos.set(1,new Movimiento("1","123","movimiento","http:..","cool","CR","SJ","P","C","D","Del palo de limón, tres cuadras norte :v"))
     }
-
-    crearMiembro(idMiembro, nombre, celular, email, provincia, canton, distrito, senas, posible_monitor, idZona, idRama, idGrupo) {
-        if(this.movimientos.has(1)){
-            var gMiembros = this.movimientos.get(1).gMiembros;
-            var gNodos = this.movimientos.get(1).gNodos; 
-            var miembro = gMiembros.crearMiembro(idMiembro, nombre, celular, email, provincia, canton, distrito, senas, posible_monitor, idZona, idRama, idGrupo);
-            gNodos.agregarMiembro(idZona, idRama, idGrupo, miembro);
-        }else{
-            throw { message: "Movimiento no existe"};
-        }
-    }
+     
 
     crearZona(idZona, nombre){
         if(this.movimientos.has(1)){
@@ -32,6 +22,22 @@ export default class Controlador{
 
     crearGrupo(idZona, idRama, idGrupo, nombre){
         this.movimientos.get(1).gNodos.crearGrupo(idZona, idRama, idGrupo, nombre);
+    }
+
+    crearMiembro(idMiembro, nombre, celular, email, provincia, canton, distrito, senas, posible_monitor, idZona, idRama, idGrupo) {
+        if(this.movimientos.has(1)){
+            var gMiembros = this.movimientos.get(1).gMiembros;
+            var gNodos = this.movimientos.get(1).gNodos; 
+            var miembro = gMiembros.crearMiembro(idMiembro, nombre, celular, email, provincia, canton, distrito, senas, posible_monitor, idZona, idRama, idGrupo);
+            gNodos.agregarMiembro(idZona, idRama, idGrupo, miembro);
+        }else{
+            throw { message: "Movimiento no existe"};
+        }
+    }
+
+    modificarMiembro(idMiembro, nombre, celular, email, provincia, canton, distrito, senas, posible_monitor, idZona, idRama, idGrupo){
+        var gMiembros = this.movimientos.get(1).gMiembros;
+        var miembro = gMiembros.modificarMiembro(idMiembro, nombre, celular, email, provincia, canton, distrito, senas, posible_monitor)
     }
 
     consultarZonas(){
@@ -54,8 +60,12 @@ export default class Controlador{
         return this.movimientos.get(1).gNodos.consultarGrupos(idZona, idRama);
     }
 
-    consultarMiembrosGrupo(idZona, idRama, idGrupo, idMiembro){
-        
+    consultarMiembrosGrupo(idZona, idRama, idGrupo){
+        return this.movimientos.get(1).gNodos.consultarMiembrosGrupo(idZona, idRama, idGrupo);
+    }
+
+    consultarMiembrosRama(idZona, idRama, idGrupo){
+        return this.movimientos.get(1).gNodos.consultarMiembrosGrupo(idZona, idRama);
     }
 
     getMiembro(idMiembro){
