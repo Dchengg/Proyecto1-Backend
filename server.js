@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors')
 const logger = require('morgan');
 const bodyParser = require('body-parser');
+const pool = require("./db")
 import Controlador from './Controlador/Controlador';
 import { json } from 'body-parser';
 
