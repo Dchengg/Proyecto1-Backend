@@ -3,7 +3,6 @@ const cors = require('cors')
 const logger = require('morgan');
 const bodyParser = require('body-parser');
 const pool = require("./db")
-const {Client}=require("pg");
 import Controlador from './Controlador/Controlador';
 var app = express();
 app.use(cors());
