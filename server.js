@@ -62,7 +62,7 @@ app.post('/crear-zona', function(req,res){
 })
 
 app.post('/crear-rama', function(req,res){
-    const { idZona, idRama, nombre } = req.body
+    const { idZona, idRama, nombre} = req.body
     try{
         controlador.crearRama(idZona, idRama, nombre)
         return res.json({ success: true})
@@ -73,9 +73,9 @@ app.post('/crear-rama', function(req,res){
 })
 
 app.post('/crear-grupo', function(req,res){
-    const { idZona, idRama, idGrupo, nombre } = req.body
+    const { idZona, idRama, idGrupo, nombre, idEncargado1, idEncargado2} = req.body
     try{
-        controlador.crearGrupo(idZona, idRama, idGrupo, nombre)
+        controlador.crearGrupo(idZona, idRama, idGrupo, nombre, idEncargado1, idEncargado2);
         return res.json({ success: true})
     }catch(err){
         console.log(err);
@@ -107,6 +107,7 @@ app.post('/modificar-miembro', function(req, res){
 
 app.post('/get-zona', function(req, res){
     const { idZona } = req.body;
+    console.log(idZona);        
     try{
         var zona = controlador.getZona(idZona)
         return res.json({ success: true, zona, hijos: Object.fromEntries(zona.composites)})
@@ -139,7 +140,14 @@ app.post('/get-grupo', function(req,res){
 })
 
 app.post('/get-miembro', function(req, res){
-    
+    const { idMiembro } = req.body;
+    try{
+        var miembro = controlador.getMiembro(idMiembro);
+        return res.json({success: true, miembro})
+    }catch(err){
+        console.log(err);
+        return res.json({success: false, error:err})
+    }
 })
 
 //////////////////////////////
@@ -197,3 +205,13 @@ var idGrupo = "1";
 controlador.crearZona(idZona, "Caribe");
 controlador.crearRama(idZona, idRama, "Juvenil");
 controlador.crearGrupo(idZona, idRama, idGrupo, "SCOUTS");
+var idMiembro = "123";
+var nombre = "Diego";
+var celular = "12324";
+var email = "email";
+var provincia = "San José";
+var canton = "Santa Ana";
+var distrito = "brasil";
+controlador.crearMiembro(idMiembro, nombre, celular, email, provincia, canton,distrito, "", "", idZona, idRama, idGrupo);
+
+controlador.crearGrupo(idZona, idRama, "2", "here","123");

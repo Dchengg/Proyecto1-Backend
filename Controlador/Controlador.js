@@ -20,8 +20,14 @@ export default class Controlador{
         this.movimientos.get(1).gNodos.crearRama(idZona, idRama, nombre);
     }
 
-    crearGrupo(idZona, idRama, idGrupo, nombre){
-        this.movimientos.get(1).gNodos.crearGrupo(idZona, idRama, idGrupo, nombre);
+    crearGrupo(idZona, idRama, idGrupo, nombre, idEncargado1, idEncargado2){
+        try{
+            var encargado1 = this.getMiembro(idEncargado1);
+            var encargado2 = this.getMiembro(idEncargado2);
+        }catch(err){
+            console.log(err);
+        }
+        this.movimientos.get(1).gNodos.crearGrupo(idZona, idRama, idGrupo, nombre, encargado1, encargado2);
     }
 
     crearMiembro(idMiembro, nombre, celular, email, provincia, canton, distrito, senas, posible_monitor, idZona, idRama, idGrupo) {
