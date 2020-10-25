@@ -114,6 +114,16 @@ class DAO{
 
     getGruposMiembro(Id){
         //Grupos donde esta y el rol
+        this.client.query("select * from GrupoMiembros inner join GrupoMiembrosRol on GrupoMiembros.id_lider = GrupoMiembrosRol.id_lider where id_miembro="+Id)
+            .then(res => {
+                console.table(res.rows)
+                this.client.end()
+                return res.rows;
+            })
+            .catch(err => {
+                console.log(err)
+                this.client.end()
+            })
     }
 
     getMiembros(){
@@ -148,7 +158,9 @@ class DAO{
     }
 }
 const dao=new DAO();
-dao.getTelefonoMovimiento();
+//dao.getGrupoMiembrosRol();
+//dao.getGruposMiembro("'117940925'");
+//dao.getTelefonoMovimiento();
 //dao.getGrupoMiembros();
 //dao.getRama();
 //dao.getGrupo();
