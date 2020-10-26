@@ -21,8 +21,8 @@ export default class DAO{
         }
     }
 
-    getMovimiento(){
-        this.client.query("select * from Movimiento")
+    getMovimiento(id){
+        this.client.query("select * from Movimiento where cedula_juridica = "+id)
             .then(res => {
                 console.table(res.rows)
                 this.client.end()
@@ -34,8 +34,8 @@ export default class DAO{
             })
     }
 
-    getTelefonoMovimiento(){
-        this.client.query("select * from Telefonos")
+    getTelefonoMovimiento(idMoviemiento){
+        this.client.query("select * from Telefonos where cedula_movimiento = "+idMoviemiento)
         .then(res => {
             console.table(res.rows)
             this.client.end()
@@ -47,8 +47,8 @@ export default class DAO{
         })
     }
 
-    getZonas(idZona){
-        return this.client.query("select * from Zona")
+    getZonaXMovimiento(idMovimiento){
+        this.client.query("select * from Zona where id_movimiento = "+idMovimiento)
             .then(res => {
                 //console.table(res.rows)
                 this.client.end()
@@ -60,21 +60,8 @@ export default class DAO{
             })
     }
 
-    getRama(){
-        this.client.query("select * from Rama")
-            .then(res => {
-                console.table(res.rows)
-                this.client.end()
-                return res.rows;
-            })
-            .catch(err => {
-                console.log(err)
-                this.client.end()
-            })
-    }
-    
-    getGrupo(){
-        this.client.query("select * from Grupo")
+    getZona(idZona){
+        this.client.query("select * from Zona where id_zona = "+idZona)
             .then(res => {
                 console.table(res.rows)
                 this.client.end()
@@ -86,8 +73,60 @@ export default class DAO{
             })
     }
 
-    getGrupoMiembros(){
-        this.client.query("select * from GrupoMiembros")
+    getRama(idRama){
+        this.client.query("select * from Rama where id_rama = "+idRama)
+            .then(res => {
+                console.table(res.rows)
+                this.client.end()
+                return res.rows;
+            })
+            .catch(err => {
+                console.log(err)
+                this.client.end()
+            })
+    }
+    
+    getRamaXZona(idZona){
+        this.client.query("select * from Rama where id_zona = "+idZona)
+            .then(res => {
+                console.table(res.rows)
+                this.client.end()
+                return res.rows;
+            })
+            .catch(err => {
+                console.log(err)
+                this.client.end()
+            })
+    }
+
+    getGrupo(idGrupo){
+        this.client.query("select * from Grupo where id_grupo = "+idGrupo)
+            .then(res => {
+                console.table(res.rows)
+                this.client.end()
+                return res.rows;
+            })
+            .catch(err => {
+                console.log(err)
+                this.client.end()
+            })
+    }
+
+    getGrupoXRama(idRama){
+        this.client.query("select * from Grupo where id_rama = "+idRama)
+            .then(res => {
+                console.table(res.rows)
+                this.client.end()
+                return res.rows;
+            })
+            .catch(err => {
+                console.log(err)
+                this.client.end()
+            })
+    }
+
+    getGrupoMiembros(idGrupo){
+        this.client.query("select * from GrupoMiembros where id_grupo = "+idGrupo)
             .then(res => {
                 console.table(res.rows)
                 this.client.end()
@@ -112,9 +151,9 @@ export default class DAO{
             })
     }
 
-    getGruposMiembro(Id){
+    getGruposMiembroxMiembro(idMiembro){
         //Grupos donde esta y el rol
-        this.client.query("select * from GrupoMiembros inner join GrupoMiembrosRol on GrupoMiembros.id_lider = GrupoMiembrosRol.id_lider where id_miembro="+Id)
+        this.client.query("select * from GrupoMiembros inner join GrupoMiembrosRol on GrupoMiembros.id_lider = GrupoMiembrosRol.id_lider where id_miembro="+idMiembro)
             .then(res => {
                 console.table(res.rows)
                 this.client.end()
@@ -140,6 +179,19 @@ export default class DAO{
             })
     }
 
+    getMiembro(idMiembro){
+        this.client.query("select * from Miembro where cedula = "+idMiembro)
+            .then(res => {
+                console.table(res.rows);
+                this.client.end()
+                return res.rows;
+            })
+            .catch(err => {
+                console.log(err)
+                this.client.end()
+            })
+    }
+
     getAsesor(){
         this.client.query("select * from Asesor")
             .then(res => {
@@ -153,12 +205,25 @@ export default class DAO{
             })
     }
 
-    loginAsesor(){
-        //verificarContrasenaAsesor
+    loginAsesor(pCedula,pContrasena){
+        //this.client.query("select * from Asesor")
+        this.client.query("select * from verificarContrasenaAsesor("+pCedula+","+pContrasena+")")
+            .then(res => {
+                console.table(res.rows);
+                this.client.end()
+                return res.rows;
+            })
+            .catch(err => {
+                console.log(err)
+                this.client.end()
+            })
     }
 }
 const dao=new DAO();
-//dao.getMovimiento();
+dao.loginAsesor("'117380721'","'Yoquese'");
+//dao.getAsesor();
+//contrasena: 'Yoquese'
+//cedula: '117380721'
 //dao.getGrupoMiembrosRol();
 //dao.getGruposMiembro("'117940925'");
 //dao.getTelefonoMovimiento();
