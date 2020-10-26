@@ -34,6 +34,19 @@ class DAO{
             })
     }
 
+    getMovimientoXAsesor(id_asesor){
+        this.client.query("select * from Movimiento where id_asesor = "+id_asesor)
+            .then(res => {
+                console.table(res.rows)
+                this.client.end()
+                return res.rows;
+            })
+            .catch(err => {
+                console.log(err)
+                this.client.end()
+            })
+    }
+
     getTelefonoMovimiento(idMoviemiento){
         this.client.query("select * from Telefonos where cedula_movimiento = "+idMoviemiento)
         .then(res => {
@@ -220,7 +233,8 @@ class DAO{
     }
 }
 const dao=new DAO();
-dao.loginAsesor("'117380721'","'Yoquese'");
+//dao.loginAsesor("'117380721'","'Yoquese'");
+dao.getMovimientoXAsesor("'117380721'");
 //dao.getAsesor();
 //contrasena: 'Yoquese'
 //cedula: '117380721'
