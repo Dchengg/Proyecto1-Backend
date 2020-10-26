@@ -45,7 +45,7 @@ export default class GestorNodos{
     
     getZona(idZona){
         var zona = this.zonas.get(idZona);
-        if(zona == null) throw {message: "No existe la zona consultada"}
+        if(zona == null) throw {message: "No existe la zona consultada " + idZona}
         return zona;
     }
 
