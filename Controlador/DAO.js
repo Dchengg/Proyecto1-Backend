@@ -205,11 +205,25 @@ class DAO{
             })
     }
 
-    loginAsesor(){
-        //verificarContrasenaAsesor
+    loginAsesor(pCedula,pContrasena){
+        //this.client.query("select * from Asesor")
+        this.client.query("select * from verificarContrasenaAsesor("+pCedula+","+pContrasena+")")
+            .then(res => {
+                console.table(res.rows);
+                this.client.end()
+                return res.rows;
+            })
+            .catch(err => {
+                console.log(err)
+                this.client.end()
+            })
     }
 }
 const dao=new DAO();
+dao.loginAsesor("'117380721'","'Yoquese'");
+//dao.getAsesor();
+//contrasena: 'Yoquese'
+//cedula: '117380721'
 //dao.getGrupoMiembrosRol();
 //dao.getGruposMiembro("'117940925'");
 //dao.getTelefonoMovimiento();
