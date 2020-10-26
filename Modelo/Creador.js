@@ -8,12 +8,13 @@ export default class Creador{
         this.controlador = controlador;
     }
 
-    iniciarAPI(){
-        var cedulaAsesor = "117380721"
-        var contraseña = "Yoquese";
-        this.dao.loginAsesor(cedulaAsesor,contraseña)
+    iniciarAPI(cedulaAsesor, contrasena){
+        this.dao.loginAsesor(cedulaAsesor,contrasena)
         .then( res => {
-            this.cargarMovimiento(cedulaAsesor);
+            if(res[0].encontrado){
+                this.cargarMovimiento(cedulaAsesor);
+            }
+            throw { message: "Datos incorrectos"}
         })
         .catch(err => {
             console.log(err);

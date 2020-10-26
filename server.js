@@ -5,7 +5,7 @@ const bodyParser = require('body-parser');
 const pool = require("./db")
 import Controlador from './Controlador/Controlador';
 import Creador from './Modelo/Creador';
-import { json } from 'body-parser';
+import ControladorLogin from './Controlador/ControladorLogin'
 
 var app = express();
 app.use(cors());
@@ -21,13 +21,38 @@ app.listen(API_PORT, function(){
 })
 
 var controlador = new Controlador();
-var creador = new Creador(controlador);
+var controladorLogin = new ControladorLogin(controlador);
+//var creador = new Creador(controlador);
 var idMovimiento = '4000042145';
-creador.iniciarAPI();
+//creador.iniciarAPI();
 
 
 app.get('/', function(req, res){
     return res.json({success: true, message: "You just connected to the social seekers API, welcome :D"})
+})
+
+app.post('/iniciar-sesion', function(req, res){
+    const { id, pass } = req.body;
+    try{
+        var loggedIn;
+        var logInPromise = controladorLogin.verificarCombinación(id, pass)
+            .then(res => {
+                loggedIn = res;
+            })
+            .catch(err => {
+                throw err
+            })
+        Promise.resolve(logInPromise)
+            .finally(() => {
+                if(loggedIn){
+                    return res.json({ success: true});
+                }
+                return res.json({ success: false});
+            })
+        
+    }catch(err){
+        return res.json({ success: false, error: err });
+    }
 })
 
 //////////////////////////////
@@ -88,6 +113,7 @@ app.post('/crear-grupo', function(req,res){
         return res.json({success: false, error: err})
     }
 })
+
 
 //////////////////////////////
 ///   MODIFY
@@ -196,7 +222,7 @@ app.post('/consultar-miembros-grupo', function(req, res){
     const { idZona, idRama, idGrupo} = req.body;
     //var idMiembro = "123";
     try{
-        var miembros = controlador.consultarMiembrosGrupo(idMovimiento, idZona, idRama, idGrupo);
+        var miembros = controlador.consultarMiembrosGrupo(idMovimiento, idZona, idRama, idGrupo);   
         return res.json({success: true, miembros: Object.fromEntries(miembros)})
     }catch(err){
         console.log(err);
