@@ -47,8 +47,8 @@ class DAO{
             })
     }
 
-    getTelefonoMovimiento(idMoviemiento){
-        this.client.query("select * from Telefonos where cedula_movimiento = "+idMoviemiento)
+    getTelefonoMovimiento(idMovimiento){
+        this.client.query("select * from Telefonos where cedula_movimiento = "+idMovimiento)
         .then(res => {
             console.table(res.rows)
             this.client.end()
@@ -272,11 +272,9 @@ class DAO{
     }
 
     loginAsesor(pCedula,pContrasena){
-        //this.client.query("select * from Asesor")
-        this.client.query("select * from verificarContrasenaAsesor("+pCedula+","+pContrasena+")")
+        return this.client.query("select * from verificarContrasenaAsesor("+pCedula+","+pContrasena+")")
             .then(res => {
                 console.table(res.rows);
-                this.client.end()
                 return res.rows;
             })
             .catch(err => {
@@ -284,15 +282,130 @@ class DAO{
                 this.client.end()
             })
     }
+
+    insertarRama(pIdMovimiento,pIdZona,pNombre){
+        return this.client.query("select * from insertarRama('"+pIdMovimiento+"', "+pIdZona+", '"+pNombre+"')")
+            .then(res => {
+                console.table(res.rows);
+                return res.rows;
+            })
+            .catch(err => {
+                console.log(err)
+                this.client.end()
+            })
+    }
+
+    insertarZona(pIdMovimiento,pIdNombre){
+        return this.client.query("select * from insertarZona('"+pIdMovimiento+"', '"+pIdNombre+"')")
+            .then(res => {
+                console.table(res.rows);
+                return res.rows;
+            })
+            .catch(err => {
+                console.log(err)
+                this.client.end()
+            })
+    }
+
+    insertarMiembro(pCedula,pNombre,pCelular,pEmail,pProvincia,pCanton,pDistrito,pSenas){
+        //AUN NO ESTA EN LA BASE
+        return this.client.query("select * from insertarMiembro('"+pCedula+"', '"+pNombre+"', '"+pCelular+"', '"+pEmail+"', '"+pProvincia+"', '"+pCanton+"', '"+pDistrito+"', '"+pSenas+"')")
+            .then(res => {
+                console.table(res.rows);
+                return res.rows;
+            })
+            .catch(err => {
+                console.log(err)
+                this.client.end()
+            })
+    }
+
+    insertarMiembroAGrupo(idGrupo,cedula,idRama,idZona,idMovimiento,idLider){
+        //AUN NO ESTA EN LA BASE
+        return this.client.query("select * from insertarMiembroAGrupo('"+cedula+"', '"+idGrupo+"', "+idRama+", "+idZona+", '"+idMovimiento+"', "+idLider+")")
+            .then(res => {
+                console.table(res.rows);
+                return res.rows;
+            })
+            .catch(err => {
+                console.log(err)
+                this.client.end()
+            })
+    }
+
+    insertarGrupo(idZona,idMonitor,idRama,idMonitor2){
+        //AUN NO ESTA EN BASE
+        return this.client.query("select * from insertarGrupo("+idZona+", '"+idMonitor+"', "+idRama+", '"+idMonitor2+"')")
+            .then(res => {
+                console.table(res.rows);
+                return res.rows;
+            })
+            .catch(err => {
+                console.log(err)
+                this.client.end()
+            })
+    }
+
+    insertarGrupo(idZona,idMonitor,idRama){
+        //AUN NO ESTA EN BASE
+        return this.client.query("select * from insertarGrupo("+idZona+", '"+idMonitor+"', "+idRama+")")
+            .then(res => {
+                console.table(res.rows);
+                return res.rows;
+            })
+            .catch(err => {
+                console.log(err)
+                this.client.end()
+            })
+    }
+
+    cambiarMiembroDeGrupo(idMiembro,idRama,idGrupoNuevo,idMovimiento,idZona){
+        //AUN NO ESTA EN BASE
+        return this.client.query("select * from cambiarMiembroGrupo("+idGrupoNuevo+", '"+idMiembro+"', "+idRama+", '"+idMovimiento+"', "+idZona+")")
+            .then(res => {
+                console.table(res.rows);
+                return res.rows;
+            })
+            .catch(err => {
+                console.log(err)
+                this.client.end()
+            })
+    }
+
+    getMiembrosXGrupo(idGrupo){
+        return this.client.query("select * from Miembro inner join GrupoMiembros on Miembro.cedula=GrupoMiembros.id_miembro where GrupoMiembros.id_grupo = "+idGrupo)
+            .then(res => {
+                console.table(res.rows)
+                return res.rows;
+            })
+            .catch(err => {
+                console.log(err)
+                this.client.end()
+            })
+    }
+
+    editarMiembro(pCedula,pNombre,pCelular,pEmail,pProvincia,pCanton,pDistrito,pSenas){
+        //AUN NO ESTA EN LA BASE
+        return this.client.query("select * from editarMiembro('"+pCedula+"', '"+pNombre+"', '"+pCelular+"', '"+pEmail+"', '"+pProvincia+"', '"+pCanton+"', '"+pDistrito+"', '"+pSenas+"')")
+            .then(res => {
+                console.table(res.rows);
+                return res.rows;
+            })
+            .catch(err => {
+                console.log(err)
+                this.client.end()
+            })
+    }
+
 }
 const dao=new DAO();
-dao.getMiembroXMovimiento("'4000042145'");
+//dao.getMiembroXMovimiento("'4000042145'");
 //dao.loginAsesor("'117380721'","'Yoquese'");
 //dao.getMovimientoXAsesor("'117380721'");
 //dao.getAsesor();
 //contrasena: 'Yoquese'
 //cedula: '117380721'
-//dao.getGrupoMiembrosRol();
+dao.getGrupoMiembrosRol();
 //dao.getGruposMiembro("'117940925'");
 //dao.getTelefonoMovimiento();
 //dao.getGrupoMiembros();
