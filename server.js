@@ -59,17 +59,7 @@ app.post('/iniciar-sesion', function(req, res){
 //////////////////////////////
 
 app.get('/crear-miembro', function(req, res){
-    //const {idMiembro, nombre, celular, email, provincia, canton,distrito, senas, posible_monitor, idZona, idRama, idGrupo} = req.body;
-    var idMiembro = "123";
-    var nombre = "Diego";
-    var celular = "12324";
-    var email = "email";
-    var provincia = "San José";
-    var canton = "Santa Ana";
-    var distrito = "brasil";
-    var idZona = "1";
-    var idRama = "1";
-    var idGrupo = "1";
+    const {idMiembro, nombre, celular, email, provincia, canton,distrito, senas, posible_monitor, idZona, idRama, idGrupo} = req.body;
     try{
         controlador.crearMiembro(idMiembro, nombre, celular, email, provincia, canton,distrito, idMovimiento, idZona, idRama, idGrupo);
         return res.json({success: true})
