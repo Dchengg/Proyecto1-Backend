@@ -159,11 +159,10 @@ export default class DAO{
 
     
     getGrupoXMovimiento(idMovimiento){
-        const quer="select * from Grupo inner join GrupoMiembros on GrupoMiembros.id_grupo=Grupo.id_grupo inner join GrupoMiembrosRol on GrupoMiembros.id_lider=GrupoMiembrosRol.id_lider where id_movimiento = '"
-        this.client.query(quer+idMovimiento+"' and (GrupoMiembros.id_lider = 1 or GrupoMiembros.id_lider = 2)")
+        const quer="select * from Grupo inner join GrupoMiembros on GrupoMiembros.id_grupo=Grupo.id_grupo inner join GrupoMiembrosRol on GrupoMiembros.id_lider=GrupoMiembrosRol.id_lider where grupo.id_movimiento = '"
+        return this.client.query(quer+idMovimiento+"' and (GrupoMiembros.id_lider = 1 or GrupoMiembros.id_lider = 2)")
             .then(res => {
                 console.table(res.rows)
-                this.client.end()
                 return res.rows;
             })
             .catch(err => {
