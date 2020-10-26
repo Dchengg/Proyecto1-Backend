@@ -4,6 +4,7 @@ const logger = require('morgan');
 const bodyParser = require('body-parser');
 const pool = require("./db")
 import Controlador from './Controlador/Controlador';
+import Creador from './Modelo/Creador';
 import { json } from 'body-parser';
 
 var app = express();
@@ -20,6 +21,10 @@ app.listen(API_PORT, function(){
 })
 
 var controlador = new Controlador();
+var creador = new Creador(controlador);
+
+creador.cargarZonas();
+
 
 app.get('/', function(req, res){
     return res.json({success: true, message: "You just connected to the social seekers API, welcome :D"})
@@ -199,7 +204,7 @@ app.post('/consultar-miembros-grupo', function(req, res){
     }
 })
 
-
+/*
 var idZona = "1";
 var idRama = "1";
 var idGrupo = "1";
@@ -215,4 +220,4 @@ var canton = "Santa Ana";
 var distrito = "brasil";
 controlador.crearMiembro(idMiembro, nombre, celular, email, provincia, canton,distrito, "", "", idZona, idRama, idGrupo);
 
-controlador.crearGrupo(idZona, idRama, "2", "here","123");
+controlador.crearGrupo(idZona, idRama, "2", "here","123");*/

@@ -11,7 +11,7 @@ const connection = {
     ssl: true
 };
 
-class DAO{
+export default class DAO{
     constructor(){
         this.client = new Client(connection);
         try{
@@ -48,9 +48,9 @@ class DAO{
     }
 
     getZonas(idZona){
-        this.client.query("select * from Zona")
+        return this.client.query("select * from Zona")
             .then(res => {
-                console.table(res.rows)
+                //console.table(res.rows)
                 this.client.end()
                 return res.rows;
             })
@@ -158,6 +158,7 @@ class DAO{
     }
 }
 const dao=new DAO();
+//dao.getMovimiento();
 //dao.getGrupoMiembrosRol();
 //dao.getGruposMiembro("'117940925'");
 //dao.getTelefonoMovimiento();
