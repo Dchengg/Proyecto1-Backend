@@ -3,7 +3,6 @@ const cors = require('cors')
 const logger = require('morgan');
 const bodyParser = require('body-parser');
 import Controlador from './Controlador/Controlador';
-import Creador from './Modelo/Creador';
 import ControladorLogin from './Controlador/ControladorLogin'
 
 var app = express();
