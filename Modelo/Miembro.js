@@ -1,6 +1,8 @@
-export default class Miembro{
-    constructor(nombre, celular, email, provincia, canton, distrito, senas, posible_monitor){
-        this.nombre = nombre;
+import Component from "./Component";
+
+export default class Miembro extends Component{
+    constructor(id, nombre, celular, email, provincia, canton, distrito, senas, posible_monitor){
+        super(id, nombre);
         this.celular = celular;
         this.email = email;
         this.provincia = provincia;
@@ -9,4 +11,6 @@ export default class Miembro{
         this.senas = senas;
         this. posible_monitor = posible_monitor;
     }
+
+    
 }
