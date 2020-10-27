@@ -24,8 +24,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon --exec babel-node ./src/server.js",
     "build": "babel src -d dist",
-    "start": "npm run build && node dist/server.js",
-    "serve": "node dist/server.js"
+    "serve": "npm run build && node dist/server.js",
+    "start": "node dist/server.js"
   },
   "repository": {
     "type": "git",
