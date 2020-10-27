@@ -9,7 +9,7 @@ export default class ControladorLogin{
         this.creador = new Creador(controlador);
     }
 
-    async verificarCombinación(id, pass, tipo){
+    async verificarCombinacion(id, pass, tipo){
         try {
             const res = await this.dao.loginAsesor(id, pass);
             if (res[0].encontrado) {
