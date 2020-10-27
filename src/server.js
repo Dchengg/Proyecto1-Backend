@@ -33,7 +33,7 @@ app.post('/iniciar-sesion', function(req, res){
     const { id, pass } = req.body;
     try{
         var loggedIn;
-        var logInPromise = controladorLogin.verificarCombinación(id, pass)
+        var logInPromise = controladorLogin.verificarCombinacion(id, pass)
             .then(res => {
                 loggedIn = res;
             })
