@@ -111,8 +111,19 @@ app.post('/crear-grupo', function(req,res){
 app.post('/modificar-miembro', function(req, res){
     const {idMiembro, nombre, celular, email, provincia, canton,distrito, senas, posible_monitor, idZona, idRama, idGrupo} = req.body;
     try{
-        controlador.modificarMiembro(idMiembro, nombre, celular, email, provincia, canton, distrito, senas, posible_monitor, idZona, idRama, idGrupo)
+        controlador.modificarMiembro(idMiembro, nombre, celular, email, provincia, canton, distrito, senas, posible_monitor,'4000042145' ,  idZona, idRama, idGrupo)
         return res.json({success: true})
+    }catch(err){
+        console.log(err);
+        return res.json({success: false, error: err})
+    }
+})
+
+app.post('/modificar-movimiento', function(req,res){
+    const {idMovimiento, idAsesor, nombre, direccionWeb, logo, pais, provincia, canton, distrito, senas} = req.body;
+    try{
+        controlador.modificarMovimiento(idMovimiento, idAsesor, nombre, direccionWeb, logo, pais, provincia, canton, distrito, senas);
+        return res.json({ success: true })
     }catch(err){
         console.log(err);
         return res.json({success: false, error: err})
@@ -125,6 +136,16 @@ app.post('/modificar-miembro', function(req, res){
 ///   Returns a single value
 //////////////////////////////
 
+app.post('/get-movimiento', function(req, res){
+    const { idMovimiento } = req.body;
+    try{
+        var movimiento = controlador.getMovimiento(idMovimiento);
+        return res.json({ success: true,  movimiento: movimiento })
+    }catch(err){
+        console.log(err);
+        return res.json({ success: true, error: err })
+    }
+})
 
 app.post('/get-zona', function(req, res){
     const { idZona } = req.body;
@@ -164,6 +185,7 @@ app.post('/get-miembro', function(req, res){
     const { idMiembro } = req.body;
     try{
         var miembro = controlador.getMiembro(idMovimiento, idMiembro);
+        var gruposMiembro = controlador;
         return res.json({success: true, miembro})
     }catch(err){
         console.log(err);

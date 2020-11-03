@@ -26,7 +26,7 @@ export default class Controlador{
         this.movimientos.get(idMovimiento).gNodos.crearRama(idZona, idRama, nombre);
     }
 
-    crearGrupo(idMovimiento, idZona, idRama, idGrupo, nombre, idEncargado1, idEncargado2){
+    crearGrupo(idMovimiento, idZona, idRama, idGrupo, nombre, idEncargado1, idEncargado2, isJefe){
         try{
             var encargado1 = this.getMiembro(idEncargado1);
             var encargado2 = this.getMiembro(idEncargado2);
@@ -47,10 +47,26 @@ export default class Controlador{
         }
     }
 
+    modificarMovimiento(idMovimiento, idAsesor,nombre, direccionWeb, logo, pais, provincia, canton, distrito, senas){
+        var movimiento = this.getMovimiento(idMovimiento);
+        movimiento.cedulaJuridica = idMovimiento;
+        movimiento.idAsesor = idAsesor;
+        movimiento.nombre = nombre;
+        movimiento.direccionWeb = direccionWeb;
+        movimiento.logo = logo;
+        movimiento.pais = pais;
+        movimiento.provincia = provincia;
+        movimiento.canton = canton;
+        movimiento.distrito = distrito;
+        movimiento.senas = senas;
+    }
+
     modificarMiembro(idMiembro, nombre, celular, email, provincia, canton, distrito, senas, posible_monitor, idMovimiento, idZona, idRama, idGrupo){
-        var gMiembros = this.movimientos.get(idMovimiento).gMiembros;
+        var movimiento =  this.getMovimiento(idMovimiento);
+        var gMiembros = movimiento.gMiembros;
         var miembro = gMiembros.modificarMiembro(idMiembro, nombre, celular, email, provincia, canton, distrito, senas, posible_monitor)
     }
+
 
     consultarZonas(idMovimiento){
         if(this.movimientos.has(idMovimiento)){
@@ -80,21 +96,29 @@ export default class Controlador{
         return this.movimientos.get(idMovimiento).gNodos.consultarMiembrosGrupo(idZona, idRama);
     }
 
-    getMiembro(idMovimiento, idMiembro){
+
+
+    getMovimiento(idMovimiento){
         if(this.movimientos.has(idMovimiento)){
-            var miembro = this.movimientos.get(idMovimiento).gMiembros.getMiembro(idMiembro);
-            if(miembro){
-                return miembro
-            }else{
-                throw { message: "No existe ningún miembro con esa cedula"}
-            }
+            return this.movimientos.get(idMovimiento);
         }else{
-            throw { message: "Movimiento no existe"}
+            throw { message: "Movimiento no existe " + idMovimiento}
+        }
+    }
+
+    getMiembro(idMovimiento, idMiembro){
+        var movimiento = this.getMovimiento(idMovimiento);
+        var miembro = movimiento.gMiembros.getMiembro(idMiembro);
+        if(miembro){
+            return miembro
+        }else{
+            throw { message: "No existe ningún miembro con esa cedula"}
         }
     }
 
     getZona(idMovimiento, idZona){
-        var zona = this.movimientos.get(idMovimiento).gNodos.getZona(idZona);
+        var movimiento = this.getMovimiento(idMovimiento);
+        var zona = movimiento.gNodos.getZona(idZona);
         if(zona == null){
             throw { message: "No existe una zona con esa identificación"}
         }
@@ -102,7 +126,8 @@ export default class Controlador{
     }
 
     getRama(idMovimiento, idZona, idRama){
-        var rama = this.movimientos.get(idMovimiento).gNodos.getRama(idZona, idRama);
+        var movimiento = this.getMovimiento(idMovimiento);
+        var rama = movimiento.gNodos.getRama(idZona, idRama);
         if(rama == null){
             throw { message: "No existe una zona con esa identificación"}
         }
@@ -110,7 +135,8 @@ export default class Controlador{
     }
 
     getGrupo(idMovimiento, idZona, idRama, idGrupo){
-        var grupo = this.movimientos.get(idMovimiento).gNodos.getGrupo(idZona, idRama, idGrupo);
+        var movimiento = this.getMovimiento(idMovimiento);
+        var grupo = movimiento.gNodos.getGrupo(idZona, idRama, idGrupo);
         if(grupo == null){
             throw { message: "No existe una grupo con esa identificación"}
         }
