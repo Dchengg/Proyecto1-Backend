@@ -11,7 +11,7 @@ const connection = {
     ssl: true
 };
 
-export default class DAO{
+class DAO{
     constructor(){
         this.client = new Client(connection);
         try{
@@ -145,6 +145,19 @@ export default class DAO{
             })
     }
 
+    getGrupos(){
+        this.client.query("select * from Grupo")
+            .then(res => {
+                console.table(res.rows)
+                this.client.end()
+                return res.rows;
+            })
+            .catch(err => {
+                console.log(err)
+                this.client.end()
+            })
+    }
+
     getGrupoXRama(idRama){
         return this.client.query(`select * from Grupo where id_rama = ''${idRama}`)
             .then(res => {
@@ -160,7 +173,7 @@ export default class DAO{
     
     getGrupoXMovimiento(idMovimiento){
         const quer="select * from Grupo inner join GrupoMiembros on GrupoMiembros.id_grupo=Grupo.id_grupo inner join GrupoMiembrosRol on GrupoMiembros.id_lider=GrupoMiembrosRol.id_lider where grupo.id_movimiento = '"
-        return this.client.query(quer+idMovimiento+"' and (GrupoMiembros.id_lider = 1 or GrupoMiembros.id_lider = 2)")
+        return this.client.query(quer+idMovimiento+"' and GrupoMiembros.id_lider != 5")
             .then(res => {
                 console.table(res.rows)
                 return res.rows;
@@ -238,7 +251,7 @@ export default class DAO{
     }
 
     getMiembroXMovimiento(idMovimiento){
-        return this.client.query(`select * from Miembro inner join GrupoMiembros on Miembro.cedula=GrupoMiembros.id_miembro where GrupoMiembros.id_movimiento = '${idMovimiento}'`)
+        return this.client.query(`select * from GrupoMiembros inner join Miembro on Miembro.cedula=GrupoMiembros.id_miembro where GrupoMiembros.id_movimiento = '${idMovimiento}'`)
             .then(res => {
                 console.table(res.rows)
                 return res.rows;
@@ -253,7 +266,7 @@ export default class DAO{
         this.client.query("select * from Asesor")
             .then(res => {
                 console.table(res.rows);
-                this.client.end()
+                //this.client.end()
                 return res.rows;
             })
             .catch(err => {
@@ -420,7 +433,7 @@ const dao=new DAO();
 //dao.getMiembroXMovimiento("'4000042145'");
 //dao.loginAsesor("'117380721'","'Yoquese'");
 //dao.getMovimientoXAsesor("'117380721'");
-//dao.getAsesor();
+//dao.getGrupo(1);
 //contrasena: 'Yoquese'
 //cedula: '117380721'
 //dao.getGrupoMiembrosRol();
@@ -431,3 +444,7 @@ const dao=new DAO();
 //dao.getGrupo();
 //dao.getAsesor();
 //Movimiento: '4000042145'
+//dao.getMiembrosXGrupo(1);
+dao.getGrupoXMovimiento('4000042145');
+//'Rescata gatos'
+//0
