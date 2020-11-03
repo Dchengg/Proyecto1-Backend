@@ -423,7 +423,7 @@ export default class DAO{
     }
 
     getGruposXMiembro(idMiembro){
-        const quer="select GrupoMiembros.id_grupo,GrupoMiembros.id_rama,GrupoMiembros.id_zona,GrupoMiembros.id_movimiento from GrupoMiembros inner join Miembro on Miembro.cedula=GrupoMiembros.id_miembro where Miembro.cedula = '"
+        const quer="select GrupoMiembros.id_grupo,GrupoMiembros.id_rama,GrupoMiembros.id_zona,GrupoMiembros.id_movimiento, Grupo.nombre from Grupo inner join GrupoMiembros on GrupoMiembros.id_grupo=Grupo.id_Grupo inner join Miembro on Miembro.cedula=GrupoMiembros.id_miembro where Miembro.cedula = '"        
         return this.client.query(quer+idMiembro+"'")
             .then(res => {
                 console.table(res.rows)
@@ -463,8 +463,8 @@ export default class DAO{
 
 }
 const dao=new DAO();
-dao.getAllGrupoMiembros();
-//dao.getGruposXMiembro('117546354');
+//dao.getAllGrupoMiembros();
+dao.getGruposXMiembro('117940925');
 //dao.getZonaXMovimiento('4000042145');
 //dao.getJefesXZona(1);
 //dao.getMiembroXMovimiento("'4000042145'");
