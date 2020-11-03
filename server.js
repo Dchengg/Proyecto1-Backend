@@ -3,8 +3,8 @@ const cors = require('cors')
 const logger = require('morgan');
 const bodyParser = require('body-parser');
 import Controlador from './Controlador/Controlador';
-import Creador from './Modelo/Creador';
-import ControladorLogin from './Controlador/ControladorLogin'
+import ControladorLogin from './Controlador/ControladorLogin';
+import DAO from "./Controlador/DAO";
 
 var app = express();
 app.use(cors());
@@ -21,6 +21,7 @@ app.listen(API_PORT, function(){
 
 var controlador = new Controlador();
 var controladorLogin = new ControladorLogin(controlador);
+var dao = new DAO();
 //var creador = new Creador(controlador);
 var idMovimiento = '4000042145';
 //creador.iniciarAPI();
@@ -185,8 +186,15 @@ app.post('/get-miembro', function(req, res){
     const { idMiembro } = req.body;
     try{
         var miembro = controlador.getMiembro(idMovimiento, idMiembro);
-        var gruposMiembro = controlador;
-        return res.json({success: true, miembro})
+        var grupos;
+        var gruposPromise = controlador.getGruposMiembro(idMovimiento, idMiembro)
+            .then(res => {
+                grupos = res;
+            })
+        Promise.resolve(gruposPromise)
+            .finally(() => {
+                return res.json({ success: true, miembro, grupos})
+            })
     }catch(err){
         console.log(err);
         return res.json({success: false, error:err})
@@ -238,6 +246,21 @@ app.post('/consultar-miembros-grupo', function(req, res){
     }catch(err){
         console.log(err);
         return res.json({success: false, error: err})
+    }
+})
+
+
+//////////////////////////////
+///   EXTRA
+//////////////////////////////
+
+app.post('/agregar-miembro', function(req, res){
+    const {idMovimimiento, idZona, idRama, idGrupo, idMiembro} = req.body;
+    try{
+        
+    }catch(err){
+        console.log(err);
+        return res.json({ success: false, error: err})
     }
 })
 

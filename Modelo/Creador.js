@@ -72,7 +72,7 @@ export default class Creador{
                 for(var i in res){
                     try{
                         var grupo = res[i];
-                        this.controlador.crearGrupo(idMovimiento, grupo.id_zona.toString(), grupo.id_rama.toString(), grupo.id_grupo.toString())
+                        this.controlador.crearGrupo(idMovimiento, grupo.id_zona.toString(), grupo.id_rama.toString(), grupo.id_grupo.toString(), grupo.nombre)
                     }catch(err){
                         console.log(err);
                     }

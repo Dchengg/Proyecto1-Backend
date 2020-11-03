@@ -11,7 +11,7 @@ const connection = {
     ssl: true
 };
 
-class DAO{
+export default class DAO{
     constructor(){
         this.client = new Client(connection);
         try{

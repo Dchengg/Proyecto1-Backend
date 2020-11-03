@@ -1,9 +1,11 @@
 import Movimiento from './Movimiento.js';
 import ControladorLogin from './ControladorLogin'
+import DAO from './DAO'
 
 export default class Controlador{
     constructor(){
         this.movimientos = new Map();
+        this.dao = new DAO();
         //this.movimientos.set(1,new Movimiento("1","123","movimiento","http:..","cool","CR","SJ","P","C","D","Del palo de limón, tres cuadras norte :v"))
     }
      
@@ -113,6 +115,22 @@ export default class Controlador{
             return miembro
         }else{
             throw { message: "No existe ningún miembro con esa cedula"}
+        }
+    }
+
+    async getGruposMiembro(idMovimiento, idMiembro){
+        try{
+            var grupos = [];
+            const res = await this.dao.getGruposXMiembro(idMiembro);
+            for(var i in res){
+                console.log(res[i])
+                var grupoInfo = res[i];
+                var grupo = this.getGrupo(idMovimiento, grupoInfo.id_zona.toString(),grupoInfo.id_rama.toString(), grupoInfo.id_grupo.toString());
+                grupos.push(grupo);
+                return grupos
+            }
+        }catch(err){
+            throw err
         }
     }
 
