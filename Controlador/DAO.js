@@ -388,6 +388,33 @@ export default class DAO{
                 this.client.end()
             })
     }
+
+    asignarJefeGrupo(idGrupo,cedulaMiembro){
+        //AUN NO ESTA EN LA BASE
+        return this.client.query("select * from asignarJefeGrupo('"+cedulaMiembro+"', "+idGrupo+")")
+            .then(res => {
+                console.table(res.rows);
+                return res.rows;
+            })
+            .catch(err => {
+                console.log(err)
+                this.client.end()
+            })
+    }
+
+    asignarJefeRama(idRama,cedulaMiembro){
+        //AUN NO ESTA EN LA BASE
+        return this.client.query("select * from asignarJefeRama('"+cedulaMiembro+"', "+idRama+")")
+            .then(res => {
+                console.table(res.rows);
+                return res.rows;
+            })
+            .catch(err => {
+                console.log(err)
+                this.client.end()
+            })
+    }
+
 }
 const dao=new DAO();
 //dao.getMiembroXMovimiento("'4000042145'");
