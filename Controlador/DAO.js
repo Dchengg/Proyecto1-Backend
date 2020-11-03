@@ -429,7 +429,7 @@ class DAO{
     }
 
     getGruposXMiembro(idMiembro){
-        const quer="select Grupo.id_grupo from Grupo inner join GrupoMiembros on GrupoMiembros.id_grupo=Grupo.id_grupo inner join Miembro on Miembro.cedula=GrupoMiembros.id_miembro where Miembro.cedula = '"
+        const quer="select GrupoMiembros.id_grupo,GrupoMiembros.id_rama,GrupoMiembros.id_zona,GrupoMiembros.id_movimiento from GrupoMiembros inner join Miembro on Miembro.cedula=GrupoMiembros.id_miembro where Miembro.cedula = '"
         return this.client.query(quer+idMiembro+"'")
             .then(res => {
                 console.table(res.rows)
@@ -440,7 +440,7 @@ class DAO{
                 this.client.end()
             })
     }
-    
+
     getJefesXZona(idZona){
         const quer="select * from Zona inner join GrupoMiembros on GrupoMiembros.id_zona=Zona.id_zona inner join GrupoMiembrosRol on GrupoMiembros.id_lider=GrupoMiembrosRol.id_lider where zona.id_zona = "
         return this.client.query(quer+idZona+" and GrupoMiembros.id_lider < 5 and GrupoMiembros.id_lider!=1")
@@ -466,7 +466,6 @@ dao.getGruposXMiembro('117940925');
 //contrasena: 'Yoquese'
 //cedula: '117380721'
 //dao.getGrupoMiembrosRol();
-//dao.getGruposMiembro("'117940925'");
 //dao.getTelefonoMovimiento();
 //dao.getGrupoMiembros();
 //dao.getRamas();
@@ -478,9 +477,9 @@ dao.getGruposXMiembro('117940925');
 //'Rescata gatos'
 /*
 1-
-2-Listo
+2-Listo dao.getGruposXMiembro(cedula);
 3-
-4-LIsto
+4-LIsto getJefesXZona(idZona)
 5-
 6-
 7-
