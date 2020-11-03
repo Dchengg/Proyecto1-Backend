@@ -428,8 +428,37 @@ class DAO{
             })
     }
 
+    getGruposXMiembro(idMiembro){
+        const quer="select * from Grupo inner join GrupoMiembros on GrupoMiembros.id_grupo=Grupo.id_grupo inner join Miembro on Miembro.cedula=GrupoMiembros.id_miembro where Miembro.cedula = '"
+        return this.client.query(quer+idMiembro+"'")
+            .then(res => {
+                console.table(res.rows)
+                return res.rows;
+            })
+            .catch(err => {
+                console.log(err)
+                this.client.end()
+            })
+    }
+    
+    getJefesXZona(idZona){
+        const quer="select * from Zona inner join GrupoMiembros on GrupoMiembros.id_zona=Zona.id_zona inner join GrupoMiembrosRol on GrupoMiembros.id_lider=GrupoMiembrosRol.id_lider where zona.id_zona = "
+        return this.client.query(quer+idZona+" and GrupoMiembros.id_lider = 4")
+            .then(res => {
+                console.table(res.rows)
+                return res.rows;
+            })
+            .catch(err => {
+                console.log(err)
+                this.client.end()
+            })
+    }
+
 }
 const dao=new DAO();
+//dao.getGruposXMiembro('117940925');
+//dao.getZonaXMovimiento('4000042145');
+dao.getJefesXZona(1);
 //dao.getMiembroXMovimiento("'4000042145'");
 //dao.loginAsesor("'117380721'","'Yoquese'");
 //dao.getMovimientoXAsesor("'117380721'");
@@ -445,6 +474,14 @@ const dao=new DAO();
 //dao.getAsesor();
 //Movimiento: '4000042145'
 //dao.getMiembrosXGrupo(1);
-dao.getGrupoXMovimiento('4000042145');
+//dao.getGrupoXMovimiento('4000042145');
 //'Rescata gatos'
-//0
+/*
+1-
+2-Listo
+3-
+4-LIsto
+5-
+6-
+7-
+*/
