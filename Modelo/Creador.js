@@ -22,18 +22,20 @@ export default class Creador{
     }
 
     cargarMovimiento(cedulaAsesor){
-        this.dao.getMovimientoXAsesor(cedulaAsesor)
+        var cedula_juridica;
+        cedula_juridica=this.dao.getMovimientoXAsesor(cedulaAsesor)
             .then(res => {
                 var movimiento = res[0];
                 try{
                     this.controlador.crearMovimiento(movimiento.cedula_juridica, cedulaAsesor, movimiento.nombre, movimiento.direccion_web, movimiento.logo, movimiento.pais, movimiento.provincia, movimiento.canton, movimiento.distrito, movimiento.senales);
                     this.cargarZonasMovimiento(movimiento.cedula_juridica);
-                    return movimiento.cedula_juridica;
+                    cedula_juridica = movimiento.cedula_juridica;
                 }catch(err){
                     console.log(err);
                 }
-            })
-        
+                return movimiento.cedula_juridica;
+            });
+            return cedula_juridica;
     }
 
     cargarZonasMovimiento(idMovimiento){

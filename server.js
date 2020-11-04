@@ -48,7 +48,6 @@ app.post('/iniciar-sesion', function(req, res){
                 console.log(res);
                 loggedIn = res.encontrado;
                 req.session.idMovimiento = res.idMovimiento
-                req.session.id = id;
             })
             .catch(err => {
                 throw err
@@ -56,6 +55,8 @@ app.post('/iniciar-sesion', function(req, res){
         Promise.resolve(logInPromise)
             .finally(() => {
                 if(loggedIn){
+                    req.session.idAsesor = id;
+                    console.log(req.session.idAsesor + "||||||||||||||||||||||||||||||");
                     return res.json({ success: true});
                 }
                 return res.json({ success: false});

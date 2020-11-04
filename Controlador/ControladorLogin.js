@@ -13,11 +13,13 @@ export default class ControladorLogin{
     async verificarCombinación(id, pass, tipo){
         try {
             const res = await this.dao.loginAsesor(id, pass);
-            var idMovimiento
+            var idMovimiento;
             if (res[0].encontrado) {
-                idMovimiento=this.creador.cargarMovimiento(id);
+                idMovimiento=await this.creador.cargarMovimiento(id);
+                
             }
-            res[0].movimiento=idMovimiento;
+            Promise.resolve(idMovimiento);
+            res[0].idMovimiento=idMovimiento;
             return res[0];
         }
         catch (err) {
