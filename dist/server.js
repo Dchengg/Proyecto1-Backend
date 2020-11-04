@@ -19,7 +19,10 @@ var logger = require('morgan');
 var bodyParser = require('body-parser');
 
 var app = express();
-app.use(cors());
+app.use(cors({
+  origin: ["http://localhost:4200", "https://social-seekers-bbb14.web.app"],
+  credentials: true
+}));
 app.use(bodyParser.urlencoded({
   extended: false
 }));
@@ -27,12 +30,10 @@ app.use(bodyParser.json()); //quitar en producción
 
 app.use(logger('dev'));
 app.use(session({
-  secret: 'keyboard cat',
-  resave: true,
-  saveUninitialized: true,
-  cookie: {
-    secure: true
-  }
+  secret: 'secret word',
+  resave: false,
+  saveUninitialized: true //cookie: { secure: true }
+
 })); //The local port is 3001
 
 var API_PORT = process.env.PORT || 3001;

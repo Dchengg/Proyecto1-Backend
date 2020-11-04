@@ -9,7 +9,7 @@ import DAO from "./Controlador/DAO";
 
 var app = express();
 app.use(cors({origin: [
-    "http://localhost:4200"
+    "http://localhost:4200","https://social-seekers-bbb14.web.app"
   ], credentials: true}));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
