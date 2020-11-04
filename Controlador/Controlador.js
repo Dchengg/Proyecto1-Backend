@@ -49,12 +49,39 @@ export default class Controlador{
         }
     }
 
-    agregarMiembroGrupo(idMovimiento, idZona, idRama, idGrupo, idMiembro){
+    agregarMiembroGrupo(idMovimiento, idZona, idRama, idGrupo, idMiembro, ){
         var grupo = this.getGrupo(idMovimiento, idZona, idRama, idGrupo);
         var miembro = this.getMiembro(idMovimiento, idMiembro);
         grupo.agregar(miembro);
     }
 
+    asignarJefeGrupo(idMovimiento,idZona, idRama, idGrupo, idMiembro, idMiembro2){
+        var grupo = this.getGrupo(idMovimiento, idZona, idRama, idGrupo);
+        try{
+
+        }catch(err){
+            console.log(err)
+        }
+        var miembro = this.getMiembro(idMovimiento, idMiembro);
+        grupo.encargado1 = miembro;
+        grupo.encargado2 = idMiembro2
+    }
+
+    asignarJefeRama(idMovimiento,idZona, idRama, idMiembro, idMiembro2){
+        var rama = this.getRama(idMovimiento, idZona, idRama);
+        var miembro = this.getMiembro(idMovimiento, idMiembro);
+        rama.encargado1 = miembro;
+        rama.encargado2 = idMiembro2
+    }
+
+    asignarJefeZona(idMovimiento,idZona, idMiembro, idMiembro2){
+        var zona = this.getZona(idMovimiento, idZona);
+        var miembro = this.getMiembro(idMovimiento, idMiembro);
+        zona.encargado1 = miembro;
+        zona.encargado2 = idMiembro2
+    }
+
+    
     modificarMovimiento(idMovimiento, idAsesor,nombre, direccionWeb, logo, pais, provincia, canton, distrito, senas){
         var movimiento = this.getMovimiento(idMovimiento);
         movimiento.cedulaJuridica = idMovimiento;

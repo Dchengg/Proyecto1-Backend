@@ -279,6 +279,40 @@ app.post('/agregar-miembro-grupo', function(req, res){
     const {idZona, idRama, idGrupo, idMiembro} = req.body;
     try{
         controlador.agregarMiembroGrupo(idMovimiento, idZona, idRama, idGrupo, idMiembro);
+        return res.json({success: true});
+    }catch(err){
+        console.log(err);
+        return res.json({ success: false, error: err})
+    }
+})
+
+app.post('/asignar-jefe-grupo', function(req, res){
+    const {idZona, idRama, idGrupo, idMiembro, idMiembro2} = req.body;
+    try{
+        controlador.asignarJefeGrupo(idMovimiento, idZona, idRama, idGrupo, idMiembro ,idMiembro2)
+        return res.json({success: true});
+    }catch(err){
+        console.log(err);
+        return res.json({ success: false, error: err})
+    }
+})
+
+app.post('/asignar-jefe-rama', function(req, res){
+    const {idZona, idRama, idMiembro, idMiembro2} = req.body;
+    try{
+        controlador.asignarJefeRama(idMovimiento, idZona, idRama, idMiembro, idMiembro2, idMiembro2)
+        return res.json({success: true});
+    }catch(err){
+        console.log(err);
+        return res.json({ success: false, error: err})
+    }
+})
+
+app.post('/asignar-jefe-zona', function(req, res){
+    const {idZona, idRama, idMiembro, idMiembro2} = req.body;
+    try{
+        controlador.asignarJefeRama(idMovimiento, idZona, idRama, idMiembro,idMiembro2, idMiembro2)
+        return res.json({success: true});
     }catch(err){
         console.log(err);
         return res.json({ success: false, error: err})
