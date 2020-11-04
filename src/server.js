@@ -17,10 +17,10 @@ app.use(bodyParser.json());
 app.use(logger('dev'));
 
 app.use(session({
-  secret: 'keyboard cat',
-  resave: true,
+  secret: 'secret word',
+  resave: false,
   saveUninitialized: true,
-  cookie: { secure: true }
+  //cookie: { secure: true }
 }))
 
 //The local port is 3001
