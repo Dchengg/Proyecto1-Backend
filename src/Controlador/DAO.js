@@ -122,7 +122,8 @@ class DAO{
     }
 
     getRamaXMovimiento(idMovimiento){
-        return this.client.query(`select * from Rama where id_movimiento = '${idMovimiento}'`)
+        //return this.client.query(`select * from Rama where Rama.id_movimiento = '${idMovimiento}'`)
+        return this.client.query(`select Rama.id_movimiento,Rama.nombre,Rama.id_zona,Rama.id_Rama,GrupoMiembros.id_Miembro,GrupoMiembros.id_lider from Rama left join GrupoMiembros on GrupoMiembros.id_rama=Rama.id_rama inner join GrupoMiembrosRol on GrupoMiembros.id_lider=GrupoMiembrosRol.id_lider where Rama.id_movimiento = '${idMovimiento}' and (GrupoMiembros.id_lider=4 or GrupoMiembros.id_lider=3)`)
             .then(res => {
                 console.table(res.rows)
                 return res.rows;
@@ -132,6 +133,8 @@ class DAO{
                 this.client.end()
             })
     }
+
+    
 
     getGrupo(idGrupo){
         this.client.query("select * from Grupo where id_grupo = "+idGrupo)
@@ -262,8 +265,8 @@ class DAO{
             })
     }
 
-    getAsesor(){
-        this.client.query("select * from Asesor")
+    getAsesor(idAsesor){
+        this.client.query("select * from Asesor where cedula = '"+idAsesor+"'")
             .then(res => {
                 console.table(res.rows);
                 //this.client.end()
@@ -487,7 +490,10 @@ class DAO{
 
 }
 const dao=new DAO();
-dao.getZonaXMovimiento('4000042145');
+dao.getRamaXMovimiento('4000042145');
+//dao.getGrupoMiembros(1);
+//dao.getAsesor('117380721');
+//dao.getZonaXMovimiento('4000042145');
 //dao.getTelefonoMovimiento('4000042145');
 //dao.getAllGrupoMiembros();
 //dao.getGruposXMiembro('117940925');
