@@ -13,8 +13,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 //quitar en producción
 app.use(logger('dev'));
-var app = express()
-app.set('trust proxy', 1) // trust first proxy
+
 app.use(session({
   secret: 'keyboard cat',
   resave: true,
