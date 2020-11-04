@@ -49,6 +49,12 @@ export default class Controlador{
         }
     }
 
+    agregarMiembroGrupo(idMovimiento, idZona, idRama, idGrupo, idMiembro){
+        var grupo = this.getGrupo(idMovimiento, idZona, idRama, idGrupo);
+        var miembro = this.getMiembro(idMovimiento, idMiembro);
+        grupo.agregar(miembro);
+    }
+
     modificarMovimiento(idMovimiento, idAsesor,nombre, direccionWeb, logo, pais, provincia, canton, distrito, senas){
         var movimiento = this.getMovimiento(idMovimiento);
         movimiento.cedulaJuridica = idMovimiento;
@@ -79,10 +85,22 @@ export default class Controlador{
     }
 
     consultarRamas(idMovimiento, idZona){
-        if(this.movimientos.has(idMovimiento)){
-            return this.movimientos.get(idMovimiento).gNodos.consultarRamas(idZona); 
-        }else{
-            throw { message: "Movimiento no existe"}
+        var movimiento = this.getMovimiento(idMovimiento);
+        return movimiento.gNodos.consultarRamas(idZona); 
+    }
+
+    async consultarRamasDisponibles(idMovimiento, idMiembro){
+        try{
+            var gruposDeMiembro = await this.getGruposMiembro(idMovimiento, idMiembro);
+            var ramas = new Map(this.consultarRamas(idMovimiento, gruposDeMiembro[0].id_zona.toString()));
+            console.log(ramas)
+            for(var i in gruposDeMiembro){
+                ramas.delete(gruposDeMiembro[i].id_rama.toString())
+            }
+            return ramas;
+        }catch(err){
+            console.log(err)
+            throw err
         }
     }
 
@@ -125,8 +143,7 @@ export default class Controlador{
             for(var i in res){
                 console.log(res[i])
                 var grupoInfo = res[i];
-                var grupo = this.getGrupo(idMovimiento, grupoInfo.id_zona.toString(),grupoInfo.id_rama.toString(), grupoInfo.id_grupo.toString());
-                grupos.push(grupo);
+                grupos.push(grupoInfo);
                 return grupos
             }
         }catch(err){

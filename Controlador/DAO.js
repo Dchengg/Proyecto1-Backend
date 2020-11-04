@@ -464,7 +464,7 @@ export default class DAO{
 }
 const dao=new DAO();
 //dao.getAllGrupoMiembros();
-dao.getGruposXMiembro('117940925');
+//dao.getGruposXMiembro('117940925');
 //dao.getZonaXMovimiento('4000042145');
 //dao.getJefesXZona(1);
 //dao.getMiembroXMovimiento("'4000042145'");

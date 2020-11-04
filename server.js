@@ -226,6 +226,27 @@ app.post('/consultar-ramas',function(req, res){
     }
 })
 
+app.post('/consultar-ramas-disponibles',function(req, res){
+    const { idMiembro } = req.body;
+    try{
+        var ramas;
+        var ramasPromise = controlador.consultarRamasDisponibles(idMovimiento, idMiembro)
+            .then(res => {
+                ramas = res
+            })
+            .catch(err => {
+                throw err
+            })
+        Promise.resolve(ramasPromise)
+            .finally(() => {
+                return res.json({success: true, ramas :Object.fromEntries(ramas)})
+            })
+    }catch(err){
+        console.log(err);
+        return res.json({success: false, error: err});
+    }
+})
+
 app.post('/consultar-grupos',function(req, res){
     const { idZona, idRama} = req.body;
     try{
@@ -254,10 +275,10 @@ app.post('/consultar-miembros-grupo', function(req, res){
 ///   EXTRA
 //////////////////////////////
 
-app.post('/agregar-miembro', function(req, res){
-    const {idMovimimiento, idZona, idRama, idGrupo, idMiembro} = req.body;
+app.post('/agregar-miembro-grupo', function(req, res){
+    const {idZona, idRama, idGrupo, idMiembro} = req.body;
     try{
-        
+        controlador.agregarMiembroGrupo(idMovimiento, idZona, idRama, idGrupo, idMiembro);
     }catch(err){
         console.log(err);
         return res.json({ success: false, error: err})
