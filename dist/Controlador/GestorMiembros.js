@@ -52,7 +52,13 @@ var GestorMiembros = /*#__PURE__*/function () {
   }, {
     key: "getMiembro",
     value: function getMiembro(idMiembro) {
-      return this.miembros.get(idMiembro);
+      if (this.miembros.has(idMiembro)) {
+        return this.miembros.get(idMiembro);
+      }
+
+      throw {
+        message: "No existe el miembro " + idMiembro
+      };
     }
   }]);
   return GestorMiembros;

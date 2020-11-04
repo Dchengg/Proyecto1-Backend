@@ -190,12 +190,15 @@ var DAO = /*#__PURE__*/function () {
       });
     }
   }, {
-    key: "getGrupoXRama",
-    value: function getGrupoXRama(idRama) {
+    key: "getGrupos",
+    value: function getGrupos() {
       var _this9 = this;
 
-      return this.client.query("select * from Grupo where id_rama = ''".concat(idRama)).then(function (res) {
+      this.client.query("select * from Grupo").then(function (res) {
         console.table(res.rows);
+
+        _this9.client.end();
+
         return res.rows;
       })["catch"](function (err) {
         console.log(err);
@@ -204,12 +207,11 @@ var DAO = /*#__PURE__*/function () {
       });
     }
   }, {
-    key: "getGrupoXMovimiento",
-    value: function getGrupoXMovimiento(idMovimiento) {
+    key: "getGrupoXRama",
+    value: function getGrupoXRama(idRama) {
       var _this10 = this;
 
-      var quer = "select * from Grupo inner join GrupoMiembros on GrupoMiembros.id_grupo=Grupo.id_grupo inner join GrupoMiembrosRol on GrupoMiembros.id_lider=GrupoMiembrosRol.id_lider where grupo.id_movimiento = '";
-      return this.client.query(quer + idMovimiento + "' and (GrupoMiembros.id_lider = 1 or GrupoMiembros.id_lider = 2)").then(function (res) {
+      return this.client.query("select * from Grupo where id_rama = ''".concat(idRama)).then(function (res) {
         console.table(res.rows);
         return res.rows;
       })["catch"](function (err) {
@@ -219,82 +221,82 @@ var DAO = /*#__PURE__*/function () {
       });
     }
   }, {
-    key: "getGrupoMiembros",
-    value: function getGrupoMiembros(idGrupo) {
+    key: "getGrupoXMovimiento",
+    value: function getGrupoXMovimiento(idMovimiento) {
       var _this11 = this;
 
-      this.client.query("select * from GrupoMiembros where id_grupo = " + idGrupo).then(function (res) {
+      var quer = "select * from Grupo inner join GrupoMiembros on GrupoMiembros.id_grupo=Grupo.id_grupo inner join GrupoMiembrosRol on GrupoMiembros.id_lider=GrupoMiembrosRol.id_lider where grupo.id_movimiento = '";
+      return this.client.query(quer + idMovimiento + "' and GrupoMiembros.id_lider != 5").then(function (res) {
         console.table(res.rows);
-
-        _this11.client.end();
-
         return res.rows;
       })["catch"](function (err) {
         console.log(err);
 
         _this11.client.end();
+      });
+    }
+  }, {
+    key: "getGrupoMiembros",
+    value: function getGrupoMiembros(idGrupo) {
+      var _this12 = this;
+
+      this.client.query("select * from GrupoMiembros where id_grupo = " + idGrupo).then(function (res) {
+        console.table(res.rows);
+
+        _this12.client.end();
+
+        return res.rows;
+      })["catch"](function (err) {
+        console.log(err);
+
+        _this12.client.end();
       });
     }
   }, {
     key: "getGrupoMiembrosRol",
     value: function getGrupoMiembrosRol() {
-      var _this12 = this;
+      var _this13 = this;
 
       this.client.query("select * from GrupoMiembrosRol").then(function (res) {
         console.table(res.rows);
 
-        _this12.client.end();
+        _this13.client.end();
 
         return res.rows;
       })["catch"](function (err) {
         console.log(err);
 
-        _this12.client.end();
+        _this13.client.end();
       });
     }
   }, {
     key: "getGruposMiembroxMiembro",
     value: function getGruposMiembroxMiembro(idMiembro) {
-      var _this13 = this;
+      var _this14 = this;
 
       //Grupos donde esta y el rol
       this.client.query("select * from GrupoMiembros inner join GrupoMiembrosRol on GrupoMiembros.id_lider = GrupoMiembrosRol.id_lider where id_miembro=" + idMiembro).then(function (res) {
         console.table(res.rows);
 
-        _this13.client.end();
+        _this14.client.end();
 
         return res.rows;
       })["catch"](function (err) {
         console.log(err);
 
-        _this13.client.end();
+        _this14.client.end();
       });
     }
   }, {
     key: "getMiembros",
     value: function getMiembros() {
-      var _this14 = this;
+      var _this15 = this;
 
-      //this.client.query("call procedure storedProcedure()")
       this.client.query("select * from Miembro").then(function (res) {
         console.table(res.rows);
 
-        _this14.client.end();
+        _this15.client.end();
 
-        return res.rows;
-      })["catch"](function (err) {
-        console.log(err);
-
-        _this14.client.end();
-      });
-    }
-  }, {
-    key: "getMiembro",
-    value: function getMiembro(idMiembro) {
-      var _this15 = this;
-
-      this.client.query("select * from Miembro where cedula = " + idMiembro).then(function (res) {
-        console.table(res.rows);
         return res.rows;
       })["catch"](function (err) {
         console.log(err);
@@ -303,11 +305,11 @@ var DAO = /*#__PURE__*/function () {
       });
     }
   }, {
-    key: "getMiembroXMovimiento",
-    value: function getMiembroXMovimiento(idMovimiento) {
+    key: "getMiembro",
+    value: function getMiembro(idMiembro) {
       var _this16 = this;
 
-      return this.client.query("select * from Miembro inner join GrupoMiembros on Miembro.cedula=GrupoMiembros.id_miembro where GrupoMiembros.id_movimiento = '".concat(idMovimiento, "'")).then(function (res) {
+      this.client.query("select * from Miembro where cedula = " + idMiembro).then(function (res) {
         console.table(res.rows);
         return res.rows;
       })["catch"](function (err) {
@@ -317,15 +319,12 @@ var DAO = /*#__PURE__*/function () {
       });
     }
   }, {
-    key: "getAsesor",
-    value: function getAsesor() {
+    key: "getMiembroXMovimiento",
+    value: function getMiembroXMovimiento(idMovimiento) {
       var _this17 = this;
 
-      this.client.query("select * from Asesor").then(function (res) {
+      return this.client.query("select * from GrupoMiembros inner join Miembro on Miembro.cedula=GrupoMiembros.id_miembro where GrupoMiembros.id_movimiento = '".concat(idMovimiento, "'")).then(function (res) {
         console.table(res.rows);
-
-        _this17.client.end();
-
         return res.rows;
       })["catch"](function (err) {
         console.log(err);
@@ -334,23 +333,13 @@ var DAO = /*#__PURE__*/function () {
       });
     }
   }, {
-    key: "loginAsesor",
-    value: function loginAsesor(pCedula, pContrasena) {
-      //this.client.query("select * from Asesor")
-      return this.client.query("select * from verificarContrasenaAsesor('".concat(pCedula, "','").concat(pContrasena, "')")).then(function (res) {
-        console.table(res.rows);
-        return res.rows;
-      })["catch"](function (err) {
-        console.log(err);
-      });
-    }
-  }, {
-    key: "insertarRama",
-    value: function insertarRama(pIdMovimiento, pIdZona, pNombre) {
+    key: "getAsesor",
+    value: function getAsesor() {
       var _this18 = this;
 
-      return this.client.query("select * from insertarRama('" + pIdMovimiento + "', " + pIdZona + ", '" + pNombre + "')").then(function (res) {
-        console.table(res.rows);
+      this.client.query("select * from Asesor").then(function (res) {
+        console.table(res.rows); //this.client.end()
+
         return res.rows;
       })["catch"](function (err) {
         console.log(err);
@@ -359,11 +348,21 @@ var DAO = /*#__PURE__*/function () {
       });
     }
   }, {
-    key: "insertarZona",
-    value: function insertarZona(pIdMovimiento, pIdNombre) {
+    key: "loginAsesor",
+    value: function loginAsesor(pCedula, pContrasena) {
+      return this.client.query("select * from verificarContrasenaAsesor('".concat(pCedula, "','").concat(pContrasena, "')")).then(function (res) {
+        console.table(res.rows);
+        return res.rows;
+      })["catch"](function (err) {
+        console.log(err);
+      });
+    }
+  }, {
+    key: "insertarGrupo",
+    value: function insertarGrupo(idMovimiento, idZona, idRama, idGrupo, bMonitores, pNombre) {
       var _this19 = this;
 
-      return this.client.query("select * from insertarZona('" + pIdMovimiento + "', '" + pIdNombre + "')").then(function (res) {
+      return this.client.query("select * from insertarGrupo('" + idMovimiento + "', " + idZona + ", " + idRama + ", " + idGrupo + ", " + bMonitores + ", " + pNombre + ")").then(function (res) {
         console.table(res.rows);
         return res.rows;
       })["catch"](function (err) {
@@ -373,12 +372,11 @@ var DAO = /*#__PURE__*/function () {
       });
     }
   }, {
-    key: "insertarMiembro",
-    value: function insertarMiembro(pCedula, pNombre, pCelular, pEmail, pProvincia, pCanton, pDistrito, pSenas) {
+    key: "insertarRama",
+    value: function insertarRama(pIdMovimiento, pIdZona, pNombre) {
       var _this20 = this;
 
-      //AUN NO ESTA EN LA BASE
-      return this.client.query("select * from insertarMiembro('" + pCedula + "', '" + pNombre + "', '" + pCelular + "', '" + pEmail + "', '" + pProvincia + "', '" + pCanton + "', '" + pDistrito + "', '" + pSenas + "')").then(function (res) {
+      return this.client.query("select * from insertarRama('" + pIdMovimiento + "', " + pIdZona + ", '" + pNombre + "')").then(function (res) {
         console.table(res.rows);
         return res.rows;
       })["catch"](function (err) {
@@ -388,12 +386,11 @@ var DAO = /*#__PURE__*/function () {
       });
     }
   }, {
-    key: "insertarMiembroAGrupo",
-    value: function insertarMiembroAGrupo(idGrupo, cedula, idRama, idZona, idMovimiento, idLider) {
+    key: "insertarZona",
+    value: function insertarZona(pIdMovimiento, pNombre) {
       var _this21 = this;
 
-      //AUN NO ESTA EN LA BASE
-      return this.client.query("select * from insertarMiembroAGrupo('" + cedula + "', '" + idGrupo + "', " + idRama + ", " + idZona + ", '" + idMovimiento + "', " + idLider + ")").then(function (res) {
+      return this.client.query("select * from insertarZona('" + pIdMovimiento + "', '" + pNombre + "')").then(function (res) {
         console.table(res.rows);
         return res.rows;
       })["catch"](function (err) {
@@ -403,12 +400,11 @@ var DAO = /*#__PURE__*/function () {
       });
     }
   }, {
-    key: "insertarGrupo",
-    value: function insertarGrupo(idZona, idMonitor, idRama, idMonitor2) {
+    key: "insertarMiembro",
+    value: function insertarMiembro(pCedula, pNombre, pCelular, pEmail, pProvincia, pCanton, pDistrito, pSenas) {
       var _this22 = this;
 
-      //AUN NO ESTA EN BASE
-      return this.client.query("select * from insertarGrupo(" + idZona + ", '" + idMonitor + "', " + idRama + ", '" + idMonitor2 + "')").then(function (res) {
+      return this.client.query("select * from insertarMiembro('" + pCedula + "', '" + pNombre + "', '" + pCelular + "', '" + pEmail + "', '" + pProvincia + "', '" + pCanton + "', '" + pDistrito + "', '" + pSenas + "')").then(function (res) {
         console.table(res.rows);
         return res.rows;
       })["catch"](function (err) {
@@ -418,12 +414,11 @@ var DAO = /*#__PURE__*/function () {
       });
     }
   }, {
-    key: "insertarGrupo",
-    value: function insertarGrupo(idZona, idMonitor, idRama) {
+    key: "insertarMiembroAGrupo",
+    value: function insertarMiembroAGrupo(idGrupo, cedula, idRama, idZona, idMovimiento) {
       var _this23 = this;
 
-      //AUN NO ESTA EN BASE
-      return this.client.query("select * from insertarGrupo(" + idZona + ", '" + idMonitor + "', " + idRama + ")").then(function (res) {
+      return this.client.query("select * from insertarMiembroAGrupo('" + cedula + "', '" + idGrupo + "', " + idRama + ", " + idZona + ", '" + idMovimiento + "')").then(function (res) {
         console.table(res.rows);
         return res.rows;
       })["catch"](function (err) {
@@ -437,8 +432,7 @@ var DAO = /*#__PURE__*/function () {
     value: function cambiarMiembroDeGrupo(idMiembro, idRama, idGrupoNuevo, idMovimiento, idZona) {
       var _this24 = this;
 
-      //AUN NO ESTA EN BASE
-      return this.client.query("select * from cambiarMiembroGrupo(" + idGrupoNuevo + ", '" + idMiembro + "', " + idRama + ", '" + idMovimiento + "', " + idZona + ")").then(function (res) {
+      return this.client.query("select * from cambiarMiembroGrupo('" + idMiembro + "', " + idGrupoNuevo + ", " + idRama + ", " + idZona + ", '" + idMovimiento + "')").then(function (res) {
         console.table(res.rows);
         return res.rows;
       })["catch"](function (err) {
@@ -463,11 +457,10 @@ var DAO = /*#__PURE__*/function () {
     }
   }, {
     key: "editarMiembro",
-    value: function editarMiembro(pCedula, pNombre, pCelular, pEmail, pProvincia, pCanton, pDistrito, pSenas) {
+    value: function editarMiembro(pCedula, pNombre, pCelular, pEmail, pProvincia, pCanton, pDistrito, pSenas, pBMonitor) {
       var _this26 = this;
 
-      //AUN NO ESTA EN LA BASE
-      return this.client.query("select * from editarMiembro('" + pCedula + "', '" + pNombre + "', '" + pCelular + "', '" + pEmail + "', '" + pProvincia + "', '" + pCanton + "', '" + pDistrito + "', '" + pSenas + "')").then(function (res) {
+      return this.client.query("select * from editarMiembro('" + pCedula + "', '" + pNombre + "', '" + pCelular + "', '" + pEmail + "', '" + pProvincia + "', '" + pCanton + "', '" + pDistrito + "', '" + pSenas + "', " + pBMonitor + ")").then(function (res) {
         console.table(res.rows);
         return res.rows;
       })["catch"](function (err) {
@@ -476,22 +469,131 @@ var DAO = /*#__PURE__*/function () {
         _this26.client.end();
       });
     }
+  }, {
+    key: "asignarJefeGrupo",
+    value: function asignarJefeGrupo(idGrupo, cedulaMiembro, idRama, idZona, idMovimiento) {
+      var _this27 = this;
+
+      return this.client.query("select * from asignarJefeGrupo('" + cedulaMiembro + "', " + idGrupo + ", " + idRama + ", " + idZona + ", '" + idMovimiento + "')").then(function (res) {
+        console.table(res.rows);
+        return res.rows;
+      })["catch"](function (err) {
+        console.log(err);
+
+        _this27.client.end();
+      });
+    }
+  }, {
+    key: "asignarJefeRama",
+    value: function asignarJefeRama(idRama, cedulaMiembro, idZona, idMovimiento) {
+      var _this28 = this;
+
+      return this.client.query("select * from asignarJefeRama('" + cedulaMiembro + "', " + idRama + ", " + idZona + ", '" + idMovimiento + "')").then(function (res) {
+        console.table(res.rows);
+        return res.rows;
+      })["catch"](function (err) {
+        console.log(err);
+
+        _this28.client.end();
+      });
+    }
+  }, {
+    key: "asignarJefeZona",
+    value: function asignarJefeZona(cedulaMiembro, idZona, idMovimiento) {
+      var _this29 = this;
+
+      return this.client.query("select * from asignarJefeZona('" + cedulaMiembro + "', " + idZona + ", '" + idMovimiento + "')").then(function (res) {
+        console.table(res.rows);
+        return res.rows;
+      })["catch"](function (err) {
+        console.log(err);
+
+        _this29.client.end();
+      });
+    }
+  }, {
+    key: "getGruposXMiembro",
+    value: function getGruposXMiembro(idMiembro) {
+      var _this30 = this;
+
+      var quer = "select GrupoMiembros.id_grupo,GrupoMiembros.id_rama,GrupoMiembros.id_zona,GrupoMiembros.id_movimiento, Grupo.nombre from Grupo inner join GrupoMiembros on GrupoMiembros.id_grupo=Grupo.id_Grupo inner join Miembro on Miembro.cedula=GrupoMiembros.id_miembro where Miembro.cedula = '";
+      return this.client.query(quer + idMiembro + "'").then(function (res) {
+        console.table(res.rows);
+        return res.rows;
+      })["catch"](function (err) {
+        console.log(err);
+
+        _this30.client.end();
+      });
+    }
+  }, {
+    key: "getJefesXZona",
+    value: function getJefesXZona(idZona) {
+      var _this31 = this;
+
+      var quer = "select * from Zona inner join GrupoMiembros on GrupoMiembros.id_zona=Zona.id_zona inner join GrupoMiembrosRol on GrupoMiembros.id_lider=GrupoMiembrosRol.id_lider where zona.id_zona = ";
+      return this.client.query(quer + idZona + " and GrupoMiembros.id_lider < 5 and GrupoMiembros.id_lider!=1").then(function (res) {
+        console.table(res.rows);
+        return res.rows;
+      })["catch"](function (err) {
+        console.log(err);
+
+        _this31.client.end();
+      });
+    }
+  }, {
+    key: "getAllGrupoMiembros",
+    value: function getAllGrupoMiembros() {
+      var _this32 = this;
+
+      var quer = "select * from GrupoMiembros";
+      return this.client.query(quer).then(function (res) {
+        console.table(res.rows);
+        return res.rows;
+      })["catch"](function (err) {
+        console.log(err);
+
+        _this32.client.end();
+      });
+    }
   }]);
   return DAO;
 }();
 
 exports["default"] = DAO;
-var dao = new DAO(); //dao.getMiembroXMovimiento("'4000042145'");
+var dao = new DAO(); //dao.getAllGrupoMiembros();
+//dao.getGruposXMiembro('117940925');
+//dao.getZonaXMovimiento('4000042145');
+//dao.getJefesXZona(1);
+//dao.getMiembroXMovimiento("'4000042145'");
 //dao.loginAsesor("'117380721'","'Yoquese'");
 //dao.getMovimientoXAsesor("'117380721'");
-//dao.getAsesor();
+//dao.getGrupo(1);
 //contrasena: 'Yoquese'
 //cedula: '117380721'
 //dao.getGrupoMiembrosRol();
-//dao.getGruposMiembro("'117940925'");
 //dao.getTelefonoMovimiento();
 //dao.getGrupoMiembros();
 //dao.getRamas();
 //dao.getGrupo();
 //dao.getAsesor();
 //Movimiento: '4000042145'
+//dao.getMiembrosXGrupo(1);
+//dao.getGrupoXMovimiento('4000042145');
+//'Rescata gatos'
+
+/*
+1-Modificar mov, zona, rama, grupo
+2-Listo dao.getGruposXMiembro(cedula);
+3-insertarGrupo(idMovimiento,idZona,idRama,idGrupo,bMonitores,pNombre)
+    insertarRama(pIdMovimiento,pIdZona,pNombre)
+    insertarZona(pIdMovimiento,pNombre)
+    FALTA INSERTAR MOVIMIENTO
+4-LIsto getJefesXZona(idZona)
+5-Modificar jefes:
+    asignarJefeGrupo(idGrupo,cedulaMiembro,idRama,idZona,idMovimiento)
+    asignarJefeRama(idRama,cedulaMiembro,idZona,idMovimiento)
+    asignarJefeZona(cedulaMiembro,idZona,idMovimiento)
+6- eliminar miembro de grupo
+7-Listo insertarMiembroAGrupo(idGrupo,cedula,idRama,idZona,idMovimiento)
+*/

@@ -6,7 +6,11 @@ var _Controlador = _interopRequireDefault(require("./Controlador/Controlador"));
 
 var _ControladorLogin = _interopRequireDefault(require("./Controlador/ControladorLogin"));
 
+var _DAO = _interopRequireDefault(require("./Controlador/DAO"));
+
 var express = require('express');
+
+var session = require('express-session');
 
 var cors = require('cors');
 
@@ -21,14 +25,23 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(bodyParser.json()); //quitar en producción
 
-app.use(logger('dev')); //The local port is 3001
+app.use(logger('dev'));
+app.use(session({
+  secret: 'keyboard cat',
+  resave: true,
+  saveUninitialized: true,
+  cookie: {
+    secure: true
+  }
+})); //The local port is 3001
 
 var API_PORT = process.env.PORT || 3001;
 app.listen(API_PORT, function () {
   console.log("LISTENING ON PORT ", API_PORT);
 });
 var controlador = new _Controlador["default"]();
-var controladorLogin = new _ControladorLogin["default"](controlador); //var creador = new Creador(controlador);
+var controladorLogin = new _ControladorLogin["default"](controlador);
+var dao = new _DAO["default"](); //var creador = new Creador(controlador);
 
 var idMovimiento = '4000042145'; //creador.iniciarAPI();
 
@@ -46,12 +59,16 @@ app.post('/iniciar-sesion', function (req, res) {
   try {
     var loggedIn;
     var logInPromise = controladorLogin.verificarCombinación(id, pass).then(function (res) {
-      loggedIn = res;
+      console.log(res);
+      loggedIn = res.encontrado;
+      req.session.idMovimiento = res.idMovimiento;
     })["catch"](function (err) {
       throw err;
     });
     Promise.resolve(logInPromise)["finally"](function () {
       if (loggedIn) {
+        req.session.idAsesor = id;
+        console.log(req.session.idAsesor + "||||||||||||||||||||||||||||||");
         return res.json({
           success: true
         });
@@ -178,7 +195,33 @@ app.post('/modificar-miembro', function (req, res) {
       idGrupo = _req$body6.idGrupo;
 
   try {
-    controlador.modificarMiembro(idMiembro, nombre, celular, email, provincia, canton, distrito, senas, posible_monitor, idZona, idRama, idGrupo);
+    controlador.modificarMiembro(idMiembro, nombre, celular, email, provincia, canton, distrito, senas, posible_monitor, '4000042145', idZona, idRama, idGrupo);
+    return res.json({
+      success: true
+    });
+  } catch (err) {
+    console.log(err);
+    return res.json({
+      success: false,
+      error: err
+    });
+  }
+});
+app.post('/modificar-movimiento', function (req, res) {
+  var _req$body7 = req.body,
+      idMovimiento = _req$body7.idMovimiento,
+      idAsesor = _req$body7.idAsesor,
+      nombre = _req$body7.nombre,
+      direccionWeb = _req$body7.direccionWeb,
+      logo = _req$body7.logo,
+      pais = _req$body7.pais,
+      provincia = _req$body7.provincia,
+      canton = _req$body7.canton,
+      distrito = _req$body7.distrito,
+      senas = _req$body7.senas;
+
+  try {
+    controlador.modificarMovimiento(idMovimiento, idAsesor, nombre, direccionWeb, logo, pais, provincia, canton, distrito, senas);
     return res.json({
       success: true
     });
@@ -194,6 +237,23 @@ app.post('/modificar-miembro', function (req, res) {
 ///   Returns a single value
 //////////////////////////////
 
+app.post('/get-movimiento', function (req, res) {
+  var idMovimiento = req.body.idMovimiento;
+
+  try {
+    var movimiento = controlador.getMovimiento(idMovimiento);
+    return res.json({
+      success: true,
+      movimiento: movimiento
+    });
+  } catch (err) {
+    console.log(err);
+    return res.json({
+      success: true,
+      error: err
+    });
+  }
+});
 app.post('/get-zona', function (req, res) {
   var idZona = req.body.idZona;
   console.log(idZona);
@@ -214,9 +274,9 @@ app.post('/get-zona', function (req, res) {
   }
 });
 app.post('/get-rama', function (req, res) {
-  var _req$body7 = req.body,
-      idZona = _req$body7.idZona,
-      idRama = _req$body7.idRama;
+  var _req$body8 = req.body,
+      idZona = _req$body8.idZona,
+      idRama = _req$body8.idRama;
 
   try {
     var rama = controlador.getRama(idMovimiento, idZona, idRama);
@@ -234,10 +294,10 @@ app.post('/get-rama', function (req, res) {
   }
 });
 app.post('/get-grupo', function (req, res) {
-  var _req$body8 = req.body,
-      idZona = _req$body8.idZona,
-      idRama = _req$body8.idRama,
-      idGrupo = _req$body8.idGrupo;
+  var _req$body9 = req.body,
+      idZona = _req$body9.idZona,
+      idRama = _req$body9.idRama,
+      idGrupo = _req$body9.idGrupo;
 
   try {
     var grupo = controlador.getGrupo(idMovimiento, idZona, idRama, idGrupo);
@@ -259,9 +319,16 @@ app.post('/get-miembro', function (req, res) {
 
   try {
     var miembro = controlador.getMiembro(idMovimiento, idMiembro);
-    return res.json({
-      success: true,
-      miembro: miembro
+    var grupos;
+    var gruposPromise = controlador.getGruposMiembro(idMovimiento, idMiembro).then(function (res) {
+      grupos = res;
+    });
+    Promise.resolve(gruposPromise)["finally"](function () {
+      return res.json({
+        success: true,
+        miembro: miembro,
+        grupos: grupos
+      });
     });
   } catch (err) {
     console.log(err);
@@ -306,10 +373,34 @@ app.post('/consultar-ramas', function (req, res) {
     });
   }
 });
+app.post('/consultar-ramas-disponibles', function (req, res) {
+  var idMiembro = req.body.idMiembro;
+
+  try {
+    var ramas;
+    var ramasPromise = controlador.consultarRamasDisponibles(idMovimiento, idMiembro).then(function (res) {
+      ramas = res;
+    })["catch"](function (err) {
+      throw err;
+    });
+    Promise.resolve(ramasPromise)["finally"](function () {
+      return res.json({
+        success: true,
+        ramas: Object.fromEntries(ramas)
+      });
+    });
+  } catch (err) {
+    console.log(err);
+    return res.json({
+      success: false,
+      error: err
+    });
+  }
+});
 app.post('/consultar-grupos', function (req, res) {
-  var _req$body9 = req.body,
-      idZona = _req$body9.idZona,
-      idRama = _req$body9.idRama;
+  var _req$body10 = req.body,
+      idZona = _req$body10.idZona,
+      idRama = _req$body10.idRama;
 
   try {
     var grupos = controlador.consultarGrupos(idMovimiento, idZona, idRama);
@@ -326,10 +417,10 @@ app.post('/consultar-grupos', function (req, res) {
   }
 });
 app.post('/consultar-miembros-grupo', function (req, res) {
-  var _req$body10 = req.body,
-      idZona = _req$body10.idZona,
-      idRama = _req$body10.idRama,
-      idGrupo = _req$body10.idGrupo; //var idMiembro = "123";
+  var _req$body11 = req.body,
+      idZona = _req$body11.idZona,
+      idRama = _req$body11.idRama,
+      idGrupo = _req$body11.idGrupo; //var idMiembro = "123";
 
   try {
     var miembros = controlador.consultarMiembrosGrupo(idMovimiento, idZona, idRama, idGrupo);
@@ -344,6 +435,94 @@ app.post('/consultar-miembros-grupo', function (req, res) {
       error: err
     });
   }
+}); //////////////////////////////
+///   EXTRA
+//////////////////////////////
+
+app.post('/agregar-miembro-grupo', function (req, res) {
+  var _req$body12 = req.body,
+      idZona = _req$body12.idZona,
+      idRama = _req$body12.idRama,
+      idGrupo = _req$body12.idGrupo,
+      idMiembro = _req$body12.idMiembro;
+
+  try {
+    controlador.agregarMiembroGrupo(idMovimiento, idZona, idRama, idGrupo, idMiembro);
+    return res.json({
+      success: true
+    });
+  } catch (err) {
+    console.log(err);
+    return res.json({
+      success: false,
+      error: err
+    });
+  }
+});
+app.post('/asignar-jefe-grupo', function (req, res) {
+  var _req$body13 = req.body,
+      idZona = _req$body13.idZona,
+      idRama = _req$body13.idRama,
+      idGrupo = _req$body13.idGrupo,
+      idMiembro = _req$body13.idMiembro,
+      idMiembro2 = _req$body13.idMiembro2;
+
+  try {
+    controlador.asignarJefeGrupo(idMovimiento, idZona, idRama, idGrupo, idMiembro, idMiembro2);
+    return res.json({
+      success: true
+    });
+  } catch (err) {
+    console.log(err);
+    return res.json({
+      success: false,
+      error: err
+    });
+  }
+});
+app.post('/asignar-jefe-rama', function (req, res) {
+  var _req$body14 = req.body,
+      idZona = _req$body14.idZona,
+      idRama = _req$body14.idRama,
+      idMiembro = _req$body14.idMiembro,
+      idMiembro2 = _req$body14.idMiembro2;
+
+  try {
+    controlador.asignarJefeRama(idMovimiento, idZona, idRama, idMiembro, idMiembro2, idMiembro2);
+    return res.json({
+      success: true
+    });
+  } catch (err) {
+    console.log(err);
+    return res.json({
+      success: false,
+      error: err
+    });
+  }
+});
+app.post('/asignar-jefe-zona', function (req, res) {
+  var _req$body15 = req.body,
+      idZona = _req$body15.idZona,
+      idRama = _req$body15.idRama,
+      idMiembro = _req$body15.idMiembro,
+      idMiembro2 = _req$body15.idMiembro2;
+
+  try {
+    controlador.asignarJefeRama(idMovimiento, idZona, idRama, idMiembro, idMiembro2, idMiembro2);
+    return res.json({
+      success: true
+    });
+  } catch (err) {
+    console.log(err);
+    return res.json({
+      success: false,
+      error: err
+    });
+  }
+});
+app.get('/showSession', function (req, res) {
+  res.send(req.session);
+  res.end(); //return res.json({success: true, session: session.userName})
 });
 /*
 var idZona = "1";

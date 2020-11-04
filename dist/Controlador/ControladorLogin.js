@@ -28,10 +28,10 @@ var ControladorLogin = /*#__PURE__*/function () {
   }
 
   (0, _createClass2["default"])(ControladorLogin, [{
-    key: "verificarCombinacion",
+    key: "verificarCombinaci\xF3n",
     value: function () {
-      var _verificarCombinacion = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee(id, pass, tipo) {
-        var res;
+      var _verificarCombinaciN = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee(id, pass, tipo) {
+        var res, idMovimiento;
         return _regenerator["default"].wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
@@ -43,30 +43,40 @@ var ControladorLogin = /*#__PURE__*/function () {
               case 3:
                 res = _context.sent;
 
-                if (res[0].encontrado) {
-                  this.creador.cargarMovimiento(id);
+                if (!res[0].encontrado) {
+                  _context.next = 8;
+                  break;
                 }
 
-                return _context.abrupt("return", res[0].encontrado);
+                _context.next = 7;
+                return this.creador.cargarMovimiento(id);
+
+              case 7:
+                idMovimiento = _context.sent;
 
               case 8:
-                _context.prev = 8;
+                Promise.resolve(idMovimiento);
+                res[0].idMovimiento = idMovimiento;
+                return _context.abrupt("return", res[0]);
+
+              case 13:
+                _context.prev = 13;
                 _context.t0 = _context["catch"](0);
                 throw _context.t0;
 
-              case 11:
+              case 16:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, this, [[0, 8]]);
+        }, _callee, this, [[0, 13]]);
       }));
 
-      function verificarCombinacion(_x, _x2, _x3) {
-        return _verificarCombinacion.apply(this, arguments);
+      function verificarCombinaciN(_x, _x2, _x3) {
+        return _verificarCombinaciN.apply(this, arguments);
       }
 
-      return verificarCombinacion;
+      return verificarCombinaciN;
     }()
   }]);
   return ControladorLogin;

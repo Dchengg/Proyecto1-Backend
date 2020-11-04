@@ -46,17 +46,23 @@ var Creador = /*#__PURE__*/function () {
     value: function cargarMovimiento(cedulaAsesor) {
       var _this2 = this;
 
-      this.dao.getMovimientoXAsesor(cedulaAsesor).then(function (res) {
+      var cedula_juridica;
+      cedula_juridica = this.dao.getMovimientoXAsesor(cedulaAsesor).then(function (res) {
         var movimiento = res[0];
 
         try {
           _this2.controlador.crearMovimiento(movimiento.cedula_juridica, cedulaAsesor, movimiento.nombre, movimiento.direccion_web, movimiento.logo, movimiento.pais, movimiento.provincia, movimiento.canton, movimiento.distrito, movimiento.senales);
 
           _this2.cargarZonasMovimiento(movimiento.cedula_juridica);
+
+          cedula_juridica = movimiento.cedula_juridica;
         } catch (err) {
           console.log(err);
         }
+
+        return movimiento.cedula_juridica;
       });
+      return cedula_juridica;
     }
   }, {
     key: "cargarZonasMovimiento",

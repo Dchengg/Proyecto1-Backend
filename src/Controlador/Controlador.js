@@ -1,9 +1,11 @@
 import Movimiento from './Movimiento.js';
 import ControladorLogin from './ControladorLogin'
+import DAO from './DAO'
 
 export default class Controlador{
     constructor(){
         this.movimientos = new Map();
+        this.dao = new DAO();
         //this.movimientos.set(1,new Movimiento("1","123","movimiento","http:..","cool","CR","SJ","P","C","D","Del palo de limón, tres cuadras norte :v"))
     }
      
@@ -26,7 +28,7 @@ export default class Controlador{
         this.movimientos.get(idMovimiento).gNodos.crearRama(idZona, idRama, nombre);
     }
 
-    crearGrupo(idMovimiento, idZona, idRama, idGrupo, nombre, idEncargado1, idEncargado2){
+    crearGrupo(idMovimiento, idZona, idRama, idGrupo, nombre, idEncargado1, idEncargado2, isJefe){
         try{
             var encargado1 = this.getMiembro(idEncargado1);
             var encargado2 = this.getMiembro(idEncargado2);
@@ -47,10 +49,59 @@ export default class Controlador{
         }
     }
 
+    agregarMiembroGrupo(idMovimiento, idZona, idRama, idGrupo, idMiembro, ){
+        var grupo = this.getGrupo(idMovimiento, idZona, idRama, idGrupo);
+        var miembro = this.getMiembro(idMovimiento, idMiembro);
+        grupo.agregar(miembro);
+    }
+
+    asignarJefeGrupo(idMovimiento,idZona, idRama, idGrupo, idMiembro, idMiembro2){
+        var grupo = this.getGrupo(idMovimiento, idZona, idRama, idGrupo);
+        try{
+
+        }catch(err){
+            console.log(err)
+        }
+        var miembro = this.getMiembro(idMovimiento, idMiembro);
+        grupo.encargado1 = miembro;
+        grupo.encargado2 = idMiembro2
+    }
+
+    asignarJefeRama(idMovimiento,idZona, idRama, idMiembro, idMiembro2){
+        var rama = this.getRama(idMovimiento, idZona, idRama);
+        var miembro = this.getMiembro(idMovimiento, idMiembro);
+        rama.encargado1 = miembro;
+        rama.encargado2 = idMiembro2
+    }
+
+    asignarJefeZona(idMovimiento,idZona, idMiembro, idMiembro2){
+        var zona = this.getZona(idMovimiento, idZona);
+        var miembro = this.getMiembro(idMovimiento, idMiembro);
+        zona.encargado1 = miembro;
+        zona.encargado2 = idMiembro2
+    }
+
+    
+    modificarMovimiento(idMovimiento, idAsesor,nombre, direccionWeb, logo, pais, provincia, canton, distrito, senas){
+        var movimiento = this.getMovimiento(idMovimiento);
+        movimiento.cedulaJuridica = idMovimiento;
+        movimiento.idAsesor = idAsesor;
+        movimiento.nombre = nombre;
+        movimiento.direccionWeb = direccionWeb;
+        movimiento.logo = logo;
+        movimiento.pais = pais;
+        movimiento.provincia = provincia;
+        movimiento.canton = canton;
+        movimiento.distrito = distrito;
+        movimiento.senas = senas;
+    }
+
     modificarMiembro(idMiembro, nombre, celular, email, provincia, canton, distrito, senas, posible_monitor, idMovimiento, idZona, idRama, idGrupo){
-        var gMiembros = this.movimientos.get(idMovimiento).gMiembros;
+        var movimiento =  this.getMovimiento(idMovimiento);
+        var gMiembros = movimiento.gMiembros;
         var miembro = gMiembros.modificarMiembro(idMiembro, nombre, celular, email, provincia, canton, distrito, senas, posible_monitor)
     }
+
 
     consultarZonas(idMovimiento){
         if(this.movimientos.has(idMovimiento)){
@@ -61,10 +112,22 @@ export default class Controlador{
     }
 
     consultarRamas(idMovimiento, idZona){
-        if(this.movimientos.has(idMovimiento)){
-            return this.movimientos.get(idMovimiento).gNodos.consultarRamas(idZona); 
-        }else{
-            throw { message: "Movimiento no existe"}
+        var movimiento = this.getMovimiento(idMovimiento);
+        return movimiento.gNodos.consultarRamas(idZona); 
+    }
+
+    async consultarRamasDisponibles(idMovimiento, idMiembro){
+        try{
+            var gruposDeMiembro = await this.getGruposMiembro(idMovimiento, idMiembro);
+            var ramas = new Map(this.consultarRamas(idMovimiento, gruposDeMiembro[0].id_zona.toString()));
+            console.log(ramas)
+            for(var i in gruposDeMiembro){
+                ramas.delete(gruposDeMiembro[i].id_rama.toString())
+            }
+            return ramas;
+        }catch(err){
+            console.log(err)
+            throw err
         }
     }
 
@@ -80,21 +143,44 @@ export default class Controlador{
         return this.movimientos.get(idMovimiento).gNodos.consultarMiembrosGrupo(idZona, idRama);
     }
 
-    getMiembro(idMovimiento, idMiembro){
+
+
+    getMovimiento(idMovimiento){
         if(this.movimientos.has(idMovimiento)){
-            var miembro = this.movimientos.get(idMovimiento).gMiembros.getMiembro(idMiembro);
-            if(miembro){
-                return miembro
-            }else{
-                throw { message: "No existe ningún miembro con esa cedula"}
-            }
+            return this.movimientos.get(idMovimiento);
         }else{
-            throw { message: "Movimiento no existe"}
+            throw { message: "Movimiento no existe " + idMovimiento}
+        }
+    }
+
+    getMiembro(idMovimiento, idMiembro){
+        var movimiento = this.getMovimiento(idMovimiento);
+        var miembro = movimiento.gMiembros.getMiembro(idMiembro);
+        if(miembro){
+            return miembro
+        }else{
+            throw { message: "No existe ningún miembro con esa cedula"}
+        }
+    }
+
+    async getGruposMiembro(idMovimiento, idMiembro){
+        try{
+            var grupos = [];
+            const res = await this.dao.getGruposXMiembro(idMiembro);
+            for(var i in res){
+                console.log(res[i])
+                var grupoInfo = res[i];
+                grupos.push(grupoInfo);
+                return grupos
+            }
+        }catch(err){
+            throw err
         }
     }
 
     getZona(idMovimiento, idZona){
-        var zona = this.movimientos.get(idMovimiento).gNodos.getZona(idZona);
+        var movimiento = this.getMovimiento(idMovimiento);
+        var zona = movimiento.gNodos.getZona(idZona);
         if(zona == null){
             throw { message: "No existe una zona con esa identificación"}
         }
@@ -102,7 +188,8 @@ export default class Controlador{
     }
 
     getRama(idMovimiento, idZona, idRama){
-        var rama = this.movimientos.get(idMovimiento).gNodos.getRama(idZona, idRama);
+        var movimiento = this.getMovimiento(idMovimiento);
+        var rama = movimiento.gNodos.getRama(idZona, idRama);
         if(rama == null){
             throw { message: "No existe una zona con esa identificación"}
         }
@@ -110,7 +197,8 @@ export default class Controlador{
     }
 
     getGrupo(idMovimiento, idZona, idRama, idGrupo){
-        var grupo = this.movimientos.get(idMovimiento).gNodos.getGrupo(idZona, idRama, idGrupo);
+        var movimiento = this.getMovimiento(idMovimiento);
+        var grupo = movimiento.gNodos.getGrupo(idZona, idRama, idGrupo);
         if(grupo == null){
             throw { message: "No existe una grupo con esa identificación"}
         }

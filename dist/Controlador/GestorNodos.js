@@ -44,9 +44,9 @@ var GestorNodos = /*#__PURE__*/function () {
     }
   }, {
     key: "crearGrupo",
-    value: function crearGrupo(idZona, idRama, idGrupo, nombre, idEncargado1, idEncargado2) {
+    value: function crearGrupo(idZona, idRama, idGrupo, nombre, idEncargado1, idEncargado2, isJefe) {
       var rama = this.getRama(idZona, idRama);
-      rama.agregar(new _Nodo["default"](idGrupo, nombre, idEncargado1, idEncargado2, false));
+      rama.agregar(new _Nodo["default"](idGrupo, nombre, idEncargado1, idEncargado2, isJefe));
     }
   }, {
     key: "consultarRamas",

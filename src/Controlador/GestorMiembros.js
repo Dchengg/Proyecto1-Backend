@@ -29,6 +29,9 @@ export default class GestorMiembros{
     }
 
     getMiembro(idMiembro){
-        return this.miembros.get(idMiembro);
+        if(this.miembros.has(idMiembro)){
+            return this.miembros.get(idMiembro);
+        }
+        throw { message: "No existe el miembro " + idMiembro}
     }
 }
