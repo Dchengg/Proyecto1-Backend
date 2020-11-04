@@ -1,10 +1,11 @@
 const express = require('express');
+const session = require('express-session')
 const cors = require('cors')
 const logger = require('morgan');
 const bodyParser = require('body-parser');
 import Controlador from './Controlador/Controlador';
-import Creador from './Modelo/Creador';
-import ControladorLogin from './Controlador/ControladorLogin'
+import ControladorLogin from './Controlador/ControladorLogin';
+import DAO from "./Controlador/DAO";
 
 var app = express();
 app.use(cors());
@@ -12,6 +13,13 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 //quitar en producción
 app.use(logger('dev'));
+
+app.use(session({
+  secret: 'keyboard cat',
+  resave: true,
+  saveUninitialized: true,
+  cookie: { secure: true }
+}))
 
 //The local port is 3001
 const API_PORT = process.env.PORT || 3001
@@ -21,6 +29,7 @@ app.listen(API_PORT, function(){
 
 var controlador = new Controlador();
 var controladorLogin = new ControladorLogin(controlador);
+var dao = new DAO();
 //var creador = new Creador(controlador);
 var idMovimiento = '4000042145';
 //creador.iniciarAPI();
@@ -36,7 +45,9 @@ app.post('/iniciar-sesion', function(req, res){
         var loggedIn;
         var logInPromise = controladorLogin.verificarCombinación(id, pass)
             .then(res => {
-                loggedIn = res;
+                console.log(res);
+                loggedIn = res.encontrado;
+                req.session.idMovimiento = res.idMovimiento
             })
             .catch(err => {
                 throw err
@@ -44,6 +55,8 @@ app.post('/iniciar-sesion', function(req, res){
         Promise.resolve(logInPromise)
             .finally(() => {
                 if(loggedIn){
+                    req.session.idAsesor = id;
+                    console.log(req.session.idAsesor + "||||||||||||||||||||||||||||||");
                     return res.json({ success: true});
                 }
                 return res.json({ success: false});
@@ -59,17 +72,7 @@ app.post('/iniciar-sesion', function(req, res){
 //////////////////////////////
 
 app.get('/crear-miembro', function(req, res){
-    //const {idMiembro, nombre, celular, email, provincia, canton,distrito, senas, posible_monitor, idZona, idRama, idGrupo} = req.body;
-    var idMiembro = "123";
-    var nombre = "Diego";
-    var celular = "12324";
-    var email = "email";
-    var provincia = "San José";
-    var canton = "Santa Ana";
-    var distrito = "brasil";
-    var idZona = "1";
-    var idRama = "1";
-    var idGrupo = "1";
+    const {idMiembro, nombre, celular, email, provincia, canton,distrito, senas, posible_monitor, idZona, idRama, idGrupo} = req.body;
     try{
         controlador.crearMiembro(idMiembro, nombre, celular, email, provincia, canton,distrito, idMovimiento, idZona, idRama, idGrupo);
         return res.json({success: true})
@@ -121,8 +124,19 @@ app.post('/crear-grupo', function(req,res){
 app.post('/modificar-miembro', function(req, res){
     const {idMiembro, nombre, celular, email, provincia, canton,distrito, senas, posible_monitor, idZona, idRama, idGrupo} = req.body;
     try{
-        controlador.modificarMiembro(idMiembro, nombre, celular, email, provincia, canton, distrito, senas, posible_monitor, idZona, idRama, idGrupo)
+        controlador.modificarMiembro(idMiembro, nombre, celular, email, provincia, canton, distrito, senas, posible_monitor,'4000042145' ,  idZona, idRama, idGrupo)
         return res.json({success: true})
+    }catch(err){
+        console.log(err);
+        return res.json({success: false, error: err})
+    }
+})
+
+app.post('/modificar-movimiento', function(req,res){
+    const {idMovimiento, idAsesor, nombre, direccionWeb, logo, pais, provincia, canton, distrito, senas} = req.body;
+    try{
+        controlador.modificarMovimiento(idMovimiento, idAsesor, nombre, direccionWeb, logo, pais, provincia, canton, distrito, senas);
+        return res.json({ success: true })
     }catch(err){
         console.log(err);
         return res.json({success: false, error: err})
@@ -135,6 +149,16 @@ app.post('/modificar-miembro', function(req, res){
 ///   Returns a single value
 //////////////////////////////
 
+app.post('/get-movimiento', function(req, res){
+    const { idMovimiento } = req.body;
+    try{
+        var movimiento = controlador.getMovimiento(idMovimiento);
+        return res.json({ success: true,  movimiento: movimiento })
+    }catch(err){
+        console.log(err);
+        return res.json({ success: true, error: err })
+    }
+})
 
 app.post('/get-zona', function(req, res){
     const { idZona } = req.body;
@@ -174,7 +198,15 @@ app.post('/get-miembro', function(req, res){
     const { idMiembro } = req.body;
     try{
         var miembro = controlador.getMiembro(idMovimiento, idMiembro);
-        return res.json({success: true, miembro})
+        var grupos;
+        var gruposPromise = controlador.getGruposMiembro(idMovimiento, idMiembro)
+            .then(res => {
+                grupos = res;
+            })
+        Promise.resolve(gruposPromise)
+            .finally(() => {
+                return res.json({ success: true, miembro, grupos})
+            })
     }catch(err){
         console.log(err);
         return res.json({success: false, error:err})
@@ -206,6 +238,27 @@ app.post('/consultar-ramas',function(req, res){
     }
 })
 
+app.post('/consultar-ramas-disponibles',function(req, res){
+    const { idMiembro } = req.body;
+    try{
+        var ramas;
+        var ramasPromise = controlador.consultarRamasDisponibles(idMovimiento, idMiembro)
+            .then(res => {
+                ramas = res
+            })
+            .catch(err => {
+                throw err
+            })
+        Promise.resolve(ramasPromise)
+            .finally(() => {
+                return res.json({success: true, ramas :Object.fromEntries(ramas)})
+            })
+    }catch(err){
+        console.log(err);
+        return res.json({success: false, error: err});
+    }
+})
+
 app.post('/consultar-grupos',function(req, res){
     const { idZona, idRama} = req.body;
     try{
@@ -228,6 +281,62 @@ app.post('/consultar-miembros-grupo', function(req, res){
         return res.json({success: false, error: err})
     }
 })
+
+
+//////////////////////////////
+///   EXTRA
+//////////////////////////////
+
+app.post('/agregar-miembro-grupo', function(req, res){
+    const {idZona, idRama, idGrupo, idMiembro} = req.body;
+    try{
+        controlador.agregarMiembroGrupo(idMovimiento, idZona, idRama, idGrupo, idMiembro);
+        return res.json({success: true});
+    }catch(err){
+        console.log(err);
+        return res.json({ success: false, error: err})
+    }
+})
+
+app.post('/asignar-jefe-grupo', function(req, res){
+    const {idZona, idRama, idGrupo, idMiembro, idMiembro2} = req.body;
+    try{
+        controlador.asignarJefeGrupo(idMovimiento, idZona, idRama, idGrupo, idMiembro ,idMiembro2)
+        return res.json({success: true});
+    }catch(err){
+        console.log(err);
+        return res.json({ success: false, error: err})
+    }
+})
+
+app.post('/asignar-jefe-rama', function(req, res){
+    const {idZona, idRama, idMiembro, idMiembro2} = req.body;
+    try{
+        controlador.asignarJefeRama(idMovimiento, idZona, idRama, idMiembro, idMiembro2, idMiembro2)
+        return res.json({success: true});
+    }catch(err){
+        console.log(err);
+        return res.json({ success: false, error: err})
+    }
+})
+
+app.post('/asignar-jefe-zona', function(req, res){
+    const {idZona, idRama, idMiembro, idMiembro2} = req.body;
+    try{
+        controlador.asignarJefeRama(idMovimiento, idZona, idRama, idMiembro,idMiembro2, idMiembro2)
+        return res.json({success: true});
+    }catch(err){
+        console.log(err);
+        return res.json({ success: false, error: err})
+    }
+})
+
+
+app.get('/showSession', (req, res) =>{
+    res.send(req.session);
+    res.end();
+    //return res.json({success: true, session: session.userName})
+});
 
 /*
 var idZona = "1";
