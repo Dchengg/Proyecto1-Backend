@@ -286,6 +286,17 @@ class DAO{
             })
     }
     
+    insertarGrupo(idMovimiento,idZona,idRama,idGrupo,bMonitores,pNombre){
+        return this.client.query("select * from insertarGrupo('"+idMovimiento+"', "+idZona+", "+idRama+", "+idGrupo+", "+bMonitores+", "+pNombre+")")
+            .then(res => {
+                console.table(res.rows);
+                return res.rows;
+            })
+            .catch(err => {
+                console.log(err)
+                this.client.end()
+            })
+    }
 
     insertarRama(pIdMovimiento,pIdZona,pNombre){
         return this.client.query("select * from insertarRama('"+pIdMovimiento+"', "+pIdZona+", '"+pNombre+"')")
@@ -299,8 +310,8 @@ class DAO{
             })
     }
 
-    insertarZona(pIdMovimiento,pIdNombre){
-        return this.client.query("select * from insertarZona('"+pIdMovimiento+"', '"+pIdNombre+"')")
+    insertarZona(pIdMovimiento,pNombre){
+        return this.client.query("select * from insertarZona('"+pIdMovimiento+"', '"+pNombre+"')")
             .then(res => {
                 console.table(res.rows);
                 return res.rows;
@@ -335,34 +346,10 @@ class DAO{
             })
     }
 
-    insertarGrupo(idMovimiento,idZona,idRama,idGrupo,bMonitores,pNombre){
-        return this.client.query("select * from insertarGrupo('"+idMovimiento+"', "+idZona+", "+idRama+", "+idGrupo+", "+bMonitores+", "+pNombre+")")
-            .then(res => {
-                console.table(res.rows);
-                return res.rows;
-            })
-            .catch(err => {
-                console.log(err)
-                this.client.end()
-            })
-    }
-
-    insertarGrupo(idZona,idMonitor,idRama){
-        //AUN NO ESTA EN BASE
-        return this.client.query("select * from insertarGrupo("+idZona+", '"+idMonitor+"', "+idRama+")")
-            .then(res => {
-                console.table(res.rows);
-                return res.rows;
-            })
-            .catch(err => {
-                console.log(err)
-                this.client.end()
-            })
-    }
+    
 
     cambiarMiembroDeGrupo(idMiembro,idRama,idGrupoNuevo,idMovimiento,idZona){
-        //AUN NO ESTA EN BASE
-        return this.client.query("select * from cambiarMiembroGrupo("+idGrupoNuevo+", '"+idMiembro+"', "+idRama+", '"+idMovimiento+"', "+idZona+")")
+        return this.client.query("select * from cambiarMiembroGrupo('"+idMiembro+"', "+idGrupoNuevo+", "+idRama+", "+idZona+", '"+idMovimiento+"')")
             .then(res => {
                 console.table(res.rows);
                 return res.rows;
@@ -385,9 +372,8 @@ class DAO{
             })
     }
 
-    editarMiembro(pCedula,pNombre,pCelular,pEmail,pProvincia,pCanton,pDistrito,pSenas){
-        //AUN NO ESTA EN LA BASE
-        return this.client.query("select * from editarMiembro('"+pCedula+"', '"+pNombre+"', '"+pCelular+"', '"+pEmail+"', '"+pProvincia+"', '"+pCanton+"', '"+pDistrito+"', '"+pSenas+"')")
+    editarMiembro(pCedula,pNombre,pCelular,pEmail,pProvincia,pCanton,pDistrito,pSenas,pBMonitor){
+        return this.client.query("select * from editarMiembro('"+pCedula+"', '"+pNombre+"', '"+pCelular+"', '"+pEmail+"', '"+pProvincia+"', '"+pCanton+"', '"+pDistrito+"', '"+pSenas+"', "+pBMonitor+")")
             .then(res => {
                 console.table(res.rows);
                 return res.rows;
@@ -486,9 +472,12 @@ dao.getGruposXMiembro('117940925');
 /*
 1-
 2-Listo dao.getGruposXMiembro(cedula);
-3-
+3-insertarGrupo(idMovimiento,idZona,idRama,idGrupo,bMonitores,pNombre)
+    insertarRama(pIdMovimiento,pIdZona,pNombre)
+    insertarZona(pIdMovimiento,pNombre)
+    FALTA INSERTAR MOVIMIENTO
 4-LIsto getJefesXZona(idZona)
 5-
 6-
-7-
+7-Listo insertarMiembroAGrupo(idGrupo,cedula,idRama,idZona,idMovimiento)
 */
