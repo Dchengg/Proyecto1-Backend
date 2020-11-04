@@ -331,6 +331,13 @@ app.post('/asignar-jefe-zona', function(req, res){
     }
 })
 
+
+app.get('/showSession', (req, res) =>{
+    res.send(req.session);
+    res.end();
+    //return res.json({success: true, session: session.userName})
+});
+
 /*
 var idZona = "1";
 var idRama = "1";
