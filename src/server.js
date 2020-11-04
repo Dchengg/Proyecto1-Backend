@@ -8,7 +8,9 @@ import ControladorLogin from './Controlador/ControladorLogin';
 import DAO from "./Controlador/DAO";
 
 var app = express();
-app.use(cors());
+app.use(cors({origin: [
+    "http://localhost:4200"
+  ], credentials: true}));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 //quitar en producción
