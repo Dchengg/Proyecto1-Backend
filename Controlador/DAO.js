@@ -275,7 +275,6 @@ class DAO{
     }
 
     loginAsesor(pCedula,pContrasena){
-        //this.client.query("select * from Asesor")
         return this.client.query(`select * from verificarContrasenaAsesor('${pCedula}','${pContrasena}')`)
             .then(res => {
                 console.table(res.rows);
@@ -408,6 +407,18 @@ class DAO{
             })
     }
 
+    asignarJefeZona(cedulaMiembro,idZona,idMovimiento){
+        return this.client.query("select * from asignarJefeZona('"+cedulaMiembro+"', "+idZona+", '"+idMovimiento+"')")
+            .then(res => {
+                console.table(res.rows);
+                return res.rows;
+            })
+            .catch(err => {
+                console.log(err)
+                this.client.end()
+            })
+    }
+
     getGruposXMiembro(idMiembro){
         const quer="select GrupoMiembros.id_grupo,GrupoMiembros.id_rama,GrupoMiembros.id_zona,GrupoMiembros.id_movimiento, Grupo.nombre from Grupo inner join GrupoMiembros on GrupoMiembros.id_grupo=Grupo.id_Grupo inner join Miembro on Miembro.cedula=GrupoMiembros.id_miembro where Miembro.cedula = '"        
         return this.client.query(quer+idMiembro+"'")
@@ -470,14 +481,17 @@ dao.getGruposXMiembro('117940925');
 //dao.getGrupoXMovimiento('4000042145');
 //'Rescata gatos'
 /*
-1-
+1-Modificar mov, zona, rama, grupo
 2-Listo dao.getGruposXMiembro(cedula);
 3-insertarGrupo(idMovimiento,idZona,idRama,idGrupo,bMonitores,pNombre)
     insertarRama(pIdMovimiento,pIdZona,pNombre)
     insertarZona(pIdMovimiento,pNombre)
     FALTA INSERTAR MOVIMIENTO
 4-LIsto getJefesXZona(idZona)
-5-
-6-
+5-Modificar jefes:
+    asignarJefeGrupo(idGrupo,cedulaMiembro,idRama,idZona,idMovimiento)
+    asignarJefeRama(idRama,cedulaMiembro,idZona,idMovimiento)
+    asignarJefeZona(cedulaMiembro,idZona,idMovimiento)
+6- eliminar miembro de grupo
 7-Listo insertarMiembroAGrupo(idGrupo,cedula,idRama,idZona,idMovimiento)
 */
