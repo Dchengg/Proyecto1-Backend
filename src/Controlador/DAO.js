@@ -57,7 +57,7 @@ class DAO{
     }
 
     getZonaXMovimiento(idMovimiento){
-        return this.client.query(`select * from Zona where id_movimiento = '${idMovimiento}'`)
+        return this.client.query(`select * from Zona inner join GrupoMiembros on GrupoMiembros.id_zona=Zona.id_Zona inner join GrupoMiembrosRol on GrupoMiembros.id_lider=GrupoMiembrosRol.id_lider where Zona.id_movimiento = '${idMovimiento}' and GrupoMiembros.id_lider = 4`)
             .then(res => {
                 console.table(res.rows)
                 return res.rows;
@@ -487,7 +487,8 @@ class DAO{
 
 }
 const dao=new DAO();
-dao.getTelefonoMovimiento('4000042145');
+dao.getZonaXMovimiento('4000042145');
+//dao.getTelefonoMovimiento('4000042145');
 //dao.getAllGrupoMiembros();
 //dao.getGruposXMiembro('117940925');
 //dao.getZonaXMovimiento('4000042145');
