@@ -1,4 +1,5 @@
 const express = require('express');
+const session = require('express-session')
 const cors = require('cors')
 const logger = require('morgan');
 const bodyParser = require('body-parser');
@@ -12,6 +13,14 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 //quitar en producción
 app.use(logger('dev'));
+var app = express()
+app.set('trust proxy', 1) // trust first proxy
+app.use(session({
+  secret: 'keyboard cat',
+  resave: true,
+  saveUninitialized: true,
+  cookie: { secure: true }
+}))
 
 //The local port is 3001
 const API_PORT = process.env.PORT || 3001
@@ -37,7 +46,10 @@ app.post('/iniciar-sesion', function(req, res){
         var loggedIn;
         var logInPromise = controladorLogin.verificarCombinación(id, pass)
             .then(res => {
-                loggedIn = res;
+                console.log(res);
+                loggedIn = res.encontrado;
+                req.session.idMovimiento = res.idMovimiento
+                req.session.id = id;
             })
             .catch(err => {
                 throw err

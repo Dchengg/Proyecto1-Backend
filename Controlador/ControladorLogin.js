@@ -7,15 +7,18 @@ export default class ControladorLogin{
         this.sesiones = new Map();
         this.dao = new DAO();
         this.creador = new Creador(controlador);
+        
     }
 
     async verificarCombinación(id, pass, tipo){
         try {
             const res = await this.dao.loginAsesor(id, pass);
+            var idMovimiento
             if (res[0].encontrado) {
-                this.creador.cargarMovimiento(id);
+                idMovimiento=this.creador.cargarMovimiento(id);
             }
-            return res[0].encontrado;
+            res[0].movimiento=idMovimiento;
+            return res[0];
         }
         catch (err) {
             throw err;

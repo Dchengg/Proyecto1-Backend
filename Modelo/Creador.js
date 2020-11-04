@@ -28,10 +28,12 @@ export default class Creador{
                 try{
                     this.controlador.crearMovimiento(movimiento.cedula_juridica, cedulaAsesor, movimiento.nombre, movimiento.direccion_web, movimiento.logo, movimiento.pais, movimiento.provincia, movimiento.canton, movimiento.distrito, movimiento.senales);
                     this.cargarZonasMovimiento(movimiento.cedula_juridica);
+                    return movimiento.cedula_juridica;
                 }catch(err){
                     console.log(err);
                 }
             })
+        
     }
 
     cargarZonasMovimiento(idMovimiento){
