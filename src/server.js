@@ -20,7 +20,7 @@ app.use(session({
   secret: 'secret word',
   resave: false,
   saveUninitialized: true,
-  //cookie: { secure: true }
+  cookie: { secure: true }
 }))
 
 //The local port is 3001
