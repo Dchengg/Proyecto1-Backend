@@ -44,9 +44,9 @@ class DAO{
                 console.log(err)
             })
     }
-
+//
     getTelefonoMovimiento(idMoviemiento){
-        this.client.query("select * from Telefonos where cedula_movimiento = "+idMoviemiento)
+        this.client.query("select * from Telefonos where cedula_movimiento = '"+idMoviemiento+"'")
         .then(res => {
             console.table(res.rows)
             return res.rows;
@@ -487,6 +487,7 @@ class DAO{
 
 }
 const dao=new DAO();
+dao.getTelefonoMovimiento('4000042145');
 //dao.getAllGrupoMiembros();
 //dao.getGruposXMiembro('117940925');
 //dao.getZonaXMovimiento('4000042145');
