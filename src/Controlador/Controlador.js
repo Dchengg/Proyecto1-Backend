@@ -16,29 +16,56 @@ export default class Controlador{
         this.movimientos.set(cedulaJuridica, new Movimiento(cedulaJuridica, idAsesor, nombre, direccionWeb, logo, pais, provimicia, canton, distrito, senas))
     }
 
-    crearZona(idMovimiento, idZona, nombre){
-        if(this.movimientos.has(idMovimiento)){
-            this.movimientos.get(idMovimiento).gNodos.crearZona(idZona, nombre); 
-        }else{
-            throw { message: "Movimiento no existe " + idMovimiento}
-        }
+
+    async crearZonaNueva(idMovimiento, nombre){
+        var res = await this.dao.insertarZona(idMovimiento, nombre)
+        .catch(err => {
+            throw err
+        })
+        this.agregarZona(idMovimiento, res.id_zona, nombre);
     }
 
-    crearRama(idMovimiento, idZona, idRama, nombre){
-        this.movimientos.get(idMovimiento).gNodos.crearRama(idZona, idRama, nombre);
+    async crearRamaNueva(idMovimiento, idZona, nombre){
+        var res = await this.dao.insertarRama(idMovimiento, idZona, nombre)
+        .catch(err => {
+            throw err
+        })
+        this.agregarRama(idMovimiento, res.id_rama, nombre)
     }
 
-    crearGrupo(idMovimiento, idZona, idRama, idGrupo, nombre, idEncargado1, idEncargado2, isJefe){
-        try{
-            var encargado1 = this.getMiembro(idEncargado1);
-            var encargado2 = this.getMiembro(idEncargado2);
-        }catch(err){
-            console.log("encargado no valido");
-        }
-        this.movimientos.get(idMovimiento).gNodos.crearGrupo(idZona, idRama, idGrupo, nombre, encargado1, encargado2);
+    async crearRamaNueva(idMovimiento, idZona, idRama, nombre){
+        var res = await this.dao.insertarRama(idMovimiento, idZona, nombre)
+            .catch(err => {
+                throw err
+            })
+        this.agregarRama(idMovimiento, idZona, res.id_rama, nombre)
     }
 
-    crearMiembro(idMiembro, nombre, celular, email, provincia, canton, distrito, senas, posible_monitor, idMovimiento, idZona, idRama, idGrupo) {
+    async crearGrupoNuevo(idMoidMovimiento, idZona, idRama, nombre, idEncargado1, idEncargado2, isMonitor){
+        var res = await this.dao.insertarGrupo(idMovimiento, idZona, idRama, isMonitor, nombre)
+        .catch(err => {
+            throw err
+        })
+        this.agregarGrupo(idMovimiento, idZona, idRama, res.id_grupo, nombre)
+    }
+
+
+    agregarZona(idMovimiento, idZona, nombre){
+        var movimiento = this.getMovimiento(idMovimiento);
+        movimiento.gNodos.crearZona(idZona, nombre); 
+    }
+
+    agregarRama(idMovimiento, idZona, idRama, nombre){
+        var movimiento = this.getMovimiento(idMovimiento);
+        movimiento.gNodos.crearRama(idZona, idRama, nombre);
+    }
+
+    agregarGrupo(idMovimiento, idZona, idRama, idGrupo, nombre, idEncargado1, idEncargado2, isJefe){
+        var movimiento = this.getMovimiento(idMovimiento);
+        movimiento.gNodos.crearGrupo(idZona, idRama, idGrupo, nombre, idEncargado1, idEncargado2, isJefe);
+    }
+
+    agregarMiembro(idMiembro, nombre, celular, email, provincia, canton, distrito, senas, posible_monitor, idMovimiento, idZona, idRama, idGrupo) {
         if(this.movimientos.has(idMovimiento)){
             var gMiembros = this.movimientos.get(idMovimiento).gMiembros;
             var gNodos = this.movimientos.get(idMovimiento).gNodos; 
@@ -55,30 +82,23 @@ export default class Controlador{
         grupo.agregar(miembro);
     }
 
-    asignarJefeGrupo(idMovimiento,idZona, idRama, idGrupo, idMiembro, idMiembro2){
-        var grupo = this.getGrupo(idMovimiento, idZona, idRama, idGrupo);
-        try{
-
-        }catch(err){
-            console.log(err)
-        }
-        var miembro = this.getMiembro(idMovimiento, idMiembro);
-        grupo.encargado1 = miembro;
-        grupo.encargado2 = idMiembro2
+    asignarEncargadoGrupo(idMovimiento,idZona, idRama, idGrupo, idMiembro, idMiembro2, isMonitor){
+        var grupo = this.getRama(idMovimiento, idZona, idRama, idGrupo);
+        this.asignarJefeNodo(grupo, idMiembro, idMiembro2, isMonitor);
     }
 
-    asignarJefeRama(idMovimiento,idZona, idRama, idMiembro, idMiembro2){
+    asignarEncargadoRama(idMovimiento,idZona, idRama, idMiembro, idMiembro2, isMonitor){
         var rama = this.getRama(idMovimiento, idZona, idRama);
-        var miembro = this.getMiembro(idMovimiento, idMiembro);
-        rama.encargado1 = miembro;
-        rama.encargado2 = idMiembro2
+        this.asignarJefeNodo(rama,idMiembro, idMiembro2, isMonitor);
     }
 
-    asignarJefeZona(idMovimiento,idZona, idMiembro, idMiembro2){
+    asignarEncargadoZona(idMovimiento,idZona, idMiembro, idMiembro2, isMonitor){
         var zona = this.getZona(idMovimiento, idZona);
-        var miembro = this.getMiembro(idMovimiento, idMiembro);
-        zona.encargado1 = miembro;
-        zona.encargado2 = idMiembro2
+        this.asignarJefeNodo(zona, idMiembro, idMiembro2, isMonitor);
+    }
+
+    asignarJefeNodo(nodo, idMiembro, idMiembro2, isMonitor){
+        nodo.asignarEncargados(idMiembro, idMiembro2, isMonitor)
     }
 
     

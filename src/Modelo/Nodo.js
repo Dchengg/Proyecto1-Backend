@@ -1,12 +1,12 @@
 import Component from "./Component"
 
 export default class Nodo extends Component{
-    constructor(id, nombre, encargado1, encargado2, isJefe){
+    constructor(id, nombre, encargado1, encargado2, isMonitor){
         super(id, nombre)
         this.composites = new Map();
         this.encargado1 = encargado1;
         this.encargado2 = encargado2;
-        this.isJefe = isJefe;
+        this.isMonitor = isMonitor;
     }
 
     agregar(registro){
@@ -21,11 +21,14 @@ export default class Nodo extends Component{
         return nodo;
     }
 
-    modificar(registro){
-
-    }
-
-    eliminar(llave){
-
+    asignarEncargados(miembro, miembro2, isMonitor){
+        if(miembro){
+            this.encargado1 = miembro;
+        }
+        if(miembro2){
+            this.encargado2 = miembro2;
+        }
+        this.isMonitor = isMonitor;
+        
     }
 }

@@ -45,7 +45,7 @@ export default class Creador{
                 for(var i in res){
                     var zona = res[i]
                     try{
-                        this.controlador.crearZona(idMovimiento, zona.id_zona.toString(), zona.nombre);
+                        this.controlador.agregarZona(idMovimiento, zona.id_zona.toString(), zona.nombre);
                     }catch(err){
                         console.log(err);
                     }
@@ -60,7 +60,7 @@ export default class Creador{
                 for(var i in res){
                     try{
                         var rama = res[i];
-                        this.controlador.crearRama(idMovimiento, rama.id_zona.toString(), rama.id_rama.toString(), rama.nombre);
+                        this.controlador.agregarRama(idMovimiento, rama.id_zona.toString(), rama.id_rama.toString(), rama.nombre);
                     }catch(err){
                         console.log(err);
                     }
@@ -76,7 +76,14 @@ export default class Creador{
                 for(var i in res){
                     try{
                         var grupo = res[i];
-                        this.controlador.crearGrupo(idMovimiento, grupo.id_zona.toString(), grupo.id_rama.toString(), grupo.id_grupo.toString(), grupo.nombre)
+                        try{
+                            this.controlador.agregarGrupo(idMovimiento, grupo.id_zona.toString(), grupo.id_rama.toString(), grupo.id_grupo.toString(), grupo.nombre);
+                            var grupoCreado = this.controlador.getGrupo(idMovimiento, grupo.id_zona.toString(), grupo.id_rama.toString(), grupo.id_grupo.toString());
+                            grupoCreado.encargado1 = grupo.id_miembro;
+                        }catch(err){
+                            var grupoCreado = this.controlador.getGrupo(idMovimiento, grupo.id_zona.toString(), grupo.id_rama.toString(), grupo.id_grupo.toString());
+                            grupoCreado.encargado2 = grupo.id_miembro;
+                        }
                     }catch(err){
                         console.log(err);
                     }
@@ -91,7 +98,7 @@ export default class Creador{
                 for(var i in res){
                     try{
                         var miembro =  res[i];
-                        this.controlador.crearMiembro(miembro.cedula, miembro.nombre, miembro.celular, miembro.email, miembro.provincia, miembro.canton, miembro.distrito, miembro.senales, miembro.b_monitor, idMovimiento, miembro.id_zona.toString(), miembro.id_rama.toString(), miembro.id_grupo.toString());
+                        this.controlador.agregarMiembro(miembro.cedula, miembro.nombre, miembro.celular, miembro.email, miembro.provincia, miembro.canton, miembro.distrito, miembro.senales, miembro.b_monitor, idMovimiento, miembro.id_zona.toString(), miembro.id_rama.toString(), miembro.id_grupo.toString());
                     }catch(err){
                         console.log(err);
                     }

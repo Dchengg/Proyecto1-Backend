@@ -305,19 +305,18 @@ export default class DAO{
             })
             .catch(err => {
                 console.log(err)
-                this.client.end()
+                throw err
             })
     }
 
-    insertarZona(pIdMovimiento,pNombre){
+    async insertarZona(pIdMovimiento,pNombre){
         return this.client.query("select * from insertarZona('"+pIdMovimiento+"', '"+pNombre+"')")
             .then(res => {
                 console.table(res.rows);
                 return res.rows;
             })
             .catch(err => {
-                console.log(err)
-                this.client.end()
+                throw err
             })
     }
 
@@ -460,6 +459,7 @@ export default class DAO{
 
 }
 const dao=new DAO();
+//dao.insertarRama(4000042145, 1, "4");
 //dao.getAllGrupoMiembros();
 //dao.getGruposXMiembro('117940925');
 //dao.getZonaXMovimiento('4000042145');
