@@ -11,7 +11,8 @@ const connection = {
     ssl: true
 };
 
-export default class DAO{
+//export default class DAO{
+class DAO{
     constructor(){
         this.client = new Client(connection);
         try{
@@ -434,7 +435,33 @@ export default class DAO{
 
     getJefesXZona(idZona){
         const quer="select * from Zona inner join GrupoMiembros on GrupoMiembros.id_zona=Zona.id_zona inner join GrupoMiembrosRol on GrupoMiembros.id_lider=GrupoMiembrosRol.id_lider where zona.id_zona = "
-        return this.client.query(quer+idZona+" and GrupoMiembros.id_lider < 5 and GrupoMiembros.id_lider!=1")
+        return this.client.query(quer+idZona+" and GrupoMiembros.id_lider = 4")
+            .then(res => {
+                console.table(res.rows)
+                return res.rows;
+            })
+            .catch(err => {
+                console.log(err)
+                this.client.end()
+            })
+    }
+
+    getJefesXRama(idRama){
+        const quer="select * from Rama inner join GrupoMiembros on GrupoMiembros.id_rama=Rama.id_rama inner join GrupoMiembrosRol on GrupoMiembros.id_lider=GrupoMiembrosRol.id_lider where Rama.id_rama = "
+        return this.client.query(quer+idRama+" and GrupoMiembros.id_lider = 3 ")
+            .then(res => {
+                console.table(res.rows)
+                return res.rows;
+            })
+            .catch(err => {
+                console.log(err)
+                this.client.end()
+            })
+    }
+
+    getJefesXGrupo(idGrupo){
+        const quer="select * from Grupo inner join GrupoMiembros on GrupoMiembros.id_grupo=Grupo.id_grupo inner join GrupoMiembrosRol on GrupoMiembros.id_lider=GrupoMiembrosRol.id_lider where Grupo.id_grupo = "
+        return this.client.query(quer+idGrupo+" and GrupoMiembros.id_lider = 2")
             .then(res => {
                 console.table(res.rows)
                 return res.rows;
