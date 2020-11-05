@@ -41,12 +41,15 @@ export default class Controlador{
         this.agregarRama(idMovimiento, idZona, res.id_rama, nombre)
     }
 
-    async crearGrupoNuevo(idMoidMovimiento, idZona, idRama, nombre, idEncargado1, idEncargado2, isMonitor){
-        var res = await this.dao.insertarGrupo(idMovimiento, idZona, idRama, isMonitor, nombre)
-        .catch(err => {
-            throw err
-        })
-        this.agregarGrupo(idMovimiento, idZona, idRama, res.id_grupo, nombre)
+    async crearGrupoNuevo(idMovimiento, idZona, idRama, idGrupo, nombre, idEncargado1, idEncargado2, isMonitor){
+        if(!idEncargado2){
+            idEncargado2 = ""
+        }
+        if(!nombre){
+            nombre = "";
+        }
+        await this.dao.insertarGrupo(idMovimiento, idZona, idRama, idGrupo, isMonitor, nombre, idEncargado1, idEncargado2);
+        this.agregarGrupo(idMovimiento, idZona, idRama, idGrupo, nombre, isMonitor, idEncargado1, idEncargado2)
     }
 
 
@@ -60,9 +63,9 @@ export default class Controlador{
         movimiento.gNodos.crearRama(idZona, idRama, nombre);
     }
 
-    agregarGrupo(idMovimiento, idZona, idRama, idGrupo, nombre, idEncargado1, idEncargado2, isJefe){
+    agregarGrupo(idMovimiento, idZona, idRama, idGrupo, nombre, isMonitor, idEncargado1, idEncargado2){
         var movimiento = this.getMovimiento(idMovimiento);
-        movimiento.gNodos.crearGrupo(idZona, idRama, idGrupo, nombre, idEncargado1, idEncargado2, isJefe);
+        movimiento.gNodos.crearGrupo(idZona, idRama, idGrupo, nombre, idEncargado1, idEncargado2, isMonitor);
     }
 
     agregarMiembro(idMiembro, nombre, celular, email, provincia, canton, distrito, senas, posible_monitor, idMovimiento, idZona, idRama, idGrupo) {

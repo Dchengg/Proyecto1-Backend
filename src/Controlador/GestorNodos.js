@@ -22,9 +22,9 @@ export default class GestorNodos{
         grupo.agregar(miembro); 
     }
 
-    crearGrupo(idZona, idRama, idGrupo, nombre, idEncargado1, idEncargado2, isJefe){
+    crearGrupo(idZona, idRama, idGrupo, nombre, idEncargado1, idEncargado2, isMonitor){
         var rama = this.getRama(idZona, idRama)
-        rama.agregar(new Nodo(idGrupo, nombre, idEncargado1, idEncargado2, isJefe))
+        rama.agregar(new Nodo(idGrupo, nombre, idEncargado1, idEncargado2, isMonitor))
     }
 
     consultarRamas(idZona){

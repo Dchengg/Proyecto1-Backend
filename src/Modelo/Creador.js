@@ -46,6 +46,7 @@ export default class Creador{
                     var zona = res[i]
                     try{
                         this.controlador.agregarZona(idMovimiento, zona.id_zona.toString(), zona.nombre);
+                        
                     }catch(err){
                         console.log(err);
                     }
@@ -80,6 +81,7 @@ export default class Creador{
                             this.controlador.agregarGrupo(idMovimiento, grupo.id_zona.toString(), grupo.id_rama.toString(), grupo.id_grupo.toString(), grupo.nombre);
                             var grupoCreado = this.controlador.getGrupo(idMovimiento, grupo.id_zona.toString(), grupo.id_rama.toString(), grupo.id_grupo.toString());
                             grupoCreado.encargado1 = grupo.id_miembro;
+                            grupoCreado.isJefe = grupo.b_monitor;
                         }catch(err){
                             var grupoCreado = this.controlador.getGrupo(idMovimiento, grupo.id_zona.toString(), grupo.id_rama.toString(), grupo.id_grupo.toString());
                             grupoCreado.encargado2 = grupo.id_miembro;
@@ -105,4 +107,5 @@ export default class Creador{
                 }
             })
     }
+
 }    

@@ -11,8 +11,8 @@ const connection = {
     ssl: true
 };
 
-//export default class DAO{
-class DAO{
+//export default class DAO{ ??
+export default class DAO{
     constructor(){
         this.client = new Client(connection);
         try{
@@ -286,15 +286,14 @@ class DAO{
             })
     }
     
-    insertarGrupo(idMovimiento,idZona,idRama,idGrupo,bMonitores,pNombre){
-        return this.client.query("select * from insertarGrupo('"+idMovimiento+"', "+idZona+", "+idRama+", "+idGrupo+", "+bMonitores+", "+pNombre+")")
+    async insertarGrupo(idMovimiento,idZona,idRama, idGrupo, bMonitores,pNombre, idMonitor1, idMonitor2){
+        return this.client.query("select * from insertarGrupo('"+idMovimiento+"', "+idZona+", "+idRama+", '"+idGrupo+"', "+bMonitores+", '"+pNombre+"','"+idMonitor1+"','"+idMonitor2+"')")
             .then(res => {
                 console.table(res.rows);
                 return res.rows;
             })
             .catch(err => {
-                console.log(err)
-                this.client.end()
+                throw err
             })
     }
 

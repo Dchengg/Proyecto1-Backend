@@ -68,7 +68,7 @@ app.post('/iniciar-sesion', function(req, res){
 })
 
 //////////////////////////////
-///   CREATIONS
+///   CREAR
 //////////////////////////////
 
 app.get('/crear-miembro', function(req, res){
@@ -114,9 +114,9 @@ app.post('/crear-rama', function(req,res){
 })
 
 app.post('/crear-grupo', function(req,res){
-    const { idZona, idRama, idGrupo, nombre, idEncargado1, idEncargado2, isJefe} = req.body
+    const { idZona, idRama, idGrupo, nombre, idEncargado1, idEncargado2, isMonitor} = req.body
     try{
-        controlador.crearGrupo(idMovimiento, idZona, idRama, idGrupo, nombre, idEncargado1, idEncargado2, isJefe);
+        controlador.crearGrupoNuevo(idMovimiento, idZona, idRama, idGrupo, nombre, idEncargado1, idEncargado2, isMonitor);
         return res.json({ success: true})
     }catch(err){
         console.log(err);
@@ -329,7 +329,7 @@ app.post('/asignar-encargado-rama', function(req, res){
 })
 
 app.post('/asignar-encargado-zona', function(req, res){
-    const {idZona, idRama, idMiembro, idMiembro2, isMonitor} = req.body;
+    const {idZona, idMiembro, idMiembro2, isMonitor} = req.body;
     try{
         controlador.asignarEncargadoZona(idMovimiento, idZona, idMiembro,idMiembro2, idMiembro2, isMonitor)
         return res.json({success: true});
