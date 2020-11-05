@@ -535,9 +535,24 @@ class DAO{
                 this.client.end()
             })
     }
+
+    modificarMovimiento(pIdMovimiento,pNombre, pPais, pProvincia, pCanton, pDistrito, pSenales, pDireccionWeb, pLogo, pTelefonos){
+        //TELEFONOS, EN PLURAL, ES UNA LISTA
+        queryPT1="select * from modificarMovimiento('"+pIdMovimiento+"', '"+pNombre+"', '"+pPais+"', '"+pProvincia+"', '"+pCanton+"', '";
+        queryPT2=pDistrito+"', '"+pSenales+"', '"+pDireccionWeb+"', '"+pLogo+"', ["+pTelefonos+"])"
+        return this.client.query(queryPT1+queryPT2)
+            .then(res => {
+                console.table(res.rows);
+                return res.rows;
+            })
+            .catch(err => {
+                console.log(err)
+                this.client.end()
+            })
+    }
 }
 const dao=new DAO();
-dao.getRamaXMovimiento('4000042145');
+//dao.getRamaXMovimiento('4000042145');
 //dao.getGrupoMiembros(1);
 //dao.getAsesor('117380721');
 //dao.getZonaXMovimiento('4000042145');
