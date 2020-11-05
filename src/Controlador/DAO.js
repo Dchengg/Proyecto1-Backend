@@ -57,7 +57,7 @@ export default class DAO{
     }
 
     getZonaXMovimiento(idMovimiento){
-        return this.client.query(`select * from Zona where id_movimiento = '${idMovimiento}'`)
+        return this.client.query(`select * from Zona inner join GrupoMiembros on GrupoMiembros.id_zona=Zona.id_Zona inner join GrupoMiembrosRol on GrupoMiembros.id_lider=GrupoMiembrosRol.id_lider where Zona.id_movimiento = '${idMovimiento}' and GrupoMiembros.id_lider = 4`)
             .then(res => {
                 console.table(res.rows)
                 return res.rows;
@@ -122,7 +122,8 @@ export default class DAO{
     }
 
     getRamaXMovimiento(idMovimiento){
-        return this.client.query(`select * from Rama where id_movimiento = '${idMovimiento}'`)
+        //return this.client.query(`select * from Rama where Rama.id_movimiento = '${idMovimiento}'`)
+        return this.client.query(`select Rama.id_movimiento,Rama.nombre,Rama.id_zona,Rama.id_Rama,GrupoMiembros.id_Miembro,GrupoMiembros.id_lider from Rama left join GrupoMiembros on GrupoMiembros.id_rama=Rama.id_rama inner join GrupoMiembrosRol on GrupoMiembros.id_lider=GrupoMiembrosRol.id_lider where Rama.id_movimiento = '${idMovimiento}' and (GrupoMiembros.id_lider=4 or GrupoMiembros.id_lider=3)`)
             .then(res => {
                 console.table(res.rows)
                 return res.rows;
@@ -132,6 +133,8 @@ export default class DAO{
                 this.client.end()
             })
     }
+
+    
 
     getGrupo(idGrupo){
         this.client.query("select * from Grupo where id_grupo = "+idGrupo)
@@ -262,8 +265,8 @@ export default class DAO{
             })
     }
 
-    getAsesor(){
-        this.client.query("select * from Asesor")
+    getAsesor(idAsesor){
+        this.client.query("select * from Asesor where cedula = '"+idAsesor+"'")
             .then(res => {
                 console.table(res.rows);
                 //this.client.end()
@@ -483,9 +486,60 @@ export default class DAO{
             })
     }
 
+    eliminarJefeGrupo(pCedula,pIdGrupo,pIdRama,pIdZona,pIdMovimiento){
+        return this.client.query("select * from eliminarjefegrupo('"+pCedula+"', "+pIdGrupo+", "+pIdRama+", "+pIdZona+", '"+pIdMovimiento+"')")
+            .then(res => {
+                console.table(res.rows);
+                return res.rows;
+            })
+            .catch(err => {
+                console.log(err)
+                this.client.end()
+            })
+    }
+
+    eliminarJefeRama(pCedula,pIdRama,pIdZona,pIdMovimiento){
+        return this.client.query("select * from eliminarjeferama('"+pCedula+"', "+pIdRama+", "+pIdZona+", '"+pIdMovimiento+"')")
+            .then(res => {
+                console.table(res.rows);
+                return res.rows;
+            })
+            .catch(err => {
+                console.log(err)
+                this.client.end()
+            })
+    }
+
+    eliminarJefeZona(pCedula,pIdZona,pIdMovimiento){
+        return this.client.query("select * from eliminarjeferama('"+pCedula+"', "+pIdZona+", '"+pIdMovimiento+"')")
+            .then(res => {
+                console.table(res.rows);
+                return res.rows;
+            })
+            .catch(err => {
+                console.log(err)
+                this.client.end()
+            })
+    }
+
+    eliminarDeGrupo(pCedula,pIdGrupo,pIdRama,pIdZona,pIdMovimiento){
+        return this.client.query("select * from eliminardegrupo('"+pCedula+"', "+pIdGrupo+", "+pIdRama+", "+pIdZona+", '"+pIdMovimiento+"')")
+            .then(res => {
+                console.table(res.rows);
+                return res.rows;
+            })
+            .catch(err => {
+                console.log(err)
+                this.client.end()
+            })
+    }
 }
 const dao=new DAO();
-dao.getTelefonoMovimiento('4000042145');
+dao.getRamaXMovimiento('4000042145');
+//dao.getGrupoMiembros(1);
+//dao.getAsesor('117380721');
+//dao.getZonaXMovimiento('4000042145');
+//dao.getTelefonoMovimiento('4000042145');
 //dao.getAllGrupoMiembros();
 //dao.getGruposXMiembro('117940925');
 //dao.getZonaXMovimiento('4000042145');
@@ -514,10 +568,14 @@ dao.getTelefonoMovimiento('4000042145');
     insertarZona(pIdMovimiento,pNombre)
     FALTA INSERTAR MOVIMIENTO
 4-LIsto getJefesXZona(idZona)
-5-Modificar jefes:
+5-Listo Modificar jefes:
     asignarJefeGrupo(idGrupo,cedulaMiembro,idRama,idZona,idMovimiento)
     asignarJefeRama(idRama,cedulaMiembro,idZona,idMovimiento)
     asignarJefeZona(cedulaMiembro,idZona,idMovimiento)
-6- eliminar miembro de grupo
+    eliminarJefeGrupo(pCedula,pIdGrupo,pIdRama,pIdZona,pIdMovimiento)
+    eliminarJefeRama(pCedula,pIdRama,pIdZona,pIdMovimiento)
+    eliminarJefeZona(pCedula,pIdZona,pIdMovimiento)
+6-Listo eliminar miembro de grupo:
+    eliminarDeGrupo(pCedula,pIdGrupo,pIdRama,pIdZona,pIdMovimiento)
 7-Listo insertarMiembroAGrupo(idGrupo,cedula,idRama,idZona,idMovimiento)
 */
