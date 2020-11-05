@@ -488,6 +488,53 @@ class DAO{
             })
     }
 
+    eliminarJefeGrupo(pCedula,pIdGrupo,pIdRama,pIdZona,pIdMovimiento){
+        return this.client.query("select * from eliminarjefegrupo('"+pCedula+"', "+pIdGrupo+", "+pIdRama+", "+pIdZona+", '"+pIdMovimiento+"')")
+            .then(res => {
+                console.table(res.rows);
+                return res.rows;
+            })
+            .catch(err => {
+                console.log(err)
+                this.client.end()
+            })
+    }
+
+    eliminarJefeRama(pCedula,pIdRama,pIdZona,pIdMovimiento){
+        return this.client.query("select * from eliminarjeferama('"+pCedula+"', "+pIdRama+", "+pIdZona+", '"+pIdMovimiento+"')")
+            .then(res => {
+                console.table(res.rows);
+                return res.rows;
+            })
+            .catch(err => {
+                console.log(err)
+                this.client.end()
+            })
+    }
+
+    eliminarJefeZona(pCedula,pIdZona,pIdMovimiento){
+        return this.client.query("select * from eliminarjeferama('"+pCedula+"', "+pIdZona+", '"+pIdMovimiento+"')")
+            .then(res => {
+                console.table(res.rows);
+                return res.rows;
+            })
+            .catch(err => {
+                console.log(err)
+                this.client.end()
+            })
+    }
+
+    eliminarDeGrupo(pCedula,pIdGrupo,pIdRama,pIdZona,pIdMovimiento){
+        return this.client.query("select * from eliminardegrupo('"+pCedula+"', "+pIdGrupo+", "+pIdRama+", "+pIdZona+", '"+pIdMovimiento+"')")
+            .then(res => {
+                console.table(res.rows);
+                return res.rows;
+            })
+            .catch(err => {
+                console.log(err)
+                this.client.end()
+            })
+    }
 }
 const dao=new DAO();
 dao.getRamaXMovimiento('4000042145');
@@ -523,10 +570,14 @@ dao.getRamaXMovimiento('4000042145');
     insertarZona(pIdMovimiento,pNombre)
     FALTA INSERTAR MOVIMIENTO
 4-LIsto getJefesXZona(idZona)
-5-Modificar jefes:
+5-Listo Modificar jefes:
     asignarJefeGrupo(idGrupo,cedulaMiembro,idRama,idZona,idMovimiento)
     asignarJefeRama(idRama,cedulaMiembro,idZona,idMovimiento)
     asignarJefeZona(cedulaMiembro,idZona,idMovimiento)
-6- eliminar miembro de grupo
+    eliminarJefeGrupo(pCedula,pIdGrupo,pIdRama,pIdZona,pIdMovimiento)
+    eliminarJefeRama(pCedula,pIdRama,pIdZona,pIdMovimiento)
+    eliminarJefeZona(pCedula,pIdZona,pIdMovimiento)
+6-Listo eliminar miembro de grupo:
+    eliminarDeGrupo(pCedula,pIdGrupo,pIdRama,pIdZona,pIdMovimiento)
 7-Listo insertarMiembroAGrupo(idGrupo,cedula,idRama,idZona,idMovimiento)
 */
