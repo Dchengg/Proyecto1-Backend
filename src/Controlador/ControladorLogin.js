@@ -16,7 +16,6 @@ export default class ControladorLogin{
             var idMovimiento;
             if (res[0].encontrado) {
                 idMovimiento=await this.creador.cargarMovimiento(id);
-                
             }
             Promise.resolve(idMovimiento);
             res[0].idMovimiento=idMovimiento;

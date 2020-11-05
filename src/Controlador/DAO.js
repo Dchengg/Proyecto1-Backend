@@ -266,15 +266,13 @@ export default class DAO{
     }
 
     getAsesor(idAsesor){
-        this.client.query("select * from Asesor where cedula = '"+idAsesor+"'")
+        return this.client.query("select * from Asesor where cedula = '"+idAsesor+"'")
             .then(res => {
                 console.table(res.rows);
-                //this.client.end()
                 return res.rows;
             })
             .catch(err => {
-                console.log(err)
-                this.client.end()
+                throw err
             })
     }
 
@@ -535,7 +533,7 @@ export default class DAO{
     }
 }
 const dao=new DAO();
-dao.getRamaXMovimiento('4000042145');
+//dao.getRamaXMovimiento('4000042145');
 //dao.getGrupoMiembros(1);
 //dao.getAsesor('117380721');
 //dao.getZonaXMovimiento('4000042145');

@@ -69,17 +69,24 @@ export default class Controlador{
     }
 
     agregarMiembro(idMiembro, nombre, celular, email, provincia, canton, distrito, senas, posible_monitor, idMovimiento, idZona, idRama, idGrupo) {
-        if(this.movimientos.has(idMovimiento)){
+        this.agregarMiembroAMovimiento(idMovimiento,idMiembro, nombre, celular, email, provincia, canton, distrito, senas, posible_monitor);
+        this.agregarMiembroGrupo(idMovimiento, idZona, idRama, idGrupo, idMiembro);
+        /*if(this.movimientos.has(idMovimiento)){
             var gMiembros = this.movimientos.get(idMovimiento).gMiembros;
             var gNodos = this.movimientos.get(idMovimiento).gNodos; 
-            var miembro = gMiembros.crearMiembro(idMiembro, nombre, celular, email, provincia, canton, distrito, senas, posible_monitor, idZona, idRama, idGrupo);
+            var miembro = gMiembros.crearMiembro(idMiembro, nombre, celular, email, provincia, canton, distrito, senas, posible_monitor);
             gNodos.agregarMiembro(idZona, idRama, idGrupo, miembro);
         }else{
             throw { message: "Movimiento no existe"};
-        }
+        }*/
     }
 
-    agregarMiembroGrupo(idMovimiento, idZona, idRama, idGrupo, idMiembro, ){
+    agregarMiembroAMovimiento(idMovimiento,idMiembro, nombre, celular, email, provincia, canton, distrito, senas, posible_monitor){
+        var movimiento = this.getMovimiento(idMovimiento);
+        movimiento.gMiembros.crearMiembro(idMiembro, nombre, celular, email, provincia, canton, distrito, senas, posible_monitor);
+    }
+
+    agregarMiembroGrupo(idMovimiento, idZona, idRama, idGrupo, idMiembro){
         var grupo = this.getGrupo(idMovimiento, idZona, idRama, idGrupo);
         var miembro = this.getMiembro(idMovimiento, idMiembro);
         grupo.agregar(miembro);

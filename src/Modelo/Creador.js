@@ -8,18 +8,6 @@ export default class Creador{
         this.controlador = controlador;
     }
 
-    iniciarAPI(cedulaAsesor, contrasena){
-        this.dao.loginAsesor(cedulaAsesor,contrasena)
-        .then( res => {
-            if(res[0].encontrado){
-                this.cargarMovimiento(cedulaAsesor);
-            }
-            throw { message: "Datos incorrectos"}
-        })
-        .catch(err => {
-            console.log(err);
-        })
-    }
 
     cargarMovimiento(cedulaAsesor){
         var cedula_juridica;
@@ -30,13 +18,19 @@ export default class Creador{
                     this.controlador.crearMovimiento(movimiento.cedula_juridica, cedulaAsesor, movimiento.nombre, movimiento.direccion_web, movimiento.logo, movimiento.pais, movimiento.provincia, movimiento.canton, movimiento.distrito, movimiento.senales);
                     this.cargarZonasMovimiento(movimiento.cedula_juridica);
                     cedula_juridica = movimiento.cedula_juridica;
+                    this.dao.getAsesor(cedulaAsesor)
+                        .then(res=> {
+                            var miembro =  res[0];
+                            console.log(cedula_juridica)
+                            this.controlador.agregarMiembroAMovimiento(cedula_juridica,miembro.cedula, miembro.nombre, miembro.celular, miembro.email, miembro.provincia, miembro.canton, miembro.distrito, miembro.senales, miembro.b_monitor);
+                        })
                 }catch(err){
                     console.log(err);
                 }
                 return movimiento.cedula_juridica;
             });
             return cedula_juridica;
-    }
+    } 
 
     cargarZonasMovimiento(idMovimiento){
         console.log(idMovimiento)
