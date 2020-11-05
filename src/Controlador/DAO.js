@@ -538,8 +538,9 @@ class DAO{
 
     modificarMovimiento(pIdMovimiento,pNombre, pPais, pProvincia, pCanton, pDistrito, pSenales, pDireccionWeb, pLogo, pTelefonos){
         //TELEFONOS, EN PLURAL, ES UNA LISTA
+        //La lista que recibe el DAO va asi: [elem1,elem2]
         queryPT1="select * from modificarMovimiento('"+pIdMovimiento+"', '"+pNombre+"', '"+pPais+"', '"+pProvincia+"', '"+pCanton+"', '";
-        queryPT2=pDistrito+"', '"+pSenales+"', '"+pDireccionWeb+"', '"+pLogo+"', ["+pTelefonos+"])"
+        queryPT2=pDistrito+"', '"+pSenales+"', '"+pDireccionWeb+"', '"+pLogo+"', {"+pTelefonos+"})"
         return this.client.query(queryPT1+queryPT2)
             .then(res => {
                 console.table(res.rows);
