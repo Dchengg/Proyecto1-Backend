@@ -101,7 +101,7 @@ app.post('/crear-zona', function(req,res){
 app.post('/crear-rama', function(req,res){
     const { idZona, nombre} = req.body
     try{
-        controlador.crearRamanueva(idMovimiento, idZona, nombre)
+        controlador.crearRamaNueva(idMovimiento, idZona, nombre)
         .then( () => {
             return res.json({success: true})
         })
