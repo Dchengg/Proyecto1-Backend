@@ -56,8 +56,22 @@ export default class DAO{
         })
     }
 
+
+    getZonas(){
+        return this.client.query(`select * from Zona `)
+            .then(res => {
+                console.table(res.rows)
+                return res.rows;
+            })
+            .catch(err => {
+                console.log(err)
+                this.client.end()
+            })
+    }
+
+
     getZonaXMovimiento(idMovimiento){
-        return this.client.query(`select * from Zona inner join GrupoMiembros on GrupoMiembros.id_zona=Zona.id_Zona inner join GrupoMiembrosRol on GrupoMiembros.id_lider=GrupoMiembrosRol.id_lider where Zona.id_movimiento = '${idMovimiento}' and GrupoMiembros.id_lider = 4`)
+        return this.client.query("Select * from getZonas('"+idMovimiento+"')")
             .then(res => {
                 console.table(res.rows)
                 return res.rows;
@@ -123,7 +137,7 @@ export default class DAO{
 
     getRamaXMovimiento(idMovimiento){
         //return this.client.query(`select * from Rama where Rama.id_movimiento = '${idMovimiento}'`)
-        return this.client.query(`select Rama.id_movimiento,Rama.nombre,Rama.id_zona,Rama.id_Rama,GrupoMiembros.id_Miembro,GrupoMiembros.id_lider from Rama left join GrupoMiembros on GrupoMiembros.id_rama=Rama.id_rama inner join GrupoMiembrosRol on GrupoMiembros.id_lider=GrupoMiembrosRol.id_lider where Rama.id_movimiento = '${idMovimiento}' and (GrupoMiembros.id_lider=4 or GrupoMiembros.id_lider=3)`)
+        return this.client.query("select * from getRamas('"+idMovimiento+"')")
             .then(res => {
                 console.table(res.rows)
                 return res.rows;
@@ -176,8 +190,7 @@ export default class DAO{
 
     
     getGrupoXMovimiento(idMovimiento){
-        const quer="select * from Grupo inner join GrupoMiembros on GrupoMiembros.id_grupo=Grupo.id_grupo inner join GrupoMiembrosRol on GrupoMiembros.id_lider=GrupoMiembrosRol.id_lider where grupo.id_movimiento = '"
-        return this.client.query(quer+idMovimiento+"' and GrupoMiembros.id_lider != 5")
+        return this.client.query("Select * from getGrupos('"+idMovimiento+"')")
             .then(res => {
                 console.table(res.rows)
                 return res.rows;
@@ -254,7 +267,7 @@ export default class DAO{
     }
 
     getMiembroXMovimiento(idMovimiento){
-        return this.client.query(`select * from GrupoMiembros inner join Miembro on Miembro.cedula=GrupoMiembros.id_miembro where GrupoMiembros.id_movimiento = '${idMovimiento}'`)
+        return this.client.query("select * from GrupoMiembros inner join Miembro on Miembro.cedula=GrupoMiembros.id_miembro where GrupoMiembros.id_movimiento = '"+idMovimiento+"'")
             .then(res => {
                 console.table(res.rows)
                 return res.rows;
@@ -531,8 +544,74 @@ export default class DAO{
                 this.client.end()
             })
     }
+
+    modificarMovimiento(pIdMovimiento,pNombre, pPais, pProvincia, pCanton, pDistrito, pSenales, pDireccionWeb, pLogo, pTelefonos){
+        //TELEFONOS, EN PLURAL, ES UNA LISTA
+        //La lista que recibe el DAO va asi: [elem1,elem2]
+        queryPT1="select * from modificarMovimiento('"+pIdMovimiento+"', '"+pNombre+"', '"+pPais+"', '"+pProvincia+"', '"+pCanton+"', '";
+        queryPT2=pDistrito+"', '"+pSenales+"', '"+pDireccionWeb+"', '"+pLogo+"', {"+pTelefonos+"})"
+        return this.client.query(queryPT1+queryPT2)
+            .then(res => {
+                console.table(res.rows);
+                return res.rows;
+            })
+            .catch(err => {
+                console.log(err)
+                this.client.end()
+            })
+    }
+
+    modificarZona(pIdMovimiento,pIdZona,pNombre){
+        return this.client.query("select * from editarzona('"+pIdMovimiento+"', "+pIdZona+", '"+pNombre+"')")
+            .then(res => {
+                console.table(res.rows);
+                return res.rows;
+            })
+            .catch(err => {
+                console.log(err)
+                this.client.end()
+            })
+    }
+
+    modificarRama(pIdMovimiento,pIdZona,pIdRama,pNombre){
+        return this.client.query("select * from editarrama('"+pIdMovimiento+"', "+pIdZona+", "+pIdRama+", '"+pNombre+"')")
+            .then(res => {
+                console.table(res.rows);
+                return res.rows;
+            })
+            .catch(err => {
+                console.log(err)
+                this.client.end()
+            })
+    }
+
+    modificarGrupo(pIdMovimiento,pIdZona,pIdRama,pIdGrupo,pB_Monitores,pNombre){
+        return this.client.query("select * from editargrupo('"+pIdMovimiento+"', "+pIdZona+", "+pIdRama+", "+pIdGrupo+", "+pB_Monitores+", '"+pNombre+"')")
+            .then(res => {
+                console.table(res.rows);
+                return res.rows;
+            })
+            .catch(err => {
+                console.log(err)
+                this.client.end()
+            })
+    }
 }
 const dao=new DAO();
+//dao.modificarZona('4000042145',1,"GAM");
+//dao.getZonaXMovimiento('4000042145');
+//dao.getRamaXMovimiento('4000042145');
+//dao.modificarRama('4000042145',1,7,"Rama Prueba");
+//dao.getRamaXMovimiento('4000042145');
+dao.getGrupoXMovimiento('4000042145');
+//dao.modificarZona();
+//dao.modificarRama();
+//dao.modificarGrupo('4000042145',1,2,1234,true,"Rescata Serpientes");
+//dao.getGrupos();
+//dao.getZonas();
+//dao.insertarZona('4000042145',"Zona Norte");
+//dao.getRamas();
+//dao.insertarRama('4000042145',1,"Rama Prueba");
 //dao.getRamaXMovimiento('4000042145');
 //dao.getGrupoMiembros(1);
 //dao.getAsesor('117380721');
@@ -542,7 +621,7 @@ const dao=new DAO();
 //dao.getGruposXMiembro('117940925');
 //dao.getZonaXMovimiento('4000042145');
 //dao.getJefesXZona(1);
-//dao.getMiembroXMovimiento("'4000042145'");
+//dao.getMiembroXMovimiento("4000042145");
 //dao.loginAsesor("'117380721'","'Yoquese'");
 //dao.getMovimientoXAsesor("'117380721'");
 //dao.getGrupo(1);
@@ -560,6 +639,10 @@ const dao=new DAO();
 //'Rescata gatos'
 /*
 1-Modificar mov, zona, rama, grupo
+    Listo
+    modificarZona(pIdMovimiento,pIdZona,pNombre)
+    modificarRama(pIdMovimiento,pIdZona,pIdRama,pNombre)
+    modificarGrupo(pIdMovimiento,pIdZona,pIdRama,pIdGrupo,pB_Monitores,pNombre,pJefe1,pJefe2)
 2-Listo dao.getGruposXMiembro(cedula);
 3-insertarGrupo(idMovimiento,idZona,idRama,idGrupo,bMonitores,pNombre)
     insertarRama(pIdMovimiento,pIdZona,pNombre)
