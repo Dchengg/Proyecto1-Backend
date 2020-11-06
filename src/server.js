@@ -166,8 +166,24 @@ app.post('/modificar-zona', function(req,res){
                 return res.json({ success: true })
             })
             .catch(err => {
-                return res.json({success: false, error: err})
+                throw err
             })
+    }catch(err){
+        console.log(err);
+        return res.json({success: false, error: err})
+    }
+})
+
+app.post('/modificar-rama', function(req, res){
+    const { idZona, idRama, nombre, idJefeNuevo1, idJefeNuevo2, idJefeViejo1, idJefeViejo2 } = req.body;
+    try{
+        controlador.modificarRama(idMovimiento, idZona, idRama, nombre, idJefeNuevo1, idJefeNuevo2, idJefeViejo1, idJefeNuevo2, idJefeViejo2)
+        .then( () => {
+            return res.json({ success: true})
+        })
+        .catch(err => {
+            return res.json({success: false, error: {message:err.message}})
+        })
     }catch(err){
         console.log(err);
         return res.json({success: false, error: err})

@@ -403,20 +403,18 @@ export default class DAO{
                 return res.rows;
             })
             .catch(err => {
-                console.log(err)
-                this.client.end()
+                throw err
             })
     }
 
-    asignarJefeRama(idRama,cedulaMiembro,idZona,idMovimiento){
+    async asignarJefeRama(idRama,cedulaMiembro,idZona,idMovimiento){
         return this.client.query("select * from asignarJefeRama('"+cedulaMiembro+"', "+idRama+", "+idZona+", '"+idMovimiento+"')")
             .then(res => {
                 console.table(res.rows);
                 return res.rows;
             })
             .catch(err => {
-                console.log(err)
-                this.client.end()
+                throw err
             })
     }
 
@@ -508,15 +506,14 @@ export default class DAO{
             })
     }
 
-    eliminarJefeRama(pCedula,pIdRama,pIdZona,pIdMovimiento){
+    async eliminarJefeRama(pCedula,pIdRama,pIdZona,pIdMovimiento){
         return this.client.query("select * from eliminarjeferama('"+pCedula+"', "+pIdRama+", "+pIdZona+", '"+pIdMovimiento+"')")
             .then(res => {
                 console.table(res.rows);
                 return res.rows;
             })
             .catch(err => {
-                console.log(err)
-                this.client.end()
+                throw err
             })
     }
 

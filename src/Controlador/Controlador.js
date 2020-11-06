@@ -168,6 +168,48 @@ export default class Controlador{
         }
     }
 
+    async modificarRama(idMovimiento, idZona, idRama , nombre, idJefeNuevo1, idJefeNuevo2, idJefeViejo1, idJefeViejo2){
+        try{
+            var rama = this.getRama(idMovimiento, idZona, idRama);
+            if(rama.nombre != nombre){
+                await this.dao.modificarRama(idMovimiento,idZona,idRama,nombre)
+                .catch(err => {
+                    throw err;
+                })
+            }
+            if(idJefeNuevo1 != idJefeViejo1){
+                await this.dao.eliminarJefeRama(idJefeViejo1,idZona,idRama, idMovimiento)
+                .catch(err => {
+                    throw err;
+                })
+            }
+            if(idJefeNuevo1){
+                await this.dao.asignarJefeRama(idJefeNuevo1, idZona, idRama, idMovimiento)
+                .catch(err => {
+                    throw err;
+                })
+            }
+            if(idJefeNuevo2 != idJefeViejo2){
+                await this.dao.eliminarJefeRama(idJefeViejo2,idZona, idMovimiento)
+                .catch(err => {
+                    throw err;
+                })
+            }
+            if(idJefeNuevo2){
+                await this.dao.asignarJefeRama(idJefeNuevo2, idZona, idMovimiento)
+                .catch(err => {
+                    throw err;
+                })
+            }
+            rama.nombre = nombre;
+            rama.setEncargado1(idJefeNuevo1);
+            rama.setEncargado2(idJefeNuevo2);
+        }catch(err){
+            console.log(err);
+            throw err
+        }
+    }
+
     modificarMiembro(idMiembro, nombre, celular, email, provincia, canton, distrito, senas, posible_monitor, idMovimiento, idZona, idRama, idGrupo){
         var movimiento =  this.getMovimiento(idMovimiento);
         var gMiembros = movimiento.gMiembros;
