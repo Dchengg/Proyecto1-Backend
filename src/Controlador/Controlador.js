@@ -153,36 +153,25 @@ export default class Controlador{
 
     async modificarZona(idMovimiento, idZona, nombre, idJefeNuevo1, idJefeNuevo2, idJefeViejo1, idJefeViejo2){
         try{
+            if(idJefeNuevo1 != idJefeViejo1 && idJefeNuevo1 && idJefeViejo1){
+                await this.dao.eliminarJefeZona(idJefeViejo1,idZona, idMovimiento)
+            }
+
+            if(idJefeNuevo2 != idJefeViejo2 && idJefeNuevo2 && idJefeViejo2){
+                await this.dao.eliminarJefeZona(idJefeViejo2,idZona, idMovimiento)
+            }
+
+            if(idJefeNuevo1){
+                await this.dao.asignarJefeZona(idJefeNuevo1, idZona, idMovimiento)
+            }
+            
+            if(idJefeNuevo2){
+                await this.dao.asignarJefeZona(idJefeNuevo2, idZona, idMovimiento)
+            }
+
             var zona = this.getZona(idMovimiento, idZona);
             if(zona.nombre != nombre){
                 await this.dao.modificarZona(idMovimiento,idZona,nombre)
-                .catch(err => {
-                    throw err;
-                })
-            }
-            if(idJefeNuevo1 != idJefeViejo1){
-                await this.dao.eliminarJefeZona(idJefeViejo1,idZona, idMovimiento)
-                .catch(err => {
-                    throw err;
-                })
-            }
-            if(idJefeNuevo1){
-                await this.dao.asignarJefeZona(idJefeNuevo1, idZona, idMovimiento)
-                .catch(err => {
-                    throw err;
-                })
-            }
-            if(idJefeNuevo2 != idJefeViejo2){
-                await this.dao.eliminarJefeZona(idJefeViejo2,idZona, idMovimiento)
-                .catch(err => {
-                    throw err;
-                })
-            }
-            if(idJefeNuevo2){
-                await this.dao.asignarJefeZona(idJefeNuevo2, idZona, idMovimiento)
-                .catch(err => {
-                    throw err;
-                })
             }
             zona.nombre = nombre;
             zona.setEncargado1(idJefeNuevo1);
@@ -195,36 +184,23 @@ export default class Controlador{
 
     async modificarRama(idMovimiento, idZona, idRama , nombre, idJefeNuevo1, idJefeNuevo2, idJefeViejo1, idJefeViejo2){
         try{
+            if(idJefeNuevo1 != idJefeViejo1 && idJefeViejo1 && idJefeNuevo1){
+                await this.dao.eliminarJefeRama(idJefeViejo1,idZona,idRama, idMovimiento)
+            }
+            if(idJefeNuevo2 != idJefeViejo2 && idJefeViejo2 && idJefeNuevo2){
+                await this.dao.eliminarJefeRama(idJefeViejo2,idZona, idRama, idMovimiento)
+            }
+
+            if(idJefeNuevo1){
+                await this.dao.asignarJefeRama(idJefeNuevo1, idZona, idRama, idMovimiento)
+            }
+            
+            if(idJefeNuevo2){
+                await this.dao.asignarJefeRama(idJefeNuevo2,idZona,idRama, idMovimiento)
+            }
             var rama = this.getRama(idMovimiento, idZona, idRama);
             if(rama.nombre != nombre){
                 await this.dao.modificarRama(idMovimiento,idZona,idRama,nombre)
-                .catch(err => {
-                    throw err;
-                })
-            }
-            if(idJefeNuevo1 != idJefeViejo1){
-                await this.dao.eliminarJefeRama(idJefeViejo1,idZona,idRama, idMovimiento)
-                .catch(err => {
-                    throw err;
-                })
-            }
-            if(idJefeNuevo1){
-                await this.dao.asignarJefeRama(idJefeNuevo1, idZona, idRama, idMovimiento)
-                .catch(err => {
-                    throw err;
-                })
-            }
-            if(idJefeNuevo2 != idJefeViejo2){
-                await this.dao.eliminarJefeRama(idJefeViejo2,idZona, idRama, idMovimiento)
-                .catch(err => {
-                    throw err;
-                })
-            }
-            if(idJefeNuevo2){
-                await this.dao.asignarJefeRama(idJefeNuevo2,idZona,idRama, idMovimiento)
-                .catch(err => {
-                    throw err;
-                })
             }
             rama.nombre = nombre;
             rama.setEncargado1(idJefeNuevo1);
@@ -237,38 +213,32 @@ export default class Controlador{
 
     async modificarGrupo(idMovimiento, idZona, idRama, idGrupo, nombre, isMonitor, idJefeNuevo1, idJefeNuevo2, idJefeViejo1, idJefeViejo2){
         try{
+            if(idJefeNuevo1 != idJefeViejo1 && idJefeNuevo1 && idJefeViejo1){
+                await this.dao.eliminarJefeGrupo(idJefeViejo1,idZona,idRama, idGrupo, idMovimiento)
+            }
+
+            if(idJefeNuevo2 != idJefeViejo2 && idJefeNuevo2 && idJefeViejo2){
+                await this.dao.eliminarJefeGrupo(idJefeViejo2,idZona, idRama, idGrupo,  idMovimiento)
+            }
+
+            if(idJefeNuevo1){
+                if(isMonitor){
+                    await this.dao.asignarMonitorGrupo(idJefeNuevo1,idZona, idRama, idGrupo, idMovimiento); 
+                }else{
+                    await this.dao.asignarJefeGrupo(idJefeNuevo1, idZona, idRama, idGrupo, idMovimiento)
+                }
+            }
+            
+            if(idJefeNuevo2){
+                if(isMonitor){
+                    await this.dao.asignarMonitorGrupo(idJefeNuevo1,idZona, idRama, idGrupo, idMovimiento)
+                }else{
+                    await this.dao.asignarJefeGrupo(idJefeNuevo2, idZona, idRama, idGrupo, idMovimiento)
+                }
+            }
             var grupo = this.getGrupo(idMovimiento, idZona, idRama, idGrupo);
             if(grupo.nombre != nombre || grupo.isMonitor != isMonitor){
                 await this.dao.modificarGrupo(idMovimiento,idZona,idRama, idGrupo, isMonitor, nombre)
-                .catch(err => {
-                    throw err;
-                })
-            }
-            if(idJefeNuevo1 != idJefeViejo1 && idJefeNuevo1 && idJefeViejo1){
-                console.log("No deberia salid D:")
-                await this.dao.eliminarJefeGrupo(idJefeViejo1,idZona,idRama, idGrupo, idMovimiento)
-                .catch(err => {
-                    throw err;
-                })
-            }
-            if(idJefeNuevo1){
-                console.log(idJefeNuevo1);
-                await this.dao.asignarJefeGrupo(idJefeNuevo1, idZona, idRama, idGrupo, idMovimiento)
-                .catch(err => {
-                    throw err;
-                })
-            }
-            if(idJefeNuevo2 != idJefeViejo2){
-                await this.dao.eliminarJefeGrupo(idJefeViejo2,idZona, idRama, idGrupo,  idMovimiento)
-                .catch(err => {
-                    throw err;
-                })
-            }
-            if(idJefeNuevo2){
-                await this.dao.asignarJefeGrupo(idJefeNuevo2, idZona, idRama, idGrupo, idMovimiento)
-                .catch(err => {
-                    throw err;
-                })
             }
             grupo.nombre = nombre;
             grupo.isMonitor = isMonitor;
@@ -371,7 +341,7 @@ export default class Controlador{
         }
     }
 
-    async getGruposMiembro(idMovimiento, idMiembro){
+    async getGruposMiembro(idMiembro){
         try{
             var grupos = [];
             const res = await this.dao.getGruposXMiembro(idMiembro);
@@ -379,8 +349,8 @@ export default class Controlador{
                 console.log(res[i])
                 var grupoInfo = res[i];
                 grupos.push(grupoInfo);
-                return grupos
             }
+            return grupos
         }catch(err){
             throw err
         }

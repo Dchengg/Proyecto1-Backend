@@ -267,7 +267,7 @@ app.post('/get-miembro', function(req, res){
     try{
         var miembro = controlador.getMiembro(idMovimiento, idMiembro);
         var grupos;
-        var gruposPromise = controlador.getGruposMiembro(idMovimiento, idMiembro)
+        var gruposPromise = controlador.getGruposMiembro(idMiembro)
             .then(res => {
                 grupos = res;
             })

@@ -590,15 +590,14 @@ export default class DAO{
             })
     }
 
-    asignarMonitorGrupo(pCedula,pIdGrupo,pIdRama,pIdZona,pIdMovimiento,){
+    async asignarMonitorGrupo(pCedula,pIdZona,pIdRama,pIdGrupo,pIdMovimiento,){
         return this.client.query("select * from asignarMonitorGrupo('"+pCedula+"', "+pIdGrupo+", "+pIdRama+", "+pIdZona+", '"+pIdMovimiento+"')")
             .then(res => {
                 console.table(res.rows);
                 return res.rows;
             })
             .catch(err => {
-                console.log(err)
-                this.client.end()
+                throw err
             })
     }
 
@@ -616,7 +615,7 @@ export default class DAO{
 }
 const dao=new DAO();
 //dao.getGruposMiembroxMiembro('117940925')
-dao.getGruposXMiembro('117940925');
+//dao.getGruposXMiembro('117940925');
 //dao.monitoresProbables('4000042145',1,1,1)
 //dao.modificarZona('4000042145',1,"GAM");
 //dao.getZonaXMovimiento('4000042145');
