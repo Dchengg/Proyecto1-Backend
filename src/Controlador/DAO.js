@@ -430,7 +430,7 @@ export default class DAO{
     }
 
     getGruposXMiembro(idMiembro){
-        const quer="select GrupoMiembros.id_grupo,GrupoMiembros.id_rama,GrupoMiembros.id_zona,GrupoMiembros.id_movimiento, Grupo.nombre from Grupo inner join GrupoMiembros on GrupoMiembros.id_grupo=Grupo.id_Grupo inner join Miembro on Miembro.cedula=GrupoMiembros.id_miembro where Miembro.cedula = '"        
+        const quer="select GrupoMiembros.id_grupo,GrupoMiembros.id_rama,GrupoMiembros.id_zona,GrupoMiembros.id_movimiento, Grupo.nombre, GrupoMiembrosRol.nombre_lider from Grupo inner join GrupoMiembros on GrupoMiembros.id_grupo=Grupo.id_Grupo inner join Miembro on Miembro.cedula=GrupoMiembros.id_miembro inner join GrupoMiembrosRol on GrupoMiembros.id_lider=GrupoMiembrosRol.id_lider where Miembro.cedula = '"        
         return this.client.query(quer+idMiembro+"'")
             .then(res => {
                 console.table(res.rows)
@@ -590,8 +590,22 @@ export default class DAO{
                 this.client.end()
             })
     }
+
+    monitoresProbables(pIdMovimiento,pIdZona,pIdRama,pIdGrupo){
+        return this.client.query("select * from monitoresprobables('"+pIdMovimiento+"', "+pIdZona+", "+pIdRama+", "+pIdGrupo+")")
+            .then(res => {
+                console.table(res.rows);
+                return res.rows;
+            })
+            .catch(err => {
+                console.log(err)
+                this.client.end()
+            })
+    }
 }
 const dao=new DAO();
+dao.getGruposXMiembro('117480362');
+//dao.monitoresProbables('4000042145',1,1,1)
 //dao.modificarZona('4000042145',1,"GAM");
 //dao.getZonaXMovimiento('4000042145');
 //dao.getRamaXMovimiento('4000042145');
