@@ -5,16 +5,16 @@ export default class GestorNodos{
         this.zonas = new Map();
     }
 
-    crearZona(idZona, nombre){
+    crearZona(idZona, nombre, idEncargado1, idEncargado2){
         if(this.zonas.has(idZona)){
             throw {message: "Ya hay una zona con ese id"}
         }
-        this.zonas.set(idZona, new Nodo(idZona, nombre));
+        this.zonas.set(idZona, new Nodo(idZona, nombre, idEncargado1, idEncargado2, false));
     }
 
-    crearRama(idZona, idRama, nombre){
+    crearRama(idZona, idRama, nombre, idEncargado1, idEncargado2){
         var zona = this.getZona(idZona);
-        zona.agregar(new Nodo(idRama, nombre));
+        zona.agregar(new Nodo(idRama, nombre, idEncargado1, idEncargado2, false));
     }
 
     agregarMiembro(idZona, idRama, idGrupo, miembro){

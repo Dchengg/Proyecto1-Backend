@@ -4,8 +4,12 @@ export default class Nodo extends Component{
     constructor(id, nombre, encargado1, encargado2, isMonitor){
         super(id, nombre)
         this.composites = new Map();
-        this.encargado1 = encargado1;
-        this.encargado2 = encargado2;
+        if(encargado1){
+            this.encargado1 = encargado1;
+        }
+        if(encargado2){
+            this.encargado1 = encargado1;
+        }
         this.isMonitor = isMonitor;
     }
 

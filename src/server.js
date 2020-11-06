@@ -226,7 +226,7 @@ app.post('/get-miembro', function(req, res){
 ///   Returns an array of values
 //////////////////////////////
 
-app.post('/consultar-zonas',function(req,res){
+app.get('/consultar-zonas',function(req,res){
     try{
         var zonas = controlador.consultarZonas(idMovimiento);
         return res.json({ success: true, zonas: Object.fromEntries(zonas)});

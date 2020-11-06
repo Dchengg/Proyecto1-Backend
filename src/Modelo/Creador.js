@@ -39,8 +39,8 @@ export default class Creador{
                 for(var i in res){
                     var zona = res[i]
                     try{
-                        this.controlador.agregarZona(idMovimiento, zona.id_zona.toString(), zona.nombre);
-                        
+                        this.controlador.agregarZona(idMovimiento, zona.id_zona.toString(), zona.nombre, zona.jefe1, zona.jefe2);
+
                     }catch(err){
                         console.log(err);
                     }
@@ -55,7 +55,7 @@ export default class Creador{
                 for(var i in res){
                     try{
                         var rama = res[i];
-                        this.controlador.agregarRama(idMovimiento, rama.id_zona.toString(), rama.id_rama.toString(), rama.nombre);
+                        this.controlador.agregarRama(idMovimiento, rama.id_zona.toString(), rama.id_rama.toString(), rama.nombre, rama.jefe1, rama.jefe2);
                     }catch(err){
                         console.log(err);
                     }
@@ -71,15 +71,7 @@ export default class Creador{
                 for(var i in res){
                     try{
                         var grupo = res[i];
-                        try{
-                            this.controlador.agregarGrupo(idMovimiento, grupo.id_zona.toString(), grupo.id_rama.toString(), grupo.id_grupo.toString(), grupo.nombre);
-                            var grupoCreado = this.controlador.getGrupo(idMovimiento, grupo.id_zona.toString(), grupo.id_rama.toString(), grupo.id_grupo.toString());
-                            grupoCreado.encargado1 = grupo.id_miembro;
-                            grupoCreado.isJefe = grupo.b_monitor;
-                        }catch(err){
-                            var grupoCreado = this.controlador.getGrupo(idMovimiento, grupo.id_zona.toString(), grupo.id_rama.toString(), grupo.id_grupo.toString());
-                            grupoCreado.encargado2 = grupo.id_miembro;
-                        }
+                        this.controlador.agregarGrupo(idMovimiento, grupo.id_zona.toString(), grupo.id_rama.toString(), grupo.id_grupo.toString(), grupo.nombre, grupo.b_monitor, grupo.jefe1, grupo.jefe2);             
                     }catch(err){
                         console.log(err);
                     }

@@ -53,14 +53,14 @@ export default class Controlador{
     }
 
 
-    agregarZona(idMovimiento, idZona, nombre){
+    agregarZona(idMovimiento, idZona, nombre, idEncargado1, idEncargado2){
         var movimiento = this.getMovimiento(idMovimiento);
-        movimiento.gNodos.crearZona(idZona, nombre); 
+        movimiento.gNodos.crearZona(idZona, nombre, idEncargado1, idEncargado2); 
     }
 
-    agregarRama(idMovimiento, idZona, idRama, nombre){
+    agregarRama(idMovimiento, idZona, idRama, nombre, idEncargado1, idEncargado2){
         var movimiento = this.getMovimiento(idMovimiento);
-        movimiento.gNodos.crearRama(idZona, idRama, nombre);
+        movimiento.gNodos.crearRama(idZona, idRama, nombre, idEncargado1, idEncargado2);
     }
 
     agregarGrupo(idMovimiento, idZona, idRama, idGrupo, nombre, isMonitor, idEncargado1, idEncargado2){
