@@ -45,8 +45,8 @@ class DAO{
             })
     }
 //
-    getTelefonoMovimiento(idMoviemiento){
-        this.client.query("select * from Telefonos where cedula_movimiento = '"+idMoviemiento+"'")
+    getTelefonoMovimiento(idMovimiento){
+        this.client.query("select * from Telefonos where cedula_movimiento = '"+idMovimiento+"'")
         .then(res => {
             console.table(res.rows)
             return res.rows;
@@ -636,10 +636,22 @@ class DAO{
                 this.client.end()
             })
     }
+    
+    todosLosMonitores(idMovimiento,idZona){
+        return this.client.query("select * from todoslosmonitores('"+idMovimiento+"', "+idZona+")")
+            .then(res => {
+                console.table(res.rows);
+                return res.rows;
+            })
+            .catch(err => {
+                console.log(err)
+                this.client.end()
+            })
+    }
 }
 const dao=new DAO();
 //dao.getGruposMiembroxMiembro('117940925')
-dao.getGruposXMiembro('117940925');
+//dao.getGruposXMiembro('117940925');
 //dao.monitoresProbables('4000042145',1,1,1)
 //dao.modificarZona('4000042145',1,"GAM");
 //dao.getZonaXMovimiento('4000042145');
