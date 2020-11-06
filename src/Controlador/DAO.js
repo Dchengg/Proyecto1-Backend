@@ -589,8 +589,8 @@ class DAO{
             })
     }
 
-    modificarGrupo(pIdMovimiento,pIdZona,pIdRama,pIdGrupo,pB_Monitores,pNombre,pJefe1,pJefe2){
-        return this.client.query("select * from editargrupo('"+pIdMovimiento+"', "+pIdZona+", "+pIdRama+", "+pIdGrupo+", "+pB_Monitores+", '"+pNombre+"', '"+pJefe1+"', '"+pJefe2+"')")
+    modificarGrupo(pIdMovimiento,pIdZona,pIdRama,pIdGrupo,pB_Monitores,pNombre){
+        return this.client.query("select * from editargrupo('"+pIdMovimiento+"', "+pIdZona+", "+pIdRama+", "+pIdGrupo+", "+pB_Monitores+", '"+pNombre+"')")
             .then(res => {
                 console.table(res.rows);
                 return res.rows;
@@ -602,9 +602,15 @@ class DAO{
     }
 }
 const dao=new DAO();
+//dao.modificarZona('4000042145',1,"GAM");
+//dao.getZonaXMovimiento('4000042145');
+//dao.getRamaXMovimiento('4000042145');
+//dao.modificarRama('4000042145',1,7,"Rama Prueba");
+//dao.getRamaXMovimiento('4000042145');
+dao.getGrupoXMovimiento('4000042145');
 //dao.modificarZona();
 //dao.modificarRama();
-//dao.modificarGrupo('4000042145',1,2,1234,true,"Rescata Serpiente","117940925","");
+//dao.modificarGrupo('4000042145',1,2,1234,true,"Rescata Serpientes");
 //dao.getGrupos();
 //dao.getZonas();
 //dao.insertarZona('4000042145',"Zona Norte");
