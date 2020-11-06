@@ -162,18 +162,36 @@ export default class Controlador{
     }
 
     consultarGrupos(idMovimiento, idZona, idRama){
-        return this.movimientos.get(idMovimiento).gNodos.consultarGrupos(idZona, idRama);
+        var movimiento = this.getMovimiento(idMovimiento);
+        return movimiento.gNodos.consultarGrupos(idZona, idRama);
     }
 
     consultarMiembrosGrupo(idMovimiento, idZona, idRama, idGrupo){
-        return this.movimientos.get(idMovimiento).gNodos.consultarMiembrosGrupo(idZona, idRama, idGrupo);
+        var movimiento = this.getMovimiento(idMovimiento)
+        return movimiento.gNodos.consultarMiembrosGrupo(idZona, idRama, idGrupo);
     }
 
     consultarMiembrosRama(idMovimiento, idZona, idRama){
-        return this.movimientos.get(idMovimiento).gNodos.consultarMiembrosGrupo(idZona, idRama);
+        var movimiento = this.getMovimiento(idMovimiento);
+        var rama = this.getRama(idMovimiento, idZona, idRama);
+        var idMiembros = movimiento.gNodos.consultarMiembrosNodo(rama);
+        var miembros = []
+        idMiembros.forEach(id =>{
+            miembros.push(this.getMiembro(idMovimiento, id));
+        })
+        return miembros;
     }
 
-
+    consultarMiembrosZona(idMovimiento, idZona){
+        var movimiento = this.getMovimiento(idMovimiento);
+        var zona = this.getZona(idMovimiento, idZona);
+        var idMiembros = movimiento.gNodos.consultarMiembrosNodo(zona);
+        var miembros = [];
+        idMiembros.forEach(id =>{
+            miembros.push(this.getMiembro(idMovimiento, id));
+        })
+        return miembros;
+    }
 
     getMovimiento(idMovimiento){
         if(this.movimientos.has(idMovimiento)){

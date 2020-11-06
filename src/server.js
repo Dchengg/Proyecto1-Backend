@@ -290,6 +290,40 @@ app.post('/consultar-miembros-grupo', function(req, res){
     }
 })
 
+app.post('/consultar-miembros-rama', function(req, res){
+    const { idZona, idRama } = req.body;
+    try{
+        var miembros = controlador.consultarMiembrosRama(idMovimiento, idZona, idRama);
+        return res.json({success: true, miembros})
+    }catch(err){
+        console.log(err);
+        return res.json({success: false, error: err})
+    }
+})
+
+app.post('/consultar-miembros-zona', function(req, res){
+    const { idZona } = req.body;
+    try{
+        var miembros = controlador.consultarMiembrosZona(idMovimiento, idZona);
+        return res.json({success: true, miembros})
+    }catch(err){
+        console.log(err);
+        return res.json({success: false, error: err})
+    }
+})
+
+app.post('/consultar-monitores', function(req, res) {
+    const {idZona, idRama } = req.body;
+    try{
+
+    }catch(err){
+        console.log(err);
+        return res.json( { success: false, error: err})
+    }
+})
+
+
+
 
 //////////////////////////////
 ///   EXTRA

@@ -42,6 +42,36 @@ export default class GestorNodos{
         var grupo = this.getGrupo(idZona, idRama, idGrupo);
         return grupo.composites;
     }
+
+    consultarMiembrosNodo(nodo){
+        var miembros = [];
+        var nodos = nodo.composites;
+        nodos.forEach( function(value, key ) {
+            if(value.encargado1){
+                miembros.push(value.encargado1)
+            }
+            if(value.encargado2){
+                miembros.push(value.encargado2)
+            }
+        });
+        return miembros;
+    }
+
+    consultarMiembrosRama(idZona, idRama){
+        var rama = this.getRama(idZona, idRama);
+        var miembros = [];
+        var grupos = rama.composites;
+        grupos.forEach( function(value, key ) {
+            if(value.encargado1){
+                miembros.push(value.encargado1)
+            }
+            if(value.encargado2){
+                miembros.push(value.encargado2)
+            }
+        });
+        return miembros;
+    }
+
     
     getZona(idZona){
         var zona = this.zonas.get(idZona);
