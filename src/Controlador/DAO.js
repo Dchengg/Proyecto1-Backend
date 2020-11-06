@@ -345,57 +345,53 @@ export default class DAO{
             })
     }
 
-    insertarMiembroAGrupo(idGrupo,cedula,idRama,idZona,idMovimiento){
+    async insertarMiembroAGrupo(idGrupo,cedula,idRama,idZona,idMovimiento){
         return this.client.query("select * from insertarMiembroAGrupo('"+cedula+"', '"+idGrupo+"', "+idRama+", "+idZona+", '"+idMovimiento+"')")
             .then(res => {
                 console.table(res.rows);
                 return res.rows;
             })
             .catch(err => {
-                console.log(err)
-                this.client.end()
+                throw err
             })
     }
 
     
 
-    cambiarMiembroDeGrupo(idMiembro,idRama,idGrupoNuevo,idMovimiento,idZona){
+    async cambiarMiembroDeGrupo(idMiembro,idRama,idGrupoNuevo,idMovimiento,idZona){
         return this.client.query("select * from cambiarMiembroGrupo('"+idMiembro+"', "+idGrupoNuevo+", "+idRama+", "+idZona+", '"+idMovimiento+"')")
             .then(res => {
                 console.table(res.rows);
                 return res.rows;
             })
             .catch(err => {
-                console.log(err)
-                this.client.end()
+                throw err
             })
     }
 
-    getMiembrosXGrupo(idGrupo){
+    async getMiembrosXGrupo(idGrupo){
         return this.client.query("select * from Miembro inner join GrupoMiembros on Miembro.cedula=GrupoMiembros.id_miembro where GrupoMiembros.id_grupo = "+idGrupo)
             .then(res => {
                 console.table(res.rows)
                 return res.rows;
             })
             .catch(err => {
-                console.log(err)
-                this.client.end()
+                throw err
             })
     }
 
-    editarMiembro(pCedula,pNombre,pCelular,pEmail,pProvincia,pCanton,pDistrito,pSenas,pBMonitor){
+    async editarMiembro(pCedula,pNombre,pCelular,pEmail,pProvincia,pCanton,pDistrito,pSenas,pBMonitor){
         return this.client.query("select * from editarMiembro('"+pCedula+"', '"+pNombre+"', '"+pCelular+"', '"+pEmail+"', '"+pProvincia+"', '"+pCanton+"', '"+pDistrito+"', '"+pSenas+"', "+pBMonitor+")")
             .then(res => {
                 console.table(res.rows);
                 return res.rows;
             })
             .catch(err => {
-                console.log(err)
-                this.client.end()
+                throw err
             })
     }
 
-    asignarJefeGrupo(idGrupo,cedulaMiembro,idRama,idZona,idMovimiento){
+    async asignarJefeGrupo(cedulaMiembro,idZona,idRama,idGrupo,idMovimiento){
         return this.client.query("select * from asignarJefeGrupo('"+cedulaMiembro+"', "+idGrupo+", "+idRama+", "+idZona+", '"+idMovimiento+"')")
             .then(res => {
                 console.table(res.rows);
@@ -406,7 +402,7 @@ export default class DAO{
             })
     }
 
-    async asignarJefeRama(idRama,cedulaMiembro,idZona,idMovimiento){
+    async asignarJefeRama(cedulaMiembro,idZona,idRama,idMovimiento){
         return this.client.query("select * from asignarJefeRama('"+cedulaMiembro+"', "+idRama+", "+idZona+", '"+idMovimiento+"')")
             .then(res => {
                 console.table(res.rows);
@@ -417,7 +413,7 @@ export default class DAO{
             })
     }
 
-    asignarJefeZona(cedulaMiembro,idZona,idMovimiento){
+    async asignarJefeZona(cedulaMiembro,idZona,idMovimiento){
         return this.client.query("select * from asignarJefeZona('"+cedulaMiembro+"', "+idZona+", '"+idMovimiento+"')")
             .then(res => {
                 console.table(res.rows);
@@ -428,7 +424,7 @@ export default class DAO{
             })
     }
 
-    getGruposXMiembro(idMiembro){
+    async getGruposXMiembro(idMiembro){
         const quer="select GrupoMiembros.id_grupo,GrupoMiembros.id_rama,GrupoMiembros.id_zona,GrupoMiembros.id_movimiento, Grupo.nombre, GrupoMiembrosRol.nombre_lider from Grupo inner join GrupoMiembros on GrupoMiembros.id_grupo=Grupo.id_Grupo inner join Miembro on Miembro.cedula=GrupoMiembros.id_miembro inner join GrupoMiembrosRol on GrupoMiembros.id_lider=GrupoMiembrosRol.id_lider where Miembro.cedula = '"        
         return this.client.query(quer+idMiembro+"'")
             .then(res => {
@@ -436,11 +432,10 @@ export default class DAO{
                 return res.rows;
             })
             .catch(err => {
-                console.log(err)
-                this.client.end()
+                throw err
             })
     }
-
+    /*
     getJefesXZona(idZona){
         const quer="select * from Zona inner join GrupoMiembros on GrupoMiembros.id_zona=Zona.id_zona inner join GrupoMiembrosRol on GrupoMiembros.id_lider=GrupoMiembrosRol.id_lider where zona.id_zona = "
         return this.client.query(quer+idZona+" and GrupoMiembros.id_lider = 4")
@@ -478,9 +473,9 @@ export default class DAO{
                 console.log(err)
                 this.client.end()
             })
-    }
+    }*/
 
-    getAllGrupoMiembros(){
+    async getAllGrupoMiembros(){
         const quer="select * from GrupoMiembros"
         return this.client.query(quer)
             .then(res => {
@@ -488,24 +483,22 @@ export default class DAO{
                 return res.rows;
             })
             .catch(err => {
-                console.log(err)
-                this.client.end()
+                throw err
             })
     }
 
-    eliminarJefeGrupo(pCedula,pIdGrupo,pIdRama,pIdZona,pIdMovimiento){
+    async eliminarJefeGrupo(pCedula,pIdZona,pIdRama,pIdGrupo,pIdMovimiento){
         return this.client.query("select * from eliminarjefegrupo('"+pCedula+"', "+pIdGrupo+", "+pIdRama+", "+pIdZona+", '"+pIdMovimiento+"')")
             .then(res => {
                 console.table(res.rows);
                 return res.rows;
             })
             .catch(err => {
-                console.log(err)
-                this.client.end()
+                throw err
             })
     }
 
-    async eliminarJefeRama(pCedula,pIdRama,pIdZona,pIdMovimiento){
+    async eliminarJefeRama(pCedula,pIdZona,pIdRama,pIdMovimiento){
         return this.client.query("select * from eliminarjeferama('"+pCedula+"', "+pIdRama+", "+pIdZona+", '"+pIdMovimiento+"')")
             .then(res => {
                 console.table(res.rows);
@@ -527,15 +520,14 @@ export default class DAO{
         }
     }
 
-    eliminarDeGrupo(pCedula,pIdGrupo,pIdRama,pIdZona,pIdMovimiento){
+    async eliminarDeGrupo(pCedula,pIdGrupo,pIdRama,pIdZona,pIdMovimiento){
         return this.client.query("select * from eliminardegrupo('"+pCedula+"', "+pIdGrupo+", "+pIdRama+", "+pIdZona+", '"+pIdMovimiento+"')")
             .then(res => {
                 console.table(res.rows);
                 return res.rows;
             })
             .catch(err => {
-                console.log(err)
-                this.client.end()
+                throw err
             })
     }
 
@@ -554,39 +546,36 @@ export default class DAO{
             })
     }
 
-    modificarZona(pIdMovimiento,pIdZona,pNombre){
+    async modificarZona(pIdMovimiento,pIdZona,pNombre){
         return this.client.query("select * from editarzona('"+pIdMovimiento+"', "+pIdZona+", '"+pNombre+"')")
             .then(res => {
                 console.table(res.rows);
                 return res.rows;
             })
             .catch(err => {
-                console.log(err)
-                this.client.end()
+                throw err
             })
     }
 
-    modificarRama(pIdMovimiento,pIdZona,pIdRama,pNombre){
+    async modificarRama(pIdMovimiento,pIdZona,pIdRama,pNombre){
         return this.client.query("select * from editarrama('"+pIdMovimiento+"', "+pIdZona+", "+pIdRama+", '"+pNombre+"')")
             .then(res => {
                 console.table(res.rows);
                 return res.rows;
             })
             .catch(err => {
-                console.log(err)
-                this.client.end()
+                throw err
             })
     }
 
-    modificarGrupo(pIdMovimiento,pIdZona,pIdRama,pIdGrupo,pB_Monitores,pNombre){
+    async modificarGrupo(pIdMovimiento,pIdZona,pIdRama,pIdGrupo,pB_Monitores,pNombre){
         return this.client.query("select * from editargrupo('"+pIdMovimiento+"', "+pIdZona+", "+pIdRama+", "+pIdGrupo+", "+pB_Monitores+", '"+pNombre+"')")
             .then(res => {
                 console.table(res.rows);
                 return res.rows;
             })
             .catch(err => {
-                console.log(err)
-                this.client.end()
+                throw err
             })
     }
 

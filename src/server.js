@@ -195,6 +195,22 @@ app.post('/modificar-rama', function(req, res){
     }
 })
 
+app.post('/modificar-grupo', function(req, res){
+    const { idZona, idRama, idGrupo, nombre, isMonitor,  idJefeNuevo1, idJefeNuevo2, idJefeViejo1, idJefeViejo2 } = req.body;
+    try{
+        controlador.modificarGrupo(idMovimiento, idZona, idRama, idGrupo, nombre, isMonitor, idJefeNuevo1, idJefeNuevo2, idJefeViejo1, idJefeNuevo2, idJefeViejo2)
+        .then( () => {
+            return res.json({ success: true})
+        })
+        .catch(err => {
+            return res.json({success: false, error: {message:err.message}})
+        })
+    }catch(err){
+        console.log(err);
+        return res.json({success: false, error: err})
+    }
+})
+
 
 //////////////////////////////
 ///   GETTERS
@@ -382,8 +398,13 @@ app.post('/consultar-monitores-probables', function(req, res) {
 app.post('/agregar-miembro-grupo', function(req, res){
     const {idZona, idRama, idGrupo, idMiembro} = req.body;
     try{
-        controlador.agregarMiembroGrupo(idMovimiento, idZona, idRama, idGrupo, idMiembro);
-        return res.json({success: true});
+        controlador.agregarMiembroNuevoAGrupo(idMovimiento, idZona, idRama, idGrupo, idMiembro)
+        .then( () => {
+            res.json({success: true})
+        })
+        .catch( err => {
+            res.json({success: false, error:{message:err.message}})
+        })
     }catch(err){
         console.log(err);
         return res.json({ success: false, error: err})

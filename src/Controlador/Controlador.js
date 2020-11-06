@@ -53,6 +53,10 @@ export default class Controlador{
     }
 
     async crearMiembroNuevo(idMiembro, nombre, celular, email, provincia, canton,distrito, senas, posible_monitor, idMovimiento, idZona, idRama, idGrupo){
+        var movimiento = this.getMovimiento(idMovimiento);
+        if(movimiento.gMiembros.miembros.has(idMiembro)){
+            throw {message: "Ya existe un miembro con ese id en el movimiento"}
+        }
         await this.dao.insertarMiembro(idMiembro, nombre, celular, email, provincia, canton, distrito, senas, posible_monitor)
         .catch(err => {
             throw err
@@ -81,6 +85,7 @@ export default class Controlador{
     }
 
     agregarMiembro(idMiembro, nombre, celular, email, provincia, canton, distrito, senas, posible_monitor, idMovimiento, idZona, idRama, idGrupo) {
+        
         this.agregarMiembroAMovimiento(idMovimiento,idMiembro, nombre, celular, email, provincia, canton, distrito, senas, posible_monitor);
         this.agregarMiembroGrupo(idMovimiento, idZona, idRama, idGrupo, idMiembro);
         /*if(this.movimientos.has(idMovimiento)){
@@ -96,6 +101,14 @@ export default class Controlador{
     agregarMiembroAMovimiento(idMovimiento,idMiembro, nombre, celular, email, provincia, canton, distrito, senas, posible_monitor){
         var movimiento = this.getMovimiento(idMovimiento);
         movimiento.gMiembros.crearMiembro(idMiembro, nombre, celular, email, provincia, canton, distrito, senas, posible_monitor);
+    }
+
+    async agregarMiembroNuevoAGrupo(idMovimiento, idZona, idRama, idGrupo, idMiembro){
+        await this.dao.insertarMiembroAGrupo(idGrupo, idMiembro, idRama, idZona, idMovimiento)
+        .catch(err =>{
+            throw err
+        })
+        this.agregarMiembroGrupo(idMovimiento, idZona, idRama, idGrupo, idMiembro);
     }
 
     agregarMiembroGrupo(idMovimiento, idZona, idRama, idGrupo, idMiembro){
@@ -202,13 +215,13 @@ export default class Controlador{
                 })
             }
             if(idJefeNuevo2 != idJefeViejo2){
-                await this.dao.eliminarJefeRama(idJefeViejo2,idZona, idMovimiento)
+                await this.dao.eliminarJefeRama(idJefeViejo2,idZona, idRama, idMovimiento)
                 .catch(err => {
                     throw err;
                 })
             }
             if(idJefeNuevo2){
-                await this.dao.asignarJefeRama(idJefeNuevo2, idZona, idMovimiento)
+                await this.dao.asignarJefeRama(idJefeNuevo2,idZona,idRama, idMovimiento)
                 .catch(err => {
                     throw err;
                 })
@@ -222,10 +235,55 @@ export default class Controlador{
         }
     }
 
+    async modificarGrupo(idMovimiento, idZona, idRama, idGrupo, nombre, isMonitor, idJefeNuevo1, idJefeNuevo2, idJefeViejo1, idJefeViejo2){
+        try{
+            var grupo = this.getGrupo(idMovimiento, idZona, idRama, idGrupo);
+            if(grupo.nombre != nombre || grupo.isMonitor != isMonitor){
+                await this.dao.modificarGrupo(idMovimiento,idZona,idRama, idGrupo, isMonitor, nombre)
+                .catch(err => {
+                    throw err;
+                })
+            }
+            if(idJefeNuevo1 != idJefeViejo1 && idJefeNuevo1 && idJefeViejo1){
+                console.log("No deberia salid D:")
+                await this.dao.eliminarJefeGrupo(idJefeViejo1,idZona,idRama, idGrupo, idMovimiento)
+                .catch(err => {
+                    throw err;
+                })
+            }
+            if(idJefeNuevo1){
+                console.log(idJefeNuevo1);
+                await this.dao.asignarJefeGrupo(idJefeNuevo1, idZona, idRama, idGrupo, idMovimiento)
+                .catch(err => {
+                    throw err;
+                })
+            }
+            if(idJefeNuevo2 != idJefeViejo2){
+                await this.dao.eliminarJefeGrupo(idJefeViejo2,idZona, idRama, idGrupo,  idMovimiento)
+                .catch(err => {
+                    throw err;
+                })
+            }
+            if(idJefeNuevo2){
+                await this.dao.asignarJefeGrupo(idJefeNuevo2, idZona, idRama, idGrupo, idMovimiento)
+                .catch(err => {
+                    throw err;
+                })
+            }
+            grupo.nombre = nombre;
+            grupo.isMonitor = isMonitor;
+            grupo.setEncargado1(idJefeNuevo1);
+            grupo.setEncargado2(idJefeNuevo2);
+        }catch(err){
+            console.log(err);
+            throw err
+        }
+    }
+
     modificarMiembro(idMiembro, nombre, celular, email, provincia, canton, distrito, senas, posible_monitor, idMovimiento, idZona, idRama, idGrupo){
         var movimiento =  this.getMovimiento(idMovimiento);
         var gMiembros = movimiento.gMiembros;
-        var miembro = gMiembros.modificarMiembro(idMiembro, nombre, celular, email, provincia, canton, distrito, senas, posible_monitor)
+        gMiembros.modificarMiembro(idMiembro, nombre, celular, email, provincia, canton, distrito, senas, posible_monitor)
     }
 
 
