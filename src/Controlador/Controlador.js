@@ -126,6 +126,32 @@ export default class Controlador{
         movimiento.senas = senas;
     }
 
+    async modificarZona(idMovimiento, idZona, nombre, idJefeNuevo1, idJefeNuevo2, idJefeViejo1, idJefeViejo2){
+        try{
+            var zona = this.getZona(idZona);
+            if(zona.nombre != nombre){
+                await this.dao.modificarZona(idMovimiento,idZona,nombre);
+            }
+            if(isJefeNuevo1 != isJefeViejo1){
+                await this.dao.eliminarJefeZona(idJefeViejo1,idZona, idMovimiento);
+            }
+            if(isJefeNuevo1){
+                await this.dao.asignarJefeZona(idJefeNuevo1, idZona, idMovimiento);
+            }
+            if(isJefeNuevo2 != isJefeViejo2){
+                await this.dao.eliminarJefeZona(idJefeViejo2,idZona, idMovimiento);
+            }
+            if(isJefeNuevo2){
+                await this.dao.asignarJefeZona(idJefeNuevo2, idZona, idMovimiento);
+            }
+            zona.nombre = nombre;
+            zona.setEncargado1(idJefeNuevo1);
+            zona.setEncargado2(idJefeNuevo2);
+        }catch(err){
+            throw err
+        }
+    }
+
     modificarMiembro(idMiembro, nombre, celular, email, provincia, canton, distrito, senas, posible_monitor, idMovimiento, idZona, idRama, idGrupo){
         var movimiento =  this.getMovimiento(idMovimiento);
         var gMiembros = movimiento.gMiembros;
@@ -160,6 +186,7 @@ export default class Controlador{
             throw err
         }
     }
+
 
     consultarGrupos(idMovimiento, idZona, idRama){
         var movimiento = this.getMovimiento(idMovimiento);

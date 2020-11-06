@@ -9,6 +9,12 @@ import DAO from "./Controlador/DAO";
 
 var app = express();
 app.use(cors());
+/*
+app.use(cors({origin: [
+    "http://localhost:4200","https://social-seekers-bbb14.web.app"
+], credentials: true}));
+*/
+
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 //quitar en producción
@@ -141,9 +147,20 @@ app.post('/modificar-miembro', function(req, res){
 })
 
 app.post('/modificar-movimiento', function(req,res){
-    const {idMovimiento, idAsesor, nombre, direccionWeb, logo, pais, provincia, canton, distrito, senas} = req.body;
+    const  { idAsesor, nombre, direccionWeb, logo, pais, provincia, canton, distrito, senas} = req.body;
     try{
         controlador.modificarMovimiento(idMovimiento, idAsesor, nombre, direccionWeb, logo, pais, provincia, canton, distrito, senas);
+        return res.json({ success: true })
+    }catch(err){
+        console.log(err);
+        return res.json({success: false, error: err})
+    }
+})
+
+app.post('/modificar-zona', function(req,res){
+    const { idZona, nombre, idJefeNuevo1, idJefeNuevo2, idJefeViejo1, idJefeViejo2} = req.body;
+    try{
+        controlador.modificarZona(idMovimiento, idZona, nombre, idJefeNuevo1, idJefeNuevo2, idJefeViejo1, idJefeNuevo2);
         return res.json({ success: true })
     }catch(err){
         console.log(err);
@@ -173,7 +190,7 @@ app.post('/get-zona', function(req, res){
     console.log(idZona);        
     try{
         var zona = controlador.getZona(idMovimiento, idZona)
-        return res.json({ success: true, zona, hijos: Object.fromEntries(zona.composites)})
+        return res.json({ success: true, zona, ramas: Object.fromEntries(zona.composites)})
     }catch(err){
         console.log(err);
         return res.json({ success: false, error: err})
@@ -184,7 +201,7 @@ app.post('/get-rama', function(req,res){
     const { idZona, idRama } = req.body
     try{
         var rama = controlador.getRama(idMovimiento, idZona, idRama)
-        return res.json({ success: true ,rama, hijos: Object.fromEntries(rama.composites)})
+        return res.json({ success: true ,rama, grupos: Object.fromEntries(rama.composites)})
     }catch(err){
         console.log(err);
         return res.json({success: false, error: err})
@@ -195,7 +212,7 @@ app.post('/get-grupo', function(req,res){
     const { idZona, idRama, idGrupo } = req.body
     try{
         var grupo = controlador.getGrupo(idMovimiento, idZona, idRama, idGrupo)
-        return res.json({ success: true ,grupo, hijos: Object.fromEntries(grupo.composites)})
+        return res.json({ success: true ,grupo, miembros: Object.fromEntries(grupo.composites)})
     }catch(err){
         console.log(err);
         return res.json({success: false, error: err})
