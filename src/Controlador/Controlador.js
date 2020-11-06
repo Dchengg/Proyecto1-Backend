@@ -128,26 +128,42 @@ export default class Controlador{
 
     async modificarZona(idMovimiento, idZona, nombre, idJefeNuevo1, idJefeNuevo2, idJefeViejo1, idJefeViejo2){
         try{
-            var zona = this.getZona(idZona);
+            var zona = this.getZona(idMovimiento, idZona);
             if(zona.nombre != nombre){
-                await this.dao.modificarZona(idMovimiento,idZona,nombre);
+                await this.dao.modificarZona(idMovimiento,idZona,nombre)
+                .catch(err => {
+                    throw err;
+                })
             }
-            if(isJefeNuevo1 != isJefeViejo1){
-                await this.dao.eliminarJefeZona(idJefeViejo1,idZona, idMovimiento);
+            if(idJefeNuevo1 != idJefeViejo1){
+                await this.dao.eliminarJefeZona(idJefeViejo1,idZona, idMovimiento)
+                .catch(err => {
+                    throw err;
+                })
             }
-            if(isJefeNuevo1){
-                await this.dao.asignarJefeZona(idJefeNuevo1, idZona, idMovimiento);
+            if(idJefeNuevo1){
+                await this.dao.asignarJefeZona(idJefeNuevo1, idZona, idMovimiento)
+                .catch(err => {
+                    throw err;
+                })
             }
-            if(isJefeNuevo2 != isJefeViejo2){
-                await this.dao.eliminarJefeZona(idJefeViejo2,idZona, idMovimiento);
+            if(idJefeNuevo2 != idJefeViejo2){
+                await this.dao.eliminarJefeZona(idJefeViejo2,idZona, idMovimiento)
+                .catch(err => {
+                    throw err;
+                })
             }
-            if(isJefeNuevo2){
-                await this.dao.asignarJefeZona(idJefeNuevo2, idZona, idMovimiento);
+            if(idJefeNuevo2){
+                await this.dao.asignarJefeZona(idJefeNuevo2, idZona, idMovimiento)
+                .catch(err => {
+                    throw err;
+                })
             }
             zona.nombre = nombre;
             zona.setEncargado1(idJefeNuevo1);
             zona.setEncargado2(idJefeNuevo2);
         }catch(err){
+            console.log(err);
             throw err
         }
     }

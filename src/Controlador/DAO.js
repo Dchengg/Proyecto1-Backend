@@ -520,15 +520,15 @@ export default class DAO{
             })
     }
 
-    eliminarJefeZona(pCedula,pIdZona,pIdMovimiento){
-        return this.client.query("select * from eliminarjeferama('"+pCedula+"', "+pIdZona+", '"+pIdMovimiento+"')")
-            .then(res => {
-                console.table(res.rows);
-                return res.rows;
-            })
-            .catch(err => {
-                throw err
-            })
+    async eliminarJefeZona(pCedula,pIdZona,pIdMovimiento){
+        try {
+            const res = await this.client.query("select * from eliminarjefezona('" + pCedula + "', " + pIdZona + ", '" + pIdMovimiento + "')");
+            console.table(res.rows);
+            return res.rows;
+        }
+        catch (err) {
+            throw err;
+        }
     }
 
     eliminarDeGrupo(pCedula,pIdGrupo,pIdRama,pIdZona,pIdMovimiento){
