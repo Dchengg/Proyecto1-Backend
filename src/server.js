@@ -77,11 +77,16 @@ app.post('/iniciar-sesion', function(req, res){
 ///   CREAR
 //////////////////////////////
 
-app.get('/crear-miembro', function(req, res){
+app.post('/crear-miembro', function(req, res){
     const {idMiembro, nombre, celular, email, provincia, canton,distrito, senas, posible_monitor, idZona, idRama, idGrupo} = req.body;
     try{
-        controlador.crearMiembro(idMiembro, nombre, celular, email, provincia, canton,distrito, idMovimiento, idZona, idRama, idGrupo);
-        return res.json({success: true})
+        controlador.crearMiembroNuevo(idMiembro, nombre, celular, email, provincia, canton,distrito, senas, posible_monitor, idMovimiento, idZona, idRama, idGrupo)
+        .then(() => {
+            return res.json({success: true});
+        })
+        .catch(err => {
+            return res.json({success: false, error: {message: err.message}})
+        })
     }
     catch(err){
         console.log(err);

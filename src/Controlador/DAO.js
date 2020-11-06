@@ -334,15 +334,14 @@ export default class DAO{
             })
     }
 
-    insertarMiembro(pCedula,pNombre,pCelular,pEmail,pProvincia,pCanton,pDistrito,pSenas){
-        return this.client.query("select * from insertarMiembro('"+pCedula+"', '"+pNombre+"', '"+pCelular+"', '"+pEmail+"', '"+pProvincia+"', '"+pCanton+"', '"+pDistrito+"', '"+pSenas+"')")
+    async insertarMiembro(pCedula,pNombre,pCelular,pEmail,pProvincia,pCanton,pDistrito,pSenas, pPosibleMonitor){
+        return this.client.query("select * from insertarMiembro('"+pCedula+"', '"+pNombre+"', '"+pCelular+"', '"+pEmail+"', '"+pProvincia+"', '"+pCanton+"', '"+pDistrito+"', '"+pSenas+"' , "+pPosibleMonitor+")")
             .then(res => {
                 console.table(res.rows);
                 return res.rows;
             })
             .catch(err => {
-                console.log(err)
-                this.client.end()
+                throw err
             })
     }
 

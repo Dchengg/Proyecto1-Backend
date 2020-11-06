@@ -52,6 +52,18 @@ export default class Controlador{
         this.agregarGrupo(idMovimiento, idZona, idRama, idGrupo, nombre, isMonitor, idEncargado1, idEncargado2)
     }
 
+    async crearMiembroNuevo(idMiembro, nombre, celular, email, provincia, canton,distrito, senas, posible_monitor, idMovimiento, idZona, idRama, idGrupo){
+        await this.dao.insertarMiembro(idMiembro, nombre, celular, email, provincia, canton, distrito, senas, posible_monitor)
+        .catch(err => {
+            throw err
+        })
+        await this.dao.insertarMiembroAGrupo(idGrupo, idMiembro, idRama, idZona, idMovimiento)
+        .catch(err => {
+            throw err
+        })
+        this.agregarMiembro(idMiembro, nombre, celular, email, provincia, canton, distrito, senas, posible_monitor, idMovimiento, idZona, idRama, idGrupo);
+    }
+
 
     agregarZona(idMovimiento, idZona, nombre, idEncargado1, idEncargado2){
         var movimiento = this.getMovimiento(idMovimiento);
