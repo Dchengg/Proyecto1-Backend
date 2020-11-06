@@ -591,15 +591,14 @@ export default class DAO{
             })
     }
 
-    monitoresProbables(pIdMovimiento,pIdZona,pIdRama,pIdGrupo){
+    async monitoresProbables(pIdMovimiento,pIdZona,pIdRama,pIdGrupo){
         return this.client.query("select * from monitoresprobables('"+pIdMovimiento+"', "+pIdZona+", "+pIdRama+", "+pIdGrupo+")")
             .then(res => {
                 console.table(res.rows);
                 return res.rows;
             })
             .catch(err => {
-                console.log(err)
-                this.client.end()
+                throw err
             })
     }
 }

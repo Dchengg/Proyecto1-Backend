@@ -5,7 +5,8 @@ const logger = require('morgan');
 const bodyParser = require('body-parser');
 import Controlador from './Controlador/Controlador';
 import ControladorLogin from './Controlador/ControladorLogin';
-import DAO from "./Controlador/DAO";
+
+
 
 var app = express();
 app.use(cors());
@@ -35,7 +36,6 @@ app.listen(API_PORT, function(){
 
 var controlador = new Controlador();
 var controladorLogin = new ControladorLogin(controlador);
-var dao = new DAO();
 //var creador = new Creador(controlador);
 var idMovimiento = '4000042145';
 //creador.iniciarAPI();
@@ -351,10 +351,16 @@ app.post('/consultar-miembros-zona', function(req, res){
     }
 })
 
-app.post('/consultar-monitores', function(req, res) {
-    const {idZona, idRama } = req.body;
+app.post('/consultar-monitores-probables', function(req, res) {
+    const {idZona, idRama, idGrupo } = req.body;
     try{
-
+        controlador.consultarMonitoresProbables(idMovimiento, idZona, idRama, idGrupo)
+        .then(monitores => {
+            return res.json( {success: true, monitores})
+        })
+        .catch(err => {
+            return res.json( { success: false, error: {message:err.message}})
+        })
     }catch(err){
         console.log(err);
         return res.json( { success: false, error: err})

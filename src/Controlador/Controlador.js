@@ -278,6 +278,11 @@ export default class Controlador{
         return miembros;
     }
 
+    async consultarMonitoresProbables(idMovimiento, idZona, idRama, idGrupo){
+        var monitores = await this.dao.monitoresProbables(idMovimiento, idZona, idRama, idGrupo);
+        return monitores;
+    }
+
     getMovimiento(idMovimiento){
         if(this.movimientos.has(idMovimiento)){
             return this.movimientos.get(idMovimiento);
