@@ -437,7 +437,7 @@ class DAO{
     }
 
     getGruposXMiembro(idMiembro){
-        const quer="select GrupoMiembros.id_grupo,GrupoMiembros.id_rama,GrupoMiembros.id_zona,GrupoMiembros.id_movimiento, Grupo.nombre from Grupo inner join GrupoMiembros on GrupoMiembros.id_grupo=Grupo.id_Grupo inner join Miembro on Miembro.cedula=GrupoMiembros.id_miembro where Miembro.cedula = '"        
+        const quer="select GrupoMiembros.id_grupo,GrupoMiembros.id_rama,GrupoMiembros.id_zona,GrupoMiembros.id_movimiento, Grupo.nombre, GrupoMiembrosRol.nombre_lider from Grupo inner join GrupoMiembros on GrupoMiembros.id_grupo=Grupo.id_Grupo inner join Miembro on Miembro.cedula=GrupoMiembros.id_miembro inner join GrupoMiembrosRol on GrupoMiembros.id_lider=GrupoMiembrosRol.id_lider where Miembro.cedula = '"        
         return this.client.query(quer+idMiembro+"'")
             .then(res => {
                 console.table(res.rows)
@@ -614,6 +614,7 @@ class DAO{
     }
 }
 const dao=new DAO();
+dao.getGruposXMiembro('117480362');
 //dao.monitoresProbables('4000042145',1,1,1)
 //dao.modificarZona('4000042145',1,"GAM");
 //dao.getZonaXMovimiento('4000042145');
