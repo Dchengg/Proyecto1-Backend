@@ -45,8 +45,8 @@ export default class DAO{
             })
     }
 //
-    getTelefonoMovimiento(idMoviemiento){
-        this.client.query("select * from Telefonos where cedula_movimiento = '"+idMoviemiento+"'")
+    getTelefonoMovimiento(idMovimiento){
+        this.client.query("select * from Telefonos where cedula_movimiento = '"+idMovimiento+"'")
         .then(res => {
             console.table(res.rows)
             return res.rows;
@@ -603,6 +603,18 @@ export default class DAO{
 
     otrasRamas(pCedula){
         return this.client.query("select * from otrasRamas('"+pCedula+"')")
+            .then(res => {
+                console.table(res.rows);
+                return res.rows;
+            })
+            .catch(err => {
+                console.log(err)
+                this.client.end()
+            })
+    }
+    
+    todosLosMonitores(idMovimiento,idZona){
+        return this.client.query("select * from todoslosmonitores('"+idMovimiento+"', "+idZona+")")
             .then(res => {
                 console.table(res.rows);
                 return res.rows;
