@@ -20,6 +20,10 @@ export default class Nodo extends Component{
         this.composites.set(registro.id, registro);
     }
 
+    eliminar(llave){
+        this.composites.delete(llave);
+    }
+
     buscar(llave){
         var nodo = this.composites.get(llave)
         return nodo;

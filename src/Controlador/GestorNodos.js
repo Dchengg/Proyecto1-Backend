@@ -30,7 +30,11 @@ export default class GestorNodos{
     consultarRamas(idZona){
         var zona = this.getZona(idZona);
         return zona.composites;
-        
+    }
+
+    eliminarDeGrupo(idZona, idRama, idGrupo, idMiembro){
+        var grupo = this.getGrupo(idZona, idRama, idGrupo);
+        grupo.eliminar(idMiembro);
     }
 
     consultarGrupos(idZona, idRama){

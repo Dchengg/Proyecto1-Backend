@@ -426,6 +426,29 @@ app.post('/agregar-miembro-grupo', function(req, res){
         return res.json({ success: false, error: err})
     }
 })
+
+app.post('/cambio-de-grupo', function(req, res){
+    const{ idZona, idRama, idGrupoViejo, idGrupoNuevo, idMiembro } = req.body;
+    try{
+        controlador.eliminarMiembroGrupo(idMovimiento, idZona, idRama, idGrupoViejo, idMiembro)
+        .then( () => {
+            controlador.agregarMiembroNuevoAGrupo(idMovimiento, idZona, idRama, idGrupoNuevo, idMiembro)
+            .then( () => {
+                return res.json({ success: true});
+            })
+            .catch(err => {
+                throw err
+            })
+        })
+        .catch(err => {
+            return res.json({success: false, error: {message: err.message}})
+        }) 
+    }catch(err){
+        console.log(err);
+        return res.json({ success: false, error:err})
+    }
+})
+
 app.post('/asignar-encargado-grupo', function(req, res){
     const {idZona, idRama, idGrupo, idMiembro, idMiembro2, isMonitor} = req.body;
     try{
@@ -458,7 +481,6 @@ app.post('/asignar-encargado-zona', function(req, res){
         return res.json({ success: false, error: err})
     }
 })
-
 
 app.get('/showSession', (req, res) =>{
     res.send(req.session);

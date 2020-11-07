@@ -52,6 +52,7 @@ export default class Controlador{
         this.agregarGrupo(idMovimiento, idZona, idRama, idGrupo, nombre, isMonitor, idEncargado1, idEncargado2)
     }
 
+
     async crearMiembroNuevo(idMiembro, nombre, celular, email, provincia, canton,distrito, senas, posible_monitor, idMovimiento, idZona, idRama, idGrupo){
         var movimiento = this.getMovimiento(idMovimiento);
         if(movimiento.gMiembros.miembros.has(idMiembro)){
@@ -105,10 +106,13 @@ export default class Controlador{
 
     async agregarMiembroNuevoAGrupo(idMovimiento, idZona, idRama, idGrupo, idMiembro){
         await this.dao.insertarMiembroAGrupo(idGrupo, idMiembro, idRama, idZona, idMovimiento)
-        .catch(err =>{
-            throw err
-        })
         this.agregarMiembroGrupo(idMovimiento, idZona, idRama, idGrupo, idMiembro);
+    }
+
+    async eliminarMiembroGrupo(idMovimiento, idZona, idRama, idGrupo, idMiembro){
+        var movimiento = this.getMovimiento(idMovimiento);
+        await this.dao.eliminarDeGrupo(idGrupo, idMiembro, idRama, idZona, idMovimiento);
+        movimiento.gNodos.eliminarDeGrupo(idZona, idRama, idGrupo, idMiembro);
     }
 
     agregarMiembroGrupo(idMovimiento, idZona, idRama, idGrupo, idMiembro){
