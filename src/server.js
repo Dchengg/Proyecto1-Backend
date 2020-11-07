@@ -327,6 +327,10 @@ app.post('/consultar-ramas-disponibles',function(req, res){
     }
 })
 
+app.post('consultar-ramas-miembro', function(req, res){
+
+})
+
 app.post('/consultar-grupos',function(req, res){
     const { idZona, idRama} = req.body;
     try{
@@ -430,7 +434,7 @@ app.post('/agregar-miembro-grupo', function(req, res){
 app.post('/cambio-de-grupo', function(req, res){
     const{ idZona, idRama, idGrupoViejo, idGrupoNuevo, idMiembro } = req.body;
     try{
-        controlador.eliminarMiembroGrupo(idMovimiento, idZona, idRama, idGrupoViejo, idMiembro)
+        /*controlador.eliminarMiembroGrupo(idMovimiento, idZona, idRama, idGrupoViejo, idMiembro)
         .then( () => {
             controlador.agregarMiembroNuevoAGrupo(idMovimiento, idZona, idRama, idGrupoNuevo, idMiembro)
             .then( () => {
@@ -442,7 +446,21 @@ app.post('/cambio-de-grupo', function(req, res){
         })
         .catch(err => {
             return res.json({success: false, error: {message: err.message}})
-        }) 
+        }) */
+        controlador.agregarMiembroNuevoAGrupo(idMovimiento, idZona, idRama, idGrupoNuevo, idMiembro)
+        .then( () => {
+            controlador.eliminarMiembroGrupo(idMovimiento, idZona, idRama, idGrupoViejo, idMiembro)
+            .then( () => {
+                return res.json({ success: true});
+            })
+            .catch(err => {
+                controlador.eliminarMiembroGrupo(idMovimiento, idZona, idRama, idGrupoNuevo, idMiembro);
+                throw err
+            })
+        })
+        .catch( err => {
+            return res.json({success: false, error: {message: err.message}})
+        })
     }catch(err){
         console.log(err);
         return res.json({ success: false, error:err})
