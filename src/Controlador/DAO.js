@@ -648,8 +648,21 @@ class DAO{
                 this.client.end()
             })
     }
+
+    ramasDeMiembros(pCedula){
+        return this.client.query("select * from ramasDeMiembro('"+pCedula+"')")
+            .then(res => {
+                console.table(res.rows);
+                return res.rows;
+            })
+            .catch(err => {
+                console.log(err)
+                this.client.end()
+            })
+    }
 }
 const dao=new DAO();
+dao.ramasDeMiembros("117940925");
 //dao.getGruposMiembroxMiembro('117940925')
 //dao.getGruposXMiembro('117940925');
 //dao.monitoresProbables('4000042145',1,1,1)
