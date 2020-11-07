@@ -327,8 +327,20 @@ app.post('/consultar-ramas-disponibles',function(req, res){
     }
 })
 
-app.post('consultar-ramas-miembro', function(req, res){
-
+app.post('/consultar-ramas-miembro', function(req, res){
+    const { idMiembro } = req.body;
+    try{
+        controlador.consultarRamasMiembro(idMiembro)
+        .then( ramas => {
+            return res.json({success:true, ramas})
+        })
+        .catch(err => {
+            return res.json({success: false, error: {message: err.message}})
+        })
+    }catch(err){
+        console.log(err);
+        return res.json({success:false, error: err})
+    }
 })
 
 app.post('/consultar-grupos',function(req, res){

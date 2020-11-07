@@ -289,6 +289,11 @@ export default class Controlador{
         return movimiento.gNodos.consultarRamas(idZona); 
     }
 
+    async consultarRamasMiembro(idMiembro){
+        var ramas = await this.dao.ramasDeMiembros(idMiembro);
+        return ramas
+    }
+
     async consultarRamasDisponibles(idMovimiento, idMiembro){
         try{
             var gruposDeMiembro = await this.getGruposMiembro(idMovimiento, idMiembro);
