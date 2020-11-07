@@ -601,27 +601,25 @@ export default class DAO{
             })
     }
 
-    otrasRamas(pCedula){
+    async otrasRamas(pCedula){
         return this.client.query("select * from otrasRamas('"+pCedula+"')")
             .then(res => {
                 console.table(res.rows);
                 return res.rows;
             })
             .catch(err => {
-                console.log(err)
-                this.client.end()
+                throw err;
             })
     }
     
-    todosLosMonitores(idMovimiento,idZona){
+    async todosLosMonitores(idMovimiento,idZona){
         return this.client.query("select * from todoslosmonitores('"+idMovimiento+"', "+idZona+")")
             .then(res => {
                 console.table(res.rows);
                 return res.rows;
             })
             .catch(err => {
-                console.log(err)
-                this.client.end()
+                throw err;
             })
     }
 }

@@ -343,6 +343,11 @@ export default class Controlador{
         return monitores;
     }
 
+    async consultarMonitoresZona(idMovimiento, idZona){
+        var monitores = await this.dao.todosLosMonitores(idMovimiento, idZona);
+        return monitores;
+    }
+
     getMovimiento(idMovimiento){
         if(this.movimientos.has(idMovimiento)){
             return this.movimientos.get(idMovimiento);

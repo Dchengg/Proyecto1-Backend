@@ -388,6 +388,22 @@ app.post('/consultar-monitores-probables', function(req, res) {
     }
 })
 
+app.post('/consultar-monitores-zona', function(req, res) {
+    const { idZona } = req.body;
+    try{
+        controlador.consultarMonitoresZona(idMovimiento, idZona)
+        .then(monitores => {
+            return res.jsonp({success: true, monitores})
+        })
+        .catch(err => {
+            return res.json({ success: false, error:{message:err.message}})
+        })
+    }catch(err){
+        console.log(err);
+        return res.json({ success: false, error: err})
+    }
+})
+
 
 
 
