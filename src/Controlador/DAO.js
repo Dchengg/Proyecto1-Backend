@@ -421,7 +421,7 @@ export default class DAO{
             })
     }
 
-    getGruposXMiembro(idMiembro){
+    async getGruposXMiembro(idMiembro){
         const quer="select * from GrupoMiembros "
         const quer2=quer+"inner join GrupoMiembrosRol on GrupoMiembros.id_lider = GrupoMiembrosRol.id_lider "
         const quer3=quer2+"inner join Grupo on (GrupoMiembros.id_movimiento=Grupo.id_movimiento AND GrupoMiembros.id_zona=Grupo.id_zona "
@@ -624,27 +624,25 @@ export default class DAO{
             })
     }
 
-    ramasDeMiembros(pCedula){
+    async ramasDeMiembros(pCedula){
         return this.client.query("select * from ramasDeMiembro('"+pCedula+"')")
             .then(res => {
                 console.table(res.rows);
                 return res.rows;
             })
             .catch(err => {
-                console.log(err)
-                this.client.end()
+                throw err
             })
     }
 
-    grupoDeMiembroEnRama(pIdMovimiento,pIdZona,pIdRama,pCedula){
+    async grupoDeMiembroEnRama(pIdMovimiento,pIdZona,pIdRama,pCedula){
         return this.client.query("select * from grupoDeMiembroEnRama('"+pIdMovimiento+"', "+pIdZona+", "+pIdRama+", '"+pCedula+"')")
             .then(res => {
                 console.table(res.rows);
                 return res.rows;
             })
             .catch(err => {
-                console.log(err)
-                this.client.end()
+                throw err
             })
     }
 }
@@ -653,7 +651,7 @@ const dao=new DAO();
 
 //dao.getGruposMiembroxMiembro('117940925');
 
-//dao.grupoDeMiembroEnRama('4000042145',1,1,'117940925');
+//dao.grupoDeMiembroEnRama('4000042145',1,3,'117940925');
 //
 //dao.getGruposMiembroxMiembro('117940925');
 

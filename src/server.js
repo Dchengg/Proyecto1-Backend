@@ -354,6 +354,22 @@ app.post('/consultar-grupos',function(req, res){
     }
 })
 
+app.post('/consultar-grupo-miembro-en-rama', function(req, res){
+    const { idZona, idRama, idMiembro} = req.body;
+    try{
+        controlador.consultarGrupoDeMiembroEnRama(idMovimiento, idZona, idRama, idMiembro)
+        .then( grupo => {
+            return res.json({success: true, grupo})
+        })
+        .catch( err => {
+            return res.json({success:false, error: {mesasage: err.message}})
+        })
+    }catch(err){
+        console.log(err);
+        return res.json({success: false, error: err})
+    }
+})
+
 app.post('/consultar-miembros-grupo', function(req, res){
     const { idZona, idRama, idGrupo} = req.body;
     //var idMiembro = "123";
