@@ -45,8 +45,8 @@ export default class DAO{
             })
     }
 //
-    getTelefonoMovimiento(idMovimiento){
-        this.client.query("select * from Telefonos where cedula_movimiento = '"+idMovimiento+"'")
+    async getTelefonoMovimiento(idMovimiento){
+        return this.client.query("select * from Telefonos where cedula_movimiento = '"+idMovimiento+"'")
         .then(res => {
             console.table(res.rows)
             return res.rows;
@@ -531,7 +531,7 @@ export default class DAO{
             })
     }
 
-    modificarMovimiento(pIdMovimiento,pNombre, pPais, pProvincia, pCanton, pDistrito, pSenales, pDireccionWeb, pLogo, pTelefonos){
+    async modificarMovimiento(pIdMovimiento,pNombre, pPais, pProvincia, pCanton, pDistrito, pSenales, pDireccionWeb, pLogo, pTelefonos){
         //TELEFONOS, EN PLURAL, ES UNA LISTA
         //La lista que recibe el DAO va asi: [elem1,elem2]
         queryPT1="select * from modificarMovimiento('"+pIdMovimiento+"', '"+pNombre+"', '"+pPais+"', '"+pProvincia+"', '"+pCanton+"', '";

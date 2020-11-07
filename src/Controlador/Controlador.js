@@ -137,10 +137,9 @@ export default class Controlador{
     }
 
     
-    modificarMovimiento(idMovimiento, idAsesor,nombre, direccionWeb, logo, pais, provincia, canton, distrito, senas){
+    async modificarMovimiento(idMovimiento,nombre, direccionWeb, logo, pais, provincia, canton, distrito, senas, telefonos){
         var movimiento = this.getMovimiento(idMovimiento);
         movimiento.cedulaJuridica = idMovimiento;
-        movimiento.idAsesor = idAsesor;
         movimiento.nombre = nombre;
         movimiento.direccionWeb = direccionWeb;
         movimiento.logo = logo;
@@ -149,6 +148,11 @@ export default class Controlador{
         movimiento.canton = canton;
         movimiento.distrito = distrito;
         movimiento.senas = senas;
+        movimiento.telefonos = []
+        for(var i in telefonos){
+            movimiento.telefonos.push(telefonos[i]);
+        }
+        await this.dao.modificarMovimiento(idMovimiento, nombre, pais, provincia, canton, distrito, senas, direccionWeb, logo, movimiento.telefonos);
     }
 
     async modificarZona(idMovimiento, idZona, nombre, idJefeNuevo1, idJefeNuevo2, idJefeViejo1, idJefeViejo2){

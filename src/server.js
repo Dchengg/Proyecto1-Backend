@@ -152,9 +152,9 @@ app.post('/modificar-miembro', function(req, res){
 })
 
 app.post('/modificar-movimiento', function(req,res){
-    const  { idAsesor, nombre, direccionWeb, logo, pais, provincia, canton, distrito, senas} = req.body;
+    const  { nombre, direccionWeb, logo, pais, provincia, canton, distrito, senas} = req.body;
     try{
-        controlador.modificarMovimiento(idMovimiento, idAsesor, nombre, direccionWeb, logo, pais, provincia, canton, distrito, senas);
+        controlador.modificarMovimiento(idMovimiento, nombre, direccionWeb, logo, pais, provincia, canton, distrito, senas);
         return res.json({ success: true })
     }catch(err){
         console.log(err);
@@ -426,7 +426,6 @@ app.post('/agregar-miembro-grupo', function(req, res){
         return res.json({ success: false, error: err})
     }
 })
-
 app.post('/asignar-encargado-grupo', function(req, res){
     const {idZona, idRama, idGrupo, idMiembro, idMiembro2, isMonitor} = req.body;
     try{

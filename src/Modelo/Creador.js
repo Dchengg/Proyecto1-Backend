@@ -16,6 +16,13 @@ export default class Creador{
                 var movimiento = res[0];
                 try{
                     this.controlador.crearMovimiento(movimiento.cedula_juridica, cedulaAsesor, movimiento.nombre, movimiento.direccion_web, movimiento.logo, movimiento.pais, movimiento.provincia, movimiento.canton, movimiento.distrito, movimiento.senales);
+                    this.dao.getTelefonoMovimiento(movimiento.cedula_juridica)
+                    .then(telefono => {
+                        var mov = this.controlador.getMovimiento(movimiento.cedula_juridica);
+                        for(var i in telefono){
+                            mov.telefonos.push(telefono[i].celular);
+                        }
+                    })
                     this.cargarZonasMovimiento(movimiento.cedula_juridica);
                     cedula_juridica = movimiento.cedula_juridica;
                     this.dao.getAsesor(cedulaAsesor)
