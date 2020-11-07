@@ -205,7 +205,6 @@ class DAO{
         this.client.query("select * from GrupoMiembros where id_grupo = "+idGrupo)
             .then(res => {
                 console.table(res.rows)
-                this.client.end()
                 return res.rows;
             })
             .catch(err => {
@@ -218,7 +217,6 @@ class DAO{
         this.client.query("select * from GrupoMiembrosRol")
             .then(res => {
                 console.table(res.rows)
-                this.client.end()
                 return res.rows;
             })
             .catch(err => {
@@ -232,7 +230,6 @@ class DAO{
         this.client.query("select * from GrupoMiembros inner join GrupoMiembrosRol on GrupoMiembros.id_lider = GrupoMiembrosRol.id_lider where id_miembro='"+idMiembro+"'")
             .then(res => {
                 console.table(res.rows)
-                this.client.end()
                 return res.rows;
             })
             .catch(err => {
@@ -437,8 +434,12 @@ class DAO{
     }
 
     getGruposXMiembro(idMiembro){
-        const quer="select * from GrupoMiembros inner join GrupoMiembrosRol on GrupoMiembros.id_lider = GrupoMiembrosRol.id_lider inner join Grupo on GrupoMiembros.id_grupo=Grupo.id_grupo where id_miembro='"
-        return this.client.query(quer+idMiembro+"'")
+        const quer="select * from GrupoMiembros "
+        const quer2=quer+"inner join GrupoMiembrosRol on GrupoMiembros.id_lider = GrupoMiembrosRol.id_lider "
+        const quer3=quer2+"inner join Grupo on (GrupoMiembros.id_movimiento=Grupo.id_movimiento AND GrupoMiembros.id_zona=Grupo.id_zona "
+        const quer4=quer3+"AND GrupoMiembros.id_rama=Grupo.id_rama AND GrupoMiembros.id_grupo=Grupo.id_grupo)"
+        const quer5=quer4+"where GrupoMiembros.id_miembro='"
+        return this.client.query(quer5+idMiembro+"'")
             .then(res => {
                 console.table(res.rows)
                 return res.rows;
@@ -660,11 +661,31 @@ class DAO{
                 this.client.end()
             })
     }
+
+    grupoDeMiembroEnRama(pIdMovimiento,pIdZona,pIdRama,pCedula){
+        return this.client.query("select * from grupoDeMiembroEnRama('"+pIdMovimiento+"', "+pIdZona+", "+pIdRama+", '"+pCedula+"')")
+            .then(res => {
+                console.table(res.rows);
+                return res.rows;
+            })
+            .catch(err => {
+                console.log(err)
+                this.client.end()
+            })
+    }
 }
 const dao=new DAO();
-dao.ramasDeMiembros("117940925");
-//dao.getGruposMiembroxMiembro('117940925')
+//dao.ramasDeMiembros("117940925");
+
+//dao.getGruposMiembroxMiembro('117940925');
+
+//dao.grupoDeMiembroEnRama('4000042145',1,1,'117940925');
+//
+//dao.getGruposMiembroxMiembro('117940925');
+
 //dao.getGruposXMiembro('117940925');
+
+
 //dao.monitoresProbables('4000042145',1,1,1)
 //dao.modificarZona('4000042145',1,"GAM");
 //dao.getZonaXMovimiento('4000042145');
