@@ -46,7 +46,7 @@ export default class Controlador{
             idEncargado2 = ""
         }
         if(!nombre){
-            nombre = "";
+            nombre = idzona+idRama+idGrupo;
         }
         await this.dao.insertarGrupo(idMovimiento, idZona, idRama, idGrupo, isMonitor, nombre, idEncargado1, idEncargado2);
         this.agregarGrupo(idMovimiento, idZona, idRama, idGrupo, nombre, isMonitor, idEncargado1, idEncargado2)
@@ -86,17 +86,8 @@ export default class Controlador{
     }
 
     agregarMiembro(idMiembro, nombre, celular, email, provincia, canton, distrito, senas, posible_monitor, idMovimiento, idZona, idRama, idGrupo) {
-        
         this.agregarMiembroAMovimiento(idMovimiento,idMiembro, nombre, celular, email, provincia, canton, distrito, senas, posible_monitor);
         this.agregarMiembroGrupo(idMovimiento, idZona, idRama, idGrupo, idMiembro);
-        /*if(this.movimientos.has(idMovimiento)){
-            var gMiembros = this.movimientos.get(idMovimiento).gMiembros;
-            var gNodos = this.movimientos.get(idMovimiento).gNodos; 
-            var miembro = gMiembros.crearMiembro(idMiembro, nombre, celular, email, provincia, canton, distrito, senas, posible_monitor);
-            gNodos.agregarMiembro(idZona, idRama, idGrupo, miembro);
-        }else{
-            throw { message: "Movimiento no existe"};
-        }*/
     }
 
     agregarMiembroAMovimiento(idMovimiento,idMiembro, nombre, celular, email, provincia, canton, distrito, senas, posible_monitor){
