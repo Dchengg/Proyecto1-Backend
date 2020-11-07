@@ -182,12 +182,29 @@ export default class Controlador{
         }
     }
 
+    verificarEliminarJefe(nodo, idJefeViejo){
+        console.log(idJefeViejo)
+        if(nodo.encargado1 == idJefeViejo || nodo.encargado2 == idJefeViejo){
+            var contador = 0;
+            var composites = nodo.composites;
+            composites.forEach((value, key) => {
+                if(value.encargado1 == idJefeViejo) contador++;
+                if(value.encargado2 == idJefeViejo) contador++;
+            })
+            if(contador == 1) throw {message: "No se puede eliminar el jefe "+idJefeViejo+" ya que es lider de un nodo superior"};
+            
+        }
+    }
+
     async modificarRama(idMovimiento, idZona, idRama , nombre, idJefeNuevo1, idJefeNuevo2, idJefeViejo1, idJefeViejo2){
         try{
-            if(idJefeNuevo1 != idJefeViejo1 && idJefeViejo1 && idJefeNuevo1){
+            var zona = this.getZona(idMovimiento, idZona);
+            if(idJefeNuevo1 != idJefeViejo1 && idJefeViejo1 && idJefeNuevo2 != idJefeViejo1){
+                this.verificarEliminarJefe(zona, idJefeViejo1);
                 await this.dao.eliminarJefeRama(idJefeViejo1,idZona,idRama, idMovimiento)
             }
-            if(idJefeNuevo2 != idJefeViejo2 && idJefeViejo2 && idJefeNuevo2){
+            if(idJefeNuevo2 != idJefeViejo2 && idJefeViejo2 && idJefeNuevo1 != idJefeViejo2){
+                this.verificarEliminarJefe(zona, idJefeViejo2);
                 await this.dao.eliminarJefeRama(idJefeViejo2,idZona, idRama, idMovimiento)
             }
 
@@ -213,11 +230,14 @@ export default class Controlador{
 
     async modificarGrupo(idMovimiento, idZona, idRama, idGrupo, nombre, isMonitor, idJefeNuevo1, idJefeNuevo2, idJefeViejo1, idJefeViejo2){
         try{
-            if(idJefeNuevo1 != idJefeViejo1 && idJefeNuevo1 && idJefeViejo1){
+            var rama = this.getRama(idMovimiento, idZona, idRama);
+            if(idJefeNuevo1 != idJefeViejo1 && idJefeViejo1 && idJefeNuevo2 != idJefeViejo1){
+                this.verificarEliminarJefe(rama,idJefeViejo1)
                 await this.dao.eliminarJefeGrupo(idJefeViejo1,idZona,idRama, idGrupo, idMovimiento)
             }
 
-            if(idJefeNuevo2 != idJefeViejo2 && idJefeNuevo2 && idJefeViejo2){
+            if(idJefeNuevo2 != idJefeViejo2 && idJefeViejo2 && idJefeNuevo1 != idJefeViejo2){
+                this.dao.verificarEliminarJefe(rama, idJefeViejo2)
                 await this.dao.eliminarJefeGrupo(idJefeViejo2,idZona, idRama, idGrupo,  idMovimiento)
             }
 
