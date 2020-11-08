@@ -146,9 +146,9 @@ app.post('/crear-grupo', function(req,res){
 //////////////////////////////
 
 app.post('/modificar-miembro', function(req, res){
-    const {idMiembro, nombre, celular, email, provincia, canton,distrito, senas, posible_monitor, idZona, idRama, idGrupo} = req.body;
+    const {idMiembro, nombre, celular, email, provincia, canton,distrito, senas, posible_monitor} = req.body;
     try{
-        controlador.modificarMiembro(idMiembro, nombre, celular, email, provincia, canton, distrito, senas, posible_monitor, idMovimiento, idZona, idRama, idGrupo)
+        controlador.modificarMiembro(idMiembro, nombre, celular, email, provincia, canton, distrito, senas, posible_monitor, idMovimiento)
         return res.json({success: true})
     }catch(err){
         console.log(err);

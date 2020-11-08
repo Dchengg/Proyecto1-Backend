@@ -583,7 +583,7 @@ export default class DAO{
     }
 
     async modificarMiembro(pCedula, pNombre, pCelular, pEmail, pProvincia, pCanton, pDistrito, pSenas, pbMonitor){
-        return this.client.query("select * from editarmiembro('"+pCedula+"', '"+pNombre+"','"+pCedular+"', '"+pEmail+"', '"+pProvincia+"','"+pCanton+"','"+pDistrito+"','"+pSenas+"','"+pbMonitor+"')")
+        return this.client.query("select * from editarmiembro('"+pCedula+"', '"+pNombre+"','"+pCelular+"', '"+pEmail+"', '"+pProvincia+"','"+pCanton+"','"+pDistrito+"','"+pSenas+"','"+pbMonitor+"')")
             .then( res => {
                 console.table(res.rows);
                 return res.rows;

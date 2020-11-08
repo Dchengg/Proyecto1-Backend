@@ -270,7 +270,8 @@ export default class Controlador{
         }
     }
 
-    async modificarMiembro(idMiembro, nombre, celular, email, provincia, canton, distrito, senas, posible_monitor, idMovimiento, idZona, idRama, idGrupo){
+    async modificarMiembro(idMiembro, nombre, celular, email, provincia, canton, distrito, senas, posible_monitor, idMovimiento){
+        await this.dao.modificarMiembro(idMiembro, nombre, celular, email, provincia, canton, distrito, senas, posible_monitor);
         var movimiento =  this.getMovimiento(idMovimiento);
         var gMiembros = movimiento.gMiembros;
         gMiembros.modificarMiembro(idMiembro, nombre, celular, email, provincia, canton, distrito, senas, posible_monitor)
