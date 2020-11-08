@@ -298,6 +298,9 @@ export default class DAO{
     }
     
     async insertarGrupo(idMovimiento,idZona,idRama, idGrupo, bMonitores,pNombre, idMonitor1, idMonitor2){
+        if(!idMonitor2){
+            idMonitor2 = "";
+        }
         return this.client.query("select * from insertarGrupo('"+idMovimiento+"', "+idZona+", "+idRama+", '"+idGrupo+"', "+bMonitores+", '"+pNombre+"','"+idMonitor1+"','"+idMonitor2+"')")
             .then(res => {
                 console.table(res.rows);
