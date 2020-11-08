@@ -48,28 +48,14 @@ export default class GestorNodos{
     }
 
     consultarMiembrosNodo(nodo){
-        var miembros = [];
+        var miembros = []
         var nodos = nodo.composites;
+        console.log(nodos);
         nodos.forEach( function(value, key ) {
-            if(value.encargado1){
+            if(value.encargado1 && !miembros.find(element => element == value.encargado1)){
                 miembros.push(value.encargado1)
             }
-            if(value.encargado2){
-                miembros.push(value.encargado2)
-            }
-        });
-        return miembros;
-    }
-
-    consultarMiembrosRama(idZona, idRama){
-        var rama = this.getRama(idZona, idRama);
-        var miembros = [];
-        var grupos = rama.composites;
-        grupos.forEach( function(value, key ) {
-            if(value.encargado1){
-                miembros.push(value.encargado1)
-            }
-            if(value.encargado2){
+            if(value.encargado2 && !miembros.find(element => element == value.encargado2)){
                 miembros.push(value.encargado2)
             }
         });

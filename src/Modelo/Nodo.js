@@ -8,7 +8,7 @@ export default class Nodo extends Component{
             this.encargado1 = encargado1;
         }
         if(encargado2){
-            this.encargado1 = encargado1;
+            this.encargado2 = encargado2;
         }
         this.isMonitor = isMonitor;
     }
