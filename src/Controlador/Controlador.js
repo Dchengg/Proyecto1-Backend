@@ -45,9 +45,10 @@ export default class Controlador{
         if(!idEncargado2){
             idEncargado2 = ""
         }
-        if(!nombre || nombre == ""){
-            nombre = idzona+idRama+idGrupo;
+        if(!nombre){
+            nombre = idZona+idRama+idGrupo;
         }
+        console.log(nombre)
         await this.dao.insertarGrupo(idMovimiento, idZona, idRama, idGrupo, isMonitor, nombre, idEncargado1, idEncargado2);
         this.agregarGrupo(idMovimiento, idZona, idRama, idGrupo, nombre, isMonitor, idEncargado1, idEncargado2)
     }
