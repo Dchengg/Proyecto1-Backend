@@ -536,8 +536,9 @@ export default class DAO{
     async modificarMovimiento(pIdMovimiento,pNombre, pPais, pProvincia, pCanton, pDistrito, pSenales, pDireccionWeb, pLogo, pTelefonos){
         //TELEFONOS, EN PLURAL, ES UNA LISTA
         //La lista que recibe el DAO va asi: [elem1,elem2]
-        queryPT1="select * from modificarMovimiento('"+pIdMovimiento+"', '"+pNombre+"', '"+pPais+"', '"+pProvincia+"', '"+pCanton+"', '";
-        queryPT2=pDistrito+"', '"+pSenales+"', '"+pDireccionWeb+"', '"+pLogo+"', {"+pTelefonos+"})"
+        var queryPT1="select * from modificarMovimiento('"+pIdMovimiento+"', '"+pNombre+"', '"+pPais+"', '"+pProvincia+"', '"+pCanton+"', '";
+        var queryPT2=pDistrito+"', '"+pSenales+"', '"+pDireccionWeb+"', '"+pLogo+"', ARRAY["+pTelefonos+"])"
+        console.log(queryPT1+queryPT2);
         return this.client.query(queryPT1+queryPT2)
             .then(res => {
                 console.table(res.rows);
@@ -573,6 +574,17 @@ export default class DAO{
     async modificarGrupo(pIdMovimiento,pIdZona,pIdRama,pIdGrupo,pB_Monitores,pNombre){
         return this.client.query("select * from editargrupo('"+pIdMovimiento+"', "+pIdZona+", "+pIdRama+", "+pIdGrupo+", "+pB_Monitores+", '"+pNombre+"')")
             .then(res => {
+                console.table(res.rows);
+                return res.rows;
+            })
+            .catch(err => {
+                throw err
+            })
+    }
+
+    async modificarMiembro(pCedula, pNombre, pCelular, pEmail, pProvincia, pCanton, pDistrito, pSenas, pbMonitor){
+        return this.client.query("select * from editarmiembro('"+pCedula+"', '"+pNombre+"','"+pCedular+"', '"+pEmail+"', '"+pProvincia+"','"+pCanton+"','"+pDistrito+"','"+pSenas+"','"+pbMonitor+"')")
+            .then( res => {
                 console.table(res.rows);
                 return res.rows;
             })

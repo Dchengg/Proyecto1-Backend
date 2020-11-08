@@ -148,7 +148,7 @@ app.post('/crear-grupo', function(req,res){
 app.post('/modificar-miembro', function(req, res){
     const {idMiembro, nombre, celular, email, provincia, canton,distrito, senas, posible_monitor, idZona, idRama, idGrupo} = req.body;
     try{
-        controlador.modificarMiembro(idMiembro, nombre, celular, email, provincia, canton, distrito, senas, posible_monitor,'4000042145' ,  idZona, idRama, idGrupo)
+        controlador.modificarMiembro(idMiembro, nombre, celular, email, provincia, canton, distrito, senas, posible_monitor, idMovimiento, idZona, idRama, idGrupo)
         return res.json({success: true})
     }catch(err){
         console.log(err);
@@ -157,13 +157,18 @@ app.post('/modificar-miembro', function(req, res){
 })
 
 app.post('/modificar-movimiento', function(req,res){
-    const  { nombre, direccionWeb, logo, pais, provincia, canton, distrito, senas} = req.body;
+    const  { nombre, direccionWeb, logo, pais, provincia, canton, distrito, senas, telefonos} = req.body;
     try{
-        controlador.modificarMovimiento(idMovimiento, nombre, direccionWeb, logo, pais, provincia, canton, distrito, senas);
-        return res.json({ success: true })
+        controlador.modificarMovimiento(idMovimiento, nombre, direccionWeb, logo, pais, provincia, canton, distrito, senas, telefonos)
+        .then( () => {
+            return res.json({ success: true })
+        })
+        .catch(err => {
+            return res.json({success: false, error: {message: err.message  }})
+        })
     }catch(err){
         console.log(err);
-        return res.json({success: false, error: err})
+        return res.json({success: false, error: {message: err}})
     }
 })
 

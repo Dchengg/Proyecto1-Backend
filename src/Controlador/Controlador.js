@@ -132,6 +132,14 @@ export default class Controlador{
     
     async modificarMovimiento(idMovimiento,nombre, direccionWeb, logo, pais, provincia, canton, distrito, senas, telefonos){
         var movimiento = this.getMovimiento(idMovimiento);
+        movimiento.telefonos = []
+        console.log(telefonos)
+        for(var i in telefonos){
+            console.log(i);
+            movimiento.telefonos.push(telefonos[i]);
+        }
+        console.log(movimiento.telefonos)
+        await this.dao.modificarMovimiento(idMovimiento, nombre, pais, provincia, canton, distrito, senas, direccionWeb, logo, movimiento.telefonos);
         movimiento.cedulaJuridica = idMovimiento;
         movimiento.nombre = nombre;
         movimiento.direccionWeb = direccionWeb;
@@ -141,11 +149,6 @@ export default class Controlador{
         movimiento.canton = canton;
         movimiento.distrito = distrito;
         movimiento.senas = senas;
-        movimiento.telefonos = []
-        for(var i in telefonos){
-            movimiento.telefonos.push(telefonos[i]);
-        }
-        await this.dao.modificarMovimiento(idMovimiento, nombre, pais, provincia, canton, distrito, senas, direccionWeb, logo, movimiento.telefonos);
     }
 
     async modificarZona(idMovimiento, idZona, nombre, idJefeNuevo1, idJefeNuevo2, idJefeViejo1, idJefeViejo2){
@@ -267,7 +270,7 @@ export default class Controlador{
         }
     }
 
-    modificarMiembro(idMiembro, nombre, celular, email, provincia, canton, distrito, senas, posible_monitor, idMovimiento, idZona, idRama, idGrupo){
+    async modificarMiembro(idMiembro, nombre, celular, email, provincia, canton, distrito, senas, posible_monitor, idMovimiento, idZona, idRama, idGrupo){
         var movimiento =  this.getMovimiento(idMovimiento);
         var gMiembros = movimiento.gMiembros;
         gMiembros.modificarMiembro(idMiembro, nombre, celular, email, provincia, canton, distrito, senas, posible_monitor)
