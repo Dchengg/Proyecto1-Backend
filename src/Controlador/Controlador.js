@@ -323,7 +323,7 @@ export default class Controlador{
             miembros.set(grupo.encargado1,this.getMiembro(idMovimiento, grupo.encargado1));
         }
         if(grupo.encargado2 && !miembros.has(grupo.encargado2)){
-            miembros.set(grupo.encargado1,this.getMiembro(idMovimiento, grupo.encargado2));
+            miembros.set(grupo.encargado2,this.getMiembro(idMovimiento, grupo.encargado2));
         }
         return miembros;
     }
