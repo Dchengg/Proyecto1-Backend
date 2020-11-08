@@ -161,11 +161,11 @@ export default class Controlador{
                 await this.dao.eliminarJefeZona(idJefeViejo2,idZona, idMovimiento)
             }
 
-            if(idJefeNuevo1){
+            if(idJefeNuevo1 && idJefeNuevo1 != idJefeViejo1 && idJefeNuevo1 != idJefeViejo2){
                 await this.dao.asignarJefeZona(idJefeNuevo1, idZona, idMovimiento)
             }
             
-            if(idJefeNuevo2){
+            if(idJefeNuevo2 && idJefeNuevo2 != idJefeViejo1 && idJefeNuevo2 != idJefeViejo2){
                 await this.dao.asignarJefeZona(idJefeNuevo2, idZona, idMovimiento)
             }
 
@@ -208,11 +208,11 @@ export default class Controlador{
                 await this.dao.eliminarJefeRama(idJefeViejo2,idZona, idRama, idMovimiento)
             }
 
-            if(idJefeNuevo1){
+            if(idJefeNuevo1 && idJefeNuevo1 != idJefeViejo1 && idJefeNuevo1 != idJefeViejo2){
                 await this.dao.asignarJefeRama(idJefeNuevo1, idZona, idRama, idMovimiento)
             }
             
-            if(idJefeNuevo2){
+            if(idJefeNuevo2 && idJefeNuevo2 != idJefeViejo1 && idJefeNuevo2 != idJefeViejo2){
                 await this.dao.asignarJefeRama(idJefeNuevo2,idZona,idRama, idMovimiento)
             }
             var rama = this.getRama(idMovimiento, idZona, idRama);
