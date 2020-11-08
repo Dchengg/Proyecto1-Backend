@@ -18,27 +18,24 @@ export default class Controlador{
 
 
     async crearZonaNueva(idMovimiento, nombre){
-        var res = await this.dao.insertarZona(idMovimiento, nombre)
+        await this.dao.insertarZona(idMovimiento, nombre)
+        .then(res => {
+            this.agregarZona(idMovimiento, res[0].id_zona.toString(), nombre);
+        })
         .catch(err => {
             throw err
         })
-        this.agregarZona(idMovimiento, res.id_zona, nombre);
+        
     }
 
     async crearRamaNueva(idMovimiento, idZona, nombre){
-        var res = await this.dao.insertarRama(idMovimiento, idZona, nombre)
+        await this.dao.insertarRama(idMovimiento,idZona,nombre)
+        .then(res => {
+            this.agregarRama(idMovimiento, idZona, res[0].id_rama.toString(), nombre)
+        })
         .catch(err => {
             throw err
         })
-        this.agregarRama(idMovimiento, res.id_rama, nombre)
-    }
-
-    async crearRamaNueva(idMovimiento, idZona, idRama, nombre){
-        var res = await this.dao.insertarRama(idMovimiento, idZona, nombre)
-            .catch(err => {
-                throw err
-            })
-        this.agregarRama(idMovimiento, idZona, res.id_rama, nombre)
     }
 
     async crearGrupoNuevo(idMovimiento, idZona, idRama, idGrupo, nombre, idEncargado1, idEncargado2, isMonitor){

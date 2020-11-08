@@ -308,7 +308,8 @@ export default class DAO{
             })
     }
 
-    insertarRama(pIdMovimiento,pIdZona,pNombre){
+    async insertarRama(pIdMovimiento,pIdZona,pNombre){
+        console.log(pNombre)
         return this.client.query("select * from insertarRama('"+pIdMovimiento+"', "+pIdZona+", '"+pNombre+"')")
             .then(res => {
                 console.table(res.rows);
