@@ -294,14 +294,9 @@ export default class Controlador{
         return ramas
     }
 
-    async consultarRamasDisponibles(idMovimiento, idMiembro){
+    async consultarRamasDisponibles(idMiembro){
         try{
-            var gruposDeMiembro = await this.getGruposMiembro(idMiembro);
-            var ramas = new Map(this.consultarRamas(idMovimiento, gruposDeMiembro[0].id_zona.toString()));
-            console.log(ramas)
-            for(var i in gruposDeMiembro){
-                ramas.delete(gruposDeMiembro[i].id_rama.toString())
-            }
+            var ramas = this.dao.otrasRamas(idMiembro)
             return ramas;
         }catch(err){
             console.log(err)

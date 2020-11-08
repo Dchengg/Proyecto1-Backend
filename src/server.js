@@ -309,23 +309,18 @@ app.post('/consultar-ramas',function(req, res){
 app.post('/consultar-ramas-disponibles',function(req, res){
     const { idMiembro } = req.body;
     try{
-        var ramas;
-        var ramasPromise = controlador.consultarRamasDisponibles(idMovimiento, idMiembro)
-            .then(res => {
-                ramas = res
-            })
-            .catch(err => {
-                throw err
-            })
-        Promise.resolve(ramasPromise)
-            .finally(() => {
-                return res.json({success: true, ramas :Object.fromEntries(ramas)})
-            })
+        controlador.consultarRamasDisponibles(idMiembro)
+        .then( ramas => {
+            return res.json({success: true, ramas})
+        })
+        .catch(err => {
+            return res.json({success: false, error: {message:err.mesasage}})
+        })
     }catch(err){
         console.log(err);
         return res.json({success: false, error: err});
     }
-})
+})  
 
 app.post('/consultar-ramas-miembro', function(req, res){
     const { idMiembro } = req.body;
