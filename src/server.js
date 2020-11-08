@@ -377,7 +377,6 @@ app.post('/consultar-grupo-miembro-en-rama', function(req, res){
 
 app.post('/consultar-miembros-grupo', function(req, res){
     const { idZona, idRama, idGrupo} = req.body;
-    //var idMiembro = "123";
     try{
         var miembros = controlador.consultarMiembrosGrupo(idMovimiento, idZona, idRama, idGrupo);   
         return res.json({success: true, miembros: Object.fromEntries(miembros)})

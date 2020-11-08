@@ -318,8 +318,16 @@ export default class Controlador{
     }
 
     consultarMiembrosGrupo(idMovimiento, idZona, idRama, idGrupo){
-        var movimiento = this.getMovimiento(idMovimiento)
-        return movimiento.gNodos.consultarMiembrosGrupo(idZona, idRama, idGrupo);
+        var movimiento = this.getMovimiento(idMovimiento);
+        var grupo = this.getGrupo(idMovimiento, idZona, idRama, idGrupo);
+        var miembros = movimiento.gNodos.consultarMiembrosGrupo(idZona, idRama, idGrupo);
+        if(grupo.encargado1 && !miembros.has(grupo.encargado1)){
+            miembros.set(grupo.encargado1,this.getMiembro(idMovimiento, grupo.encargado1));
+        }
+        if(grupo.encargado2 && !miembros.has(grupo.encargado2)){
+            miembros.set(grupo.encargado1,this.getMiembro(idMovimiento, grupo.encargado2));
+        }
+        return miembros;
     }
 
     consultarMiembrosRama(idMovimiento, idZona, idRama){
