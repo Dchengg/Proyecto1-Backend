@@ -100,7 +100,7 @@ export default class Controlador{
 
     async eliminarMiembroGrupo(idMovimiento, idZona, idRama, idGrupo, idMiembro){
         var movimiento = this.getMovimiento(idMovimiento);
-        await this.dao.eliminarDeGrupo(idGrupo, idMiembro, idRama, idZona, idMovimiento);
+        await this.dao.eliminarDeGrupo(idMiembro, idGrupo, idRama, idZona, idMovimiento);
         movimiento.gNodos.eliminarDeGrupo(idZona, idRama, idGrupo, idMiembro);
     }
 
