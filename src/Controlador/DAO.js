@@ -439,7 +439,7 @@ export default class DAO{
     }
 
     async cambioMiembroGrupo(pCedula,pIdGrupoViejo, pIdGrupoNuevo, pIdRama, pIdZona, pIdMovimiento){
-        const quer="select * from cambiarmiembrogrupo ('"+pCedula+"','"+pIdGrupoViejo+"','"+pIdGrupoNuevo+"',"+pIdRama+","+pIdZona+",'"+pIdMovimiento+"')"
+        const quer="select * from cambiarmiembrogrupo ('"+pCedula+"','"+pIdGrupoViejo+"','"+pIdGrupoNuevo+ "',"+pIdRama+","+pIdZona+",'"+pIdMovimiento+"')"
         return this.client.query(quer)
             .then(res => {
                 console.table(res.rows)

@@ -190,7 +190,7 @@ app.post('/modificar-zona', function(req,res){
 app.post('/modificar-rama', function(req, res){
     const { idZona, idRama, nombre, idJefeNuevo1, idJefeNuevo2, idJefeViejo1, idJefeViejo2 } = req.body;
     try{
-        controlador.modificarRama(idMovimiento, idZona, idRama, nombre, idJefeNuevo1, idJefeNuevo2, idJefeViejo1, idJefeNuevo2, idJefeViejo2)
+        controlador.modificarRama(idMovimiento, idZona, idRama, nombre, idJefeNuevo1, idJefeNuevo2, idJefeViejo1, idJefeViejo2)
         .then( () => {
             return res.json({ success: true})
         })

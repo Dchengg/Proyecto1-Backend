@@ -237,8 +237,8 @@ export default class Controlador{
             }
 
             if(idJefeNuevo2 != idJefeViejo2 && idJefeViejo2 && idJefeNuevo1 != idJefeViejo2){
-                this.dao.verificarEliminarJefe(rama, idJefeViejo2)
-                await this.dao.eliminarJefeGrupo(idJefeViejo2,idZona, idRama, idGrupo,  idMovimiento)
+                this.verificarEliminarJefe(rama, idJefeViejo2)
+                await this.dao.eliminarJefeGrupo(idJefeViejo2,idZona, idRama, idGrupo, idMovimiento)
             }
 
             if(idJefeNuevo1 && idJefeNuevo1 != idJefeViejo1 && idJefeNuevo1 != idJefeViejo2){
