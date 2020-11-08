@@ -5,7 +5,8 @@ const logger = require('morgan');
 const bodyParser = require('body-parser');
 import Controlador from './Controlador/Controlador';
 import ControladorLogin from './Controlador/ControladorLogin';
-import DAO from "./Controlador/DAO";
+
+
 
 var app = express();
 app.use(cors({origin: [
@@ -34,7 +35,6 @@ app.listen(API_PORT, function(){
 
 var controlador = new Controlador();
 var controladorLogin = new ControladorLogin(controlador);
-var dao = new DAO();
 //var creador = new Creador(controlador);
 var idMovimiento = '4000042145';
 //creador.iniciarAPI();
@@ -50,7 +50,6 @@ app.post('/iniciar-sesion', function(req, res){
         var loggedIn;
         var logInPromise = controladorLogin.verificarCombinación(id, pass)
             .then(res => {
-                console.log(res);
                 loggedIn = res.encontrado;
                 req.session.idMovimiento = res.idMovimiento
             })
@@ -61,7 +60,6 @@ app.post('/iniciar-sesion', function(req, res){
             .finally(() => {
                 if(loggedIn){
                     req.session.idAsesor = id;
-                    console.log(req.session.idAsesor + "||||||||||||||||||||||||||||||");
                     return res.json({ success: true});
                 }
                 return res.json({ success: false});
@@ -73,14 +71,19 @@ app.post('/iniciar-sesion', function(req, res){
 })
 
 //////////////////////////////
-///   CREATIONS
+///   CREAR
 //////////////////////////////
 
-app.get('/crear-miembro', function(req, res){
+app.post('/crear-miembro', function(req, res){
     const {idMiembro, nombre, celular, email, provincia, canton,distrito, senas, posible_monitor, idZona, idRama, idGrupo} = req.body;
     try{
-        controlador.crearMiembro(idMiembro, nombre, celular, email, provincia, canton,distrito, idMovimiento, idZona, idRama, idGrupo);
-        return res.json({success: true})
+        controlador.crearMiembroNuevo(idMiembro, nombre, celular, email, provincia, canton,distrito, senas, posible_monitor, idMovimiento, idZona, idRama, idGrupo)
+        .then(() => {
+            return res.json({success: true});
+        })
+        .catch(err => {
+            return res.json({success: false, error: {message: err.message}})
+        })
     }
     catch(err){
         console.log(err);
@@ -89,32 +92,45 @@ app.get('/crear-miembro', function(req, res){
 })
 
 app.post('/crear-zona', function(req,res){
-    const { idZona, nombre } = req.body
+    const { nombre } = req.body
     try{
-        controlador.crearZona(idMovimiento, idZona, nombre)
-        return res.json({ success: true})
+        controlador.crearZonaNueva(idMovimiento, nombre)
+        .then( () => {
+            return res.json({ success: true})
+        })
+        .catch(err => {
+            return res.json({success: false, error: {message:err.message}})
+        })
     }catch(err){
-        console.log(err);
         return res.json({success: false, error: err})
     }
 })
 
 app.post('/crear-rama', function(req,res){
-    const { idZona, idRama, nombre} = req.body
+    const { idZona,nombre} = req.body
     try{
-        controlador.crearRama(idMovimiento, idZona, idRama, nombre)
-        return res.json({ success: true})
+        controlador.crearRamaNueva(idMovimiento, idZona, nombre)
+        .then( () => {
+            return res.json({success: true})
+        })
+        .catch(err => {
+            return res.json({success: false, error: {message:err.message} })
+        })
     }catch(err){
-        console.log(err);
         return res.json({success: false, error: err})
     }
 })
 
 app.post('/crear-grupo', function(req,res){
-    const { idMovimiento, idZona, idRama, idGrupo, nombre, idEncargado1, idEncargado2} = req.body
+    const { idZona, idRama, idGrupo, nombre, idEncargado1, idEncargado2, isMonitor} = req.body
     try{
-        controlador.crearGrupo(idZona, idRama, idGrupo, nombre, idEncargado1, idEncargado2);
-        return res.json({ success: true})
+        controlador.crearGrupoNuevo(idMovimiento, idZona, idRama, idGrupo, nombre, idEncargado1, idEncargado2, isMonitor)
+        .then( () => {
+            return res.json({ success: true})
+        })
+        .catch(err => {
+            return res.json({success: false, error:{message: err.message}})
+        })
     }catch(err){
         console.log(err);
         return res.json({success: false, error: err})
@@ -127,9 +143,9 @@ app.post('/crear-grupo', function(req,res){
 //////////////////////////////
 
 app.post('/modificar-miembro', function(req, res){
-    const {idMiembro, nombre, celular, email, provincia, canton,distrito, senas, posible_monitor, idZona, idRama, idGrupo} = req.body;
+    const {idMiembro, nombre, celular, email, provincia, canton,distrito, senas, posible_monitor} = req.body;
     try{
-        controlador.modificarMiembro(idMiembro, nombre, celular, email, provincia, canton, distrito, senas, posible_monitor,'4000042145' ,  idZona, idRama, idGrupo)
+        controlador.modificarMiembro(idMiembro, nombre, celular, email, provincia, canton, distrito, senas, posible_monitor, idMovimiento)
         return res.json({success: true})
     }catch(err){
         console.log(err);
@@ -138,10 +154,64 @@ app.post('/modificar-miembro', function(req, res){
 })
 
 app.post('/modificar-movimiento', function(req,res){
-    const {idMovimiento, idAsesor, nombre, direccionWeb, logo, pais, provincia, canton, distrito, senas} = req.body;
+    const  { nombre, direccionWeb, logo, pais, provincia, canton, distrito, senas, telefonos} = req.body;
     try{
-        controlador.modificarMovimiento(idMovimiento, idAsesor, nombre, direccionWeb, logo, pais, provincia, canton, distrito, senas);
-        return res.json({ success: true })
+        controlador.modificarMovimiento(idMovimiento, nombre, direccionWeb, logo, pais, provincia, canton, distrito, senas, telefonos)
+        .then( () => {
+            return res.json({ success: true })
+        })
+        .catch(err => {
+            return res.json({success: false, error: {message: err.message  }})
+        })
+    }catch(err){
+        console.log(err);
+        return res.json({success: false, error: {message: err}})
+    }
+})
+
+app.post('/modificar-zona', function(req,res){
+    const { idZona, nombre, idJefeNuevo1, idJefeNuevo2, idJefeViejo1, idJefeViejo2} = req.body;
+    try{
+        var promise = controlador.modificarZona(idMovimiento, idZona, nombre, idJefeNuevo1, idJefeNuevo2, idJefeViejo1, idJefeViejo2);
+        Promise.resolve(promise)
+            .finally(() => {
+                return res.json({ success: true })
+            })
+            .catch(err => {
+                throw err
+            })
+    }catch(err){
+        console.log(err);
+        return res.json({success: false, error: err})
+    }
+})
+
+app.post('/modificar-rama', function(req, res){
+    const { idZona, idRama, nombre, idJefeNuevo1, idJefeNuevo2, idJefeViejo1, idJefeViejo2 } = req.body;
+    try{
+        controlador.modificarRama(idMovimiento, idZona, idRama, nombre, idJefeNuevo1, idJefeNuevo2, idJefeViejo1, idJefeViejo2)
+        .then( () => {
+            return res.json({ success: true})
+        })
+        .catch(err => {
+            return res.json({success: false, error: {message:err.message}})
+        })
+    }catch(err){
+        console.log(err);
+        return res.json({success: false, error: err})
+    }
+})
+
+app.post('/modificar-grupo', function(req, res){
+    const { idZona, idRama, idGrupo, nombre, isMonitor,  idJefeNuevo1, idJefeNuevo2, idJefeViejo1, idJefeViejo2 } = req.body;
+    try{
+        controlador.modificarGrupo(idMovimiento, idZona, idRama, idGrupo, nombre, isMonitor, idJefeNuevo1, idJefeNuevo2, idJefeViejo1, idJefeViejo2)
+        .then( () => {
+            return res.json({ success: true})
+        })
+        .catch(err => {
+            return res.json({success: false, error: {message:err.message}})
+        })
     }catch(err){
         console.log(err);
         return res.json({success: false, error: err})
@@ -155,7 +225,7 @@ app.post('/modificar-movimiento', function(req,res){
 //////////////////////////////
 
 app.post('/get-movimiento', function(req, res){
-    const { idMovimiento } = req.body;
+    //const { idMovimiento } = req.body;
     try{
         var movimiento = controlador.getMovimiento(idMovimiento);
         return res.json({ success: true,  movimiento: movimiento })
@@ -170,7 +240,7 @@ app.post('/get-zona', function(req, res){
     console.log(idZona);        
     try{
         var zona = controlador.getZona(idMovimiento, idZona)
-        return res.json({ success: true, zona, hijos: Object.fromEntries(zona.composites)})
+        return res.json({ success: true, zona, ramas: Object.fromEntries(zona.composites)})
     }catch(err){
         console.log(err);
         return res.json({ success: false, error: err})
@@ -181,7 +251,7 @@ app.post('/get-rama', function(req,res){
     const { idZona, idRama } = req.body
     try{
         var rama = controlador.getRama(idMovimiento, idZona, idRama)
-        return res.json({ success: true ,rama, hijos: Object.fromEntries(rama.composites)})
+        return res.json({ success: true ,rama, grupos: Object.fromEntries(rama.composites)})
     }catch(err){
         console.log(err);
         return res.json({success: false, error: err})
@@ -192,7 +262,7 @@ app.post('/get-grupo', function(req,res){
     const { idZona, idRama, idGrupo } = req.body
     try{
         var grupo = controlador.getGrupo(idMovimiento, idZona, idRama, idGrupo)
-        return res.json({ success: true ,grupo, hijos: Object.fromEntries(grupo.composites)})
+        return res.json({ success: true ,grupo, miembros: Object.fromEntries(grupo.composites)})
     }catch(err){
         console.log(err);
         return res.json({success: false, error: err})
@@ -204,7 +274,7 @@ app.post('/get-miembro', function(req, res){
     try{
         var miembro = controlador.getMiembro(idMovimiento, idMiembro);
         var grupos;
-        var gruposPromise = controlador.getGruposMiembro(idMovimiento, idMiembro)
+        var gruposPromise = controlador.getGruposMiembro(idMiembro)
             .then(res => {
                 grupos = res;
             })
@@ -246,21 +316,32 @@ app.post('/consultar-ramas',function(req, res){
 app.post('/consultar-ramas-disponibles',function(req, res){
     const { idMiembro } = req.body;
     try{
-        var ramas;
-        var ramasPromise = controlador.consultarRamasDisponibles(idMovimiento, idMiembro)
-            .then(res => {
-                ramas = res
-            })
-            .catch(err => {
-                throw err
-            })
-        Promise.resolve(ramasPromise)
-            .finally(() => {
-                return res.json({success: true, ramas :Object.fromEntries(ramas)})
-            })
+        controlador.consultarRamasDisponibles(idMiembro)
+        .then( ramas => {
+            return res.json({success: true, ramas})
+        })
+        .catch(err => {
+            return res.json({success: false, error: {message:err.mesasage}})
+        })
     }catch(err){
         console.log(err);
         return res.json({success: false, error: err});
+    }
+})  
+
+app.post('/consultar-ramas-miembro', function(req, res){
+    const { idMiembro } = req.body;
+    try{
+        controlador.consultarRamasMiembro(idMiembro)
+        .then( ramas => {
+            return res.json({success:true, ramas})
+        })
+        .catch(err => {
+            return res.json({success: false, error: {message: err.message}})
+        })
+    }catch(err){
+        console.log(err);
+        return res.json({success:false, error: err})
     }
 })
 
@@ -275,9 +356,24 @@ app.post('/consultar-grupos',function(req, res){
     }
 })
 
+app.post('/consultar-grupo-miembro-en-rama', function(req, res){
+    const { idZona, idRama, idMiembro} = req.body;
+    try{
+        controlador.consultarGrupoDeMiembroEnRama(idMovimiento, idZona, idRama, idMiembro)
+        .then( grupo => {
+            return res.json({success: true, grupo})
+        })
+        .catch( err => {
+            return res.json({success:false, error: {mesasage: err.message}})
+        })
+    }catch(err){
+        console.log(err);
+        return res.json({success: false, error: err})
+    }
+})
+
 app.post('/consultar-miembros-grupo', function(req, res){
     const { idZona, idRama, idGrupo} = req.body;
-    //var idMiembro = "123";
     try{
         var miembros = controlador.consultarMiembrosGrupo(idMovimiento, idZona, idRama, idGrupo);   
         return res.json({success: true, miembros: Object.fromEntries(miembros)})
@@ -287,6 +383,62 @@ app.post('/consultar-miembros-grupo', function(req, res){
     }
 })
 
+app.post('/consultar-miembros-rama', function(req, res){
+    const { idZona, idRama } = req.body;
+    try{
+        var miembros = controlador.consultarMiembrosRama(idMovimiento, idZona, idRama);
+        return res.json({success: true, miembros})
+    }catch(err){
+        console.log(err);
+        return res.json({success: false, error: err})
+    }
+})
+
+app.post('/consultar-miembros-zona', function(req, res){
+    const { idZona } = req.body;
+    try{
+        var miembros = controlador.consultarMiembrosZona(idMovimiento, idZona);
+        return res.json({success: true, miembros})
+    }catch(err){
+        console.log(err);
+        return res.json({success: false, error: err})
+    }
+})
+
+app.post('/consultar-monitores-probables', function(req, res) {
+    const {idZona, idRama, idGrupo } = req.body;
+    try{
+        controlador.consultarMonitoresProbables(idMovimiento, idZona, idRama, idGrupo)
+        .then(monitores => {
+            return res.json( {success: true, monitores})
+        })
+        .catch(err => {
+            return res.json( { success: false, error: {message:err.message}})
+        })
+    }catch(err){
+        console.log(err);
+        return res.json( { success: false, error: err})
+    }
+})
+
+app.post('/consultar-monitores-zona', function(req, res) {
+    const { idZona } = req.body;
+    try{
+        controlador.consultarMonitoresZona(idMovimiento, idZona)
+        .then(monitores => {
+            return res.jsonp({success: true, monitores})
+        })
+        .catch(err => {
+            return res.json({ success: false, error:{message:err.message}})
+        })
+    }catch(err){
+        console.log(err);
+        return res.json({ success: false, error: err})
+    }
+})
+
+
+
 
 //////////////////////////////
 ///   EXTRA
@@ -295,29 +447,53 @@ app.post('/consultar-miembros-grupo', function(req, res){
 app.post('/agregar-miembro-grupo', function(req, res){
     const {idZona, idRama, idGrupo, idMiembro} = req.body;
     try{
-        controlador.agregarMiembroGrupo(idMovimiento, idZona, idRama, idGrupo, idMiembro);
-        return res.json({success: true});
+        controlador.agregarMiembroNuevoAGrupo(idMovimiento, idZona, idRama, idGrupo, idMiembro)
+        .then( () => {
+            res.json({success: true})
+        })
+        .catch( err => {
+            res.json({success: false, error:{message:err.message}})
+        })
     }catch(err){
         console.log(err);
         return res.json({ success: false, error: err})
     }
 })
 
-app.post('/asignar-jefe-grupo', function(req, res){
-    const {idZona, idRama, idGrupo, idMiembro, idMiembro2} = req.body;
+app.post('/cambio-de-grupo', function(req, res){
+    const{ idZona, idRama, idGrupoViejo, idGrupoNuevo, idMiembro } = req.body;
     try{
-        controlador.asignarJefeGrupo(idMovimiento, idZona, idRama, idGrupo, idMiembro ,idMiembro2)
-        return res.json({success: true});
+        /*controlador.agregarMiembroNuevoAGrupo(idMovimiento, idZona, idRama, idGrupoNuevo, idMiembro)
+        .then( () => {
+            controlador.eliminarMiembroGrupo(idMovimiento, idZona, idRama, idGrupoViejo, idMiembro)
+            .then( () => {
+                return res.json({ success: true});
+            })
+            .catch(err => {
+                controlador.eliminarMiembroGrupo(idMovimiento, idZona, idRama, idGrupoNuevo, idMiembro);
+                throw err
+            })
+        })
+        .catch( err => {
+            return res.json({success: false, error: {message: err.message}})
+        })*/
+        controlador.cambioDeGrupo(idMovimiento, idZona, idRama, idGrupoNuevo, idGrupoViejo, idMiembro)
+        .then( () => {
+            return res.json({success: true})
+        })
+        .catch( err => {
+            return res.json({success: false, error: { message: err.message}})
+        })
     }catch(err){
         console.log(err);
-        return res.json({ success: false, error: err})
+        return res.json({ success: false, error:err.mesasage})
     }
 })
 
-app.post('/asignar-jefe-rama', function(req, res){
-    const {idZona, idRama, idMiembro, idMiembro2} = req.body;
+app.post('/asignar-encargado-grupo', function(req, res){
+    const {idZona, idRama, idGrupo, idMiembro, idMiembro2, isMonitor} = req.body;
     try{
-        controlador.asignarJefeRama(idMovimiento, idZona, idRama, idMiembro, idMiembro2, idMiembro2)
+        controlador.asignarEncargadoGrupo(idMovimiento, idZona, idRama, idGrupo, idMiembro ,idMiembro2, isMonitor)
         return res.json({success: true});
     }catch(err){
         console.log(err);
@@ -325,10 +501,10 @@ app.post('/asignar-jefe-rama', function(req, res){
     }
 })
 
-app.post('/asignar-jefe-zona', function(req, res){
-    const {idZona, idRama, idMiembro, idMiembro2} = req.body;
+app.post('/asignar-encargado-rama', function(req, res){
+    const {idZona, idRama, idMiembro, idMiembro2, isMonitor} = req.body;
     try{
-        controlador.asignarJefeRama(idMovimiento, idZona, idRama, idMiembro,idMiembro2, idMiembro2)
+        controlador.asignarEncargadoRama(idMovimiento, idZona, idRama, idMiembro, idMiembro2, idMiembro2, isMonitor)
         return res.json({success: true});
     }catch(err){
         console.log(err);
@@ -336,6 +512,16 @@ app.post('/asignar-jefe-zona', function(req, res){
     }
 })
 
+app.post('/asignar-encargado-zona', function(req, res){
+    const {idZona, idMiembro, idMiembro2, isMonitor} = req.body;
+    try{
+        controlador.asignarEncargadoZona(idMovimiento, idZona, idMiembro,idMiembro2, idMiembro2, isMonitor)
+        return res.json({success: true});
+    }catch(err){
+        console.log(err);
+        return res.json({ success: false, error: err})
+    }
+})
 
 app.get('/showSession', (req, res) =>{
     res.send(req.session);

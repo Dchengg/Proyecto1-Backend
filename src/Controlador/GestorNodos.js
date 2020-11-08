@@ -5,16 +5,16 @@ export default class GestorNodos{
         this.zonas = new Map();
     }
 
-    crearZona(idZona, nombre){
+    crearZona(idZona, nombre, idEncargado1, idEncargado2){
         if(this.zonas.has(idZona)){
             throw {message: "Ya hay una zona con ese id"}
         }
-        this.zonas.set(idZona, new Nodo(idZona, nombre));
+        this.zonas.set(idZona, new Nodo(idZona, nombre, idEncargado1, idEncargado2, false));
     }
 
-    crearRama(idZona, idRama, nombre){
+    crearRama(idZona, idRama, nombre, idEncargado1, idEncargado2){
         var zona = this.getZona(idZona);
-        zona.agregar(new Nodo(idRama, nombre));
+        zona.agregar(new Nodo(idRama, nombre, idEncargado1, idEncargado2, false));
     }
 
     agregarMiembro(idZona, idRama, idGrupo, miembro){
@@ -22,15 +22,19 @@ export default class GestorNodos{
         grupo.agregar(miembro); 
     }
 
-    crearGrupo(idZona, idRama, idGrupo, nombre, idEncargado1, idEncargado2, isJefe){
+    crearGrupo(idZona, idRama, idGrupo, nombre, idEncargado1, idEncargado2, isMonitor){
         var rama = this.getRama(idZona, idRama)
-        rama.agregar(new Nodo(idGrupo, nombre, idEncargado1, idEncargado2, isJefe))
+        rama.agregar(new Nodo(idGrupo, nombre, idEncargado1, idEncargado2, isMonitor))
     }
 
     consultarRamas(idZona){
         var zona = this.getZona(idZona);
         return zona.composites;
-        
+    }
+
+    eliminarDeGrupo(idZona, idRama, idGrupo, idMiembro){
+        var grupo = this.getGrupo(idZona, idRama, idGrupo);
+        grupo.eliminar(idMiembro);
     }
 
     consultarGrupos(idZona, idRama){
@@ -42,6 +46,21 @@ export default class GestorNodos{
         var grupo = this.getGrupo(idZona, idRama, idGrupo);
         return grupo.composites;
     }
+
+    consultarMiembrosNodo(nodo){
+        var miembros = []
+        var nodos = nodo.composites;
+        nodos.forEach( function(value, key ) {
+            if(value.encargado1 && !miembros.find(element => element == value.encargado1)){
+                miembros.push(value.encargado1)
+            }
+            if(value.encargado2 && !miembros.find(element => element == value.encargado2)){
+                miembros.push(value.encargado2)
+            }
+        });
+        return miembros;
+    }
+
     
     getZona(idZona){
         var zona = this.zonas.get(idZona);

@@ -15,5 +15,6 @@ export default class Movimiento{
         this.senas = senas;
         this.gMiembros = new GestorMiembros();
         this.gNodos = new GestorNodos();
+        this.telefonos = []
     }
 }
