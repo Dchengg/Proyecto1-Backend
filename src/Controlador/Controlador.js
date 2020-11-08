@@ -45,7 +45,6 @@ export default class Controlador{
         if(!nombre){
             nombre = idZona+idRama+idGrupo;
         }
-        console.log(nombre)
         await this.dao.insertarGrupo(idMovimiento, idZona, idRama, idGrupo, isMonitor, nombre, idEncargado1, idEncargado2);
         this.agregarGrupo(idMovimiento, idZona, idRama, idGrupo, nombre, isMonitor, idEncargado1, idEncargado2)
     }
@@ -65,6 +64,13 @@ export default class Controlador{
             throw err
         })
         this.agregarMiembro(idMiembro, nombre, celular, email, provincia, canton, distrito, senas, posible_monitor, idMovimiento, idZona, idRama, idGrupo);
+    }
+
+    async cambioDeGrupo(idMovimiento, idZona, idRama, idGrupoNuevo, idGrupoViejo, idMiembro){
+        await this.dao.cambioMiembroGrupo(idMiembro, idGrupoViejo, idGrupoNuevo, idRama, idZona, idMovimiento);
+        this.agregarMiembroGrupo(idMovimiento, idZona, idRama, idGrupoNuevo, idMiembro);
+        var movimiento = this.getMovimiento(idMovimiento);
+        movimiento.gNodos.eliminarDeGrupo(idZona, idRama, idGrupoViejo, idMiembro);
     }
 
 
@@ -133,12 +139,9 @@ export default class Controlador{
     async modificarMovimiento(idMovimiento,nombre, direccionWeb, logo, pais, provincia, canton, distrito, senas, telefonos){
         var movimiento = this.getMovimiento(idMovimiento);
         movimiento.telefonos = []
-        console.log(telefonos)
         for(var i in telefonos){
-            console.log(i);
             movimiento.telefonos.push(telefonos[i]);
         }
-        console.log(movimiento.telefonos)
         await this.dao.modificarMovimiento(idMovimiento, nombre, pais, provincia, canton, distrito, senas, direccionWeb, logo, movimiento.telefonos);
         movimiento.cedulaJuridica = idMovimiento;
         movimiento.nombre = nombre;
@@ -177,13 +180,11 @@ export default class Controlador{
             zona.setEncargado1(idJefeNuevo1);
             zona.setEncargado2(idJefeNuevo2);
         }catch(err){
-            console.log(err);
             throw err
         }
     }
 
     verificarEliminarJefe(nodo, idJefeViejo){
-        console.log(idJefeViejo)
         if(nodo.encargado1 == idJefeViejo || nodo.encargado2 == idJefeViejo){
             var contador = 0;
             var composites = nodo.composites;
@@ -223,7 +224,6 @@ export default class Controlador{
             rama.setEncargado1(idJefeNuevo1);
             rama.setEncargado2(idJefeNuevo2);
         }catch(err){
-            console.log(err);
             throw err
         }
     }
@@ -250,7 +250,6 @@ export default class Controlador{
             }
             
             if(idJefeNuevo2 && idJefeNuevo2 != idJefeViejo1 && idJefeNuevo2 != idJefeViejo2){
-                console.log("idJefeNuevo2")
                 if(isMonitor){
                     await this.dao.asignarMonitorGrupo(idJefeNuevo2,idZona, idRama, idGrupo, idMovimiento)
                 }else{
@@ -266,7 +265,6 @@ export default class Controlador{
             grupo.setEncargado1(idJefeNuevo1);
             grupo.setEncargado2(idJefeNuevo2);
         }catch(err){
-            console.log(err);
             throw err
         }
     }
@@ -302,7 +300,6 @@ export default class Controlador{
             var ramas = this.dao.otrasRamas(idMiembro)
             return ramas;
         }catch(err){
-            console.log(err)
             throw err
         }
     }

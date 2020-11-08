@@ -437,45 +437,18 @@ export default class DAO{
                 throw err
             })
     }
-    /*
-    getJefesXZona(idZona){
-        const quer="select * from Zona inner join GrupoMiembros on GrupoMiembros.id_zona=Zona.id_zona inner join GrupoMiembrosRol on GrupoMiembros.id_lider=GrupoMiembrosRol.id_lider where zona.id_zona = "
-        return this.client.query(quer+idZona+" and GrupoMiembros.id_lider = 4")
-            .then(res => {
-                console.table(res.rows)
-                return res.rows;
-            })
-            .catch(err => {
-                console.log(err)
-                this.client.end()
-            })
-    }
 
-    getJefesXRama(idRama){
-        const quer="select * from Rama inner join GrupoMiembros on GrupoMiembros.id_rama=Rama.id_rama inner join GrupoMiembrosRol on GrupoMiembros.id_lider=GrupoMiembrosRol.id_lider where Rama.id_rama = "
-        return this.client.query(quer+idRama+" and GrupoMiembros.id_lider = 3 ")
+    async cambioMiembroGrupo(pCedula,pIdGrupoViejo, pIdGrupoNuevo, pIdRama, pIdZona, pIdMovimiento){
+        const quer="select * from cambiarmiembrogrupo ('"+pCedula+"','"+pIdGrupoViejo+"','"+pIdGrupoNuevo+"',"+pIdRama+","+pIdZona+",'"+pIdMovimiento+"')"
+        return this.client.query(quer)
             .then(res => {
                 console.table(res.rows)
                 return res.rows;
             })
             .catch(err => {
-                console.log(err)
-                this.client.end()
+                throw err
             })
-    }
-
-    getJefesXGrupo(idGrupo){
-        const quer="select * from Grupo inner join GrupoMiembros on GrupoMiembros.id_grupo=Grupo.id_grupo inner join GrupoMiembrosRol on GrupoMiembros.id_lider=GrupoMiembrosRol.id_lider where Grupo.id_grupo = "
-        return this.client.query(quer+idGrupo+" and GrupoMiembros.id_lider = 2")
-            .then(res => {
-                console.table(res.rows)
-                return res.rows;
-            })
-            .catch(err => {
-                console.log(err)
-                this.client.end()
-            })
-    }*/
+    } 
 
     async getAllGrupoMiembros(){
         const quer="select * from GrupoMiembros"
@@ -659,78 +632,3 @@ export default class DAO{
             })
     }
 }
-const dao=new DAO();
-//dao.ramasDeMiembros("117940925");
-
-//dao.getGruposMiembroxMiembro('117940925');
-
-//dao.grupoDeMiembroEnRama('4000042145',1,3,'117940925');
-//
-//dao.getGruposMiembroxMiembro('117940925');
-
-//dao.getGruposXMiembro('117480362');
-
-
-//dao.monitoresProbables('4000042145',1,1,1)
-//dao.modificarZona('4000042145',1,"GAM");
-//dao.getZonaXMovimiento('4000042145');
-//dao.getRamaXMovimiento('4000042145');
-//dao.modificarRama('4000042145',1,7,"Rama Prueba");
-//dao.getRamaXMovimiento('4000042145');
-//dao.getGrupoXMovimiento('4000042145');
-//dao.modificarZona();
-//dao.modificarRama();
-//dao.modificarGrupo('4000042145',1,2,1234,true,"Rescata Serpientes");
-//dao.getGrupos();
-//dao.getZonas();
-//dao.insertarZona('4000042145',"Zona Norte");
-//dao.getRamas();
-//dao.insertarRama('4000042145',1,"Rama Prueba");
-//dao.getRamaXMovimiento('4000042145');
-//dao.getGrupoMiembros(1);
-//dao.getAsesor('117380721');
-//dao.getZonaXMovimiento('4000042145');
-//dao.getTelefonoMovimiento('4000042145');
-//dao.getAllGrupoMiembros();
-//dao.getGruposXMiembro('117940925');
-//dao.getZonaXMovimiento('4000042145');
-//dao.getJefesXZona(1);
-//dao.getMiembroXMovimiento("4000042145");
-//dao.loginAsesor("'117380721'","'Yoquese'");
-//dao.getMovimientoXAsesor("'117380721'");
-//dao.getGrupo(1);
-//contrasena: 'Yoquese'
-//cedula: '117380721'
-//dao.getGrupoMiembrosRol();
-//dao.getTelefonoMovimiento();
-//dao.getGrupoMiembros();
-//dao.getRamas();
-//dao.getGrupo();
-//dao.getAsesor();
-//Movimiento: '4000042145'
-//dao.getMiembrosXGrupo(1);
-//dao.getGrupoXMovimiento('4000042145');
-//'Rescata gatos'
-/*
-1-Modificar mov, zona, rama, grupo
-    Listo
-    modificarZona(pIdMovimiento,pIdZona,pNombre)
-    modificarRama(pIdMovimiento,pIdZona,pIdRama,pNombre)
-    modificarGrupo(pIdMovimiento,pIdZona,pIdRama,pIdGrupo,pB_Monitores,pNombre,pJefe1,pJefe2)
-2-Listo dao.getGruposXMiembro(cedula);
-3-insertarGrupo(idMovimiento,idZona,idRama,idGrupo,bMonitores,pNombre)
-    insertarRama(pIdMovimiento,pIdZona,pNombre)
-    insertarZona(pIdMovimiento,pNombre)
-    FALTA INSERTAR MOVIMIENTO
-4-LIsto getJefesXZona(idZona)
-5-Listo Modificar jefes:
-    asignarJefeGrupo(idGrupo,cedulaMiembro,idRama,idZona,idMovimiento)
-    asignarJefeRama(idRama,cedulaMiembro,idZona,idMovimiento)
-    asignarJefeZona(cedulaMiembro,idZona,idMovimiento)
-    eliminarJefeGrupo(pCedula,pIdGrupo,pIdRama,pIdZona,pIdMovimiento)
-    eliminarJefeRama(pCedula,pIdRama,pIdZona,pIdMovimiento)
-    eliminarJefeZona(pCedula,pIdZona,pIdMovimiento)
-6-Listo eliminar miembro de grupo:
-    eliminarDeGrupo(pCedula,pIdGrupo,pIdRama,pIdZona,pIdMovimiento)
-7-Listo insertarMiembroAGrupo(idGrupo,cedula,idRama,idZona,idMovimiento)
-*/

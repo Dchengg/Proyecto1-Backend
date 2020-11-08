@@ -40,7 +40,6 @@ export default class Creador{
     } 
 
     cargarZonasMovimiento(idMovimiento){
-        console.log(idMovimiento)
         this.dao.getZonaXMovimiento(idMovimiento)
             .then(res => {
                 for(var i in res){
@@ -78,7 +77,6 @@ export default class Creador{
                 for(var i in res){
                     try{
                         var grupo = res[i];
-                        console.log(grupo)
                         this.controlador.agregarGrupo(idMovimiento, grupo.id_zona.toString(), grupo.id_rama.toString(), grupo.id_grupo.toString(), grupo.nombre, grupo.b_monitor, grupo.jefe1, grupo.jefe2);             
                     }catch(err){
                         console.log(err);

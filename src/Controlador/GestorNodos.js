@@ -50,7 +50,6 @@ export default class GestorNodos{
     consultarMiembrosNodo(nodo){
         var miembros = []
         var nodos = nodo.composites;
-        console.log(nodos);
         nodos.forEach( function(value, key ) {
             if(value.encargado1 && !miembros.find(element => element == value.encargado1)){
                 miembros.push(value.encargado1)

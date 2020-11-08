@@ -51,7 +51,6 @@ app.post('/iniciar-sesion', function(req, res){
         var loggedIn;
         var logInPromise = controladorLogin.verificarCombinación(id, pass)
             .then(res => {
-                console.log(res);
                 loggedIn = res.encontrado;
                 req.session.idMovimiento = res.idMovimiento
             })
@@ -62,7 +61,6 @@ app.post('/iniciar-sesion', function(req, res){
             .finally(() => {
                 if(loggedIn){
                     req.session.idAsesor = id;
-                    console.log(req.session.idAsesor + "||||||||||||||||||||||||||||||");
                     return res.json({ success: true});
                 }
                 return res.json({ success: false});
@@ -466,20 +464,7 @@ app.post('/agregar-miembro-grupo', function(req, res){
 app.post('/cambio-de-grupo', function(req, res){
     const{ idZona, idRama, idGrupoViejo, idGrupoNuevo, idMiembro } = req.body;
     try{
-        /*controlador.eliminarMiembroGrupo(idMovimiento, idZona, idRama, idGrupoViejo, idMiembro)
-        .then( () => {
-            controlador.agregarMiembroNuevoAGrupo(idMovimiento, idZona, idRama, idGrupoNuevo, idMiembro)
-            .then( () => {
-                return res.json({ success: true});
-            })
-            .catch(err => {
-                throw err
-            })
-        })
-        .catch(err => {
-            return res.json({success: false, error: {message: err.message}})
-        }) */
-        controlador.agregarMiembroNuevoAGrupo(idMovimiento, idZona, idRama, idGrupoNuevo, idMiembro)
+        /*controlador.agregarMiembroNuevoAGrupo(idMovimiento, idZona, idRama, idGrupoNuevo, idMiembro)
         .then( () => {
             controlador.eliminarMiembroGrupo(idMovimiento, idZona, idRama, idGrupoViejo, idMiembro)
             .then( () => {
@@ -492,10 +477,17 @@ app.post('/cambio-de-grupo', function(req, res){
         })
         .catch( err => {
             return res.json({success: false, error: {message: err.message}})
+        })*/
+        controlador.cambioDeGrupo(idMovimiento, idZona, idRama, idGrupoNuevo, idGrupoViejo, idMiembro)
+        .then( () => {
+            return res.json({success: true})
+        })
+        .catch( err => {
+            return res.json({success: false, error: { message: err.message}})
         })
     }catch(err){
         console.log(err);
-        return res.json({ success: false, error:err})
+        return res.json({ success: false, error:err.mesasage})
     }
 })
 
