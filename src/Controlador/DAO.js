@@ -655,7 +655,7 @@ const dao=new DAO();
 //
 //dao.getGruposMiembroxMiembro('117940925');
 
-//dao.getGruposXMiembro('117940925');
+//dao.getGruposXMiembro('117480362');
 
 
 //dao.monitoresProbables('4000042145',1,1,1)

@@ -296,7 +296,7 @@ export default class Controlador{
 
     async consultarRamasDisponibles(idMovimiento, idMiembro){
         try{
-            var gruposDeMiembro = await this.getGruposMiembro(idMovimiento, idMiembro);
+            var gruposDeMiembro = await this.getGruposMiembro(idMiembro);
             var ramas = new Map(this.consultarRamas(idMovimiento, gruposDeMiembro[0].id_zona.toString()));
             console.log(ramas)
             for(var i in gruposDeMiembro){
@@ -380,7 +380,6 @@ export default class Controlador{
             var grupos = [];
             const res = await this.dao.getGruposXMiembro(idMiembro);
             for(var i in res){
-                console.log(res[i])
                 var grupoInfo = res[i];
                 grupos.push(grupoInfo);
             }
