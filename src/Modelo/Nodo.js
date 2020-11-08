@@ -40,14 +40,10 @@ export default class Nodo extends Component{
     }
 
     setEncargado1(idEncargado1){
-        if(idEncargado1){
-            this.encargado1 = idEncargado1;
-        }
+        this.encargado1 = idEncargado1;
     }
 
     setEncargado2(idEncargado2){
-        if(idEncargado2){
-            this.encargado2 = idEncargado2;
-        }
+        this.encargado2 = idEncargado2;
     }
 }
