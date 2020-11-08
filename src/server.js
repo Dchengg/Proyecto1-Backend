@@ -208,7 +208,7 @@ app.post('/modificar-rama', function(req, res){
 app.post('/modificar-grupo', function(req, res){
     const { idZona, idRama, idGrupo, nombre, isMonitor,  idJefeNuevo1, idJefeNuevo2, idJefeViejo1, idJefeViejo2 } = req.body;
     try{
-        controlador.modificarGrupo(idMovimiento, idZona, idRama, idGrupo, nombre, isMonitor, idJefeNuevo1, idJefeNuevo2, idJefeViejo1, idJefeNuevo2, idJefeViejo2)
+        controlador.modificarGrupo(idMovimiento, idZona, idRama, idGrupo, nombre, isMonitor, idJefeNuevo1, idJefeNuevo2, idJefeViejo1, idJefeViejo2)
         .then( () => {
             return res.json({ success: true})
         })

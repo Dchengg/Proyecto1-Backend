@@ -241,7 +241,7 @@ export default class Controlador{
                 await this.dao.eliminarJefeGrupo(idJefeViejo2,idZona, idRama, idGrupo,  idMovimiento)
             }
 
-            if(idJefeNuevo1){
+            if(idJefeNuevo1 && idJefeNuevo1 != idJefeViejo1 && idJefeNuevo1 != idJefeViejo2){
                 if(isMonitor){
                     await this.dao.asignarMonitorGrupo(idJefeNuevo1,idZona, idRama, idGrupo, idMovimiento); 
                 }else{
@@ -249,9 +249,10 @@ export default class Controlador{
                 }
             }
             
-            if(idJefeNuevo2){
+            if(idJefeNuevo2 && idJefeNuevo2 != idJefeViejo1 && idJefeNuevo2 != idJefeViejo2){
+                console.log("idJefeNuevo2")
                 if(isMonitor){
-                    await this.dao.asignarMonitorGrupo(idJefeNuevo1,idZona, idRama, idGrupo, idMovimiento)
+                    await this.dao.asignarMonitorGrupo(idJefeNuevo2,idZona, idRama, idGrupo, idMovimiento)
                 }else{
                     await this.dao.asignarJefeGrupo(idJefeNuevo2, idZona, idRama, idGrupo, idMovimiento)
                 }
