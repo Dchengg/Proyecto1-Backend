@@ -45,7 +45,7 @@ export default class Controlador{
         if(!idEncargado2){
             idEncargado2 = ""
         }
-        if(!nombre){
+        if(!nombre || nombre == ""){
             nombre = idzona+idRama+idGrupo;
         }
         await this.dao.insertarGrupo(idMovimiento, idZona, idRama, idGrupo, isMonitor, nombre, idEncargado1, idEncargado2);
