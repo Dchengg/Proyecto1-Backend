@@ -39,14 +39,15 @@ export default class Controlador{
     }
 
     async crearGrupoNuevo(idMovimiento, idZona, idRama, idGrupo, nombre, idEncargado1, idEncargado2, isMonitor){
-        if(!idEncargado2){
-            idEncargado2 = ""
-        }
         if(!nombre){
             nombre = idZona+idRama+idGrupo;
         }
         await this.dao.insertarGrupo(idMovimiento, idZona, idRama, idGrupo, isMonitor, nombre, idEncargado1, idEncargado2);
         this.agregarGrupo(idMovimiento, idZona, idRama, idGrupo, nombre, isMonitor, idEncargado1, idEncargado2)
+        this.agregarMiembroGrupo(idMovimiento, idZona, idRama, idGrupo, idEncargado1);
+        if(idEncargado2){
+            this.agregarMiembroGrupo(idMovimiento, idZona, idRama, idGrupo, idEncargado2);
+        }
     }
 
 
@@ -230,33 +231,44 @@ export default class Controlador{
 
     async modificarGrupo(idMovimiento, idZona, idRama, idGrupo, nombre, isMonitor, idJefeNuevo1, idJefeNuevo2, idJefeViejo1, idJefeViejo2){
         try{
+            var movimiento = this.getMovimiento(idMovimiento);
             var rama = this.getRama(idMovimiento, idZona, idRama);
+            var grupo = this.getGrupo(idMovimiento, idZona, idRama, idGrupo);
             if(idJefeNuevo1 != idJefeViejo1 && idJefeViejo1 && idJefeNuevo2 != idJefeViejo1){
                 this.verificarEliminarJefe(rama,idJefeViejo1)
                 await this.dao.eliminarJefeGrupo(idJefeViejo1,idZona,idRama, idGrupo, idMovimiento)
+                if(grupo.isMonitor){
+                    movimiento.gNodos.eliminarDeGrupo(idZona, idRama, idGrupo, idJefeViejo1);
+                }
             }
 
             if(idJefeNuevo2 != idJefeViejo2 && idJefeViejo2 && idJefeNuevo1 != idJefeViejo2){
                 this.verificarEliminarJefe(rama, idJefeViejo2)
                 await this.dao.eliminarJefeGrupo(idJefeViejo2,idZona, idRama, idGrupo, idMovimiento)
+                if(grupo.isMonitor){
+                    movimiento.gNodos.eliminarDeGrupo(idZona, idRama, idGrupo, idJefeViejo2);
+                }
             }
+            
 
             if(idJefeNuevo1 && idJefeNuevo1 != idJefeViejo1 && idJefeNuevo1 != idJefeViejo2){
                 if(isMonitor){
                     await this.dao.asignarMonitorGrupo(idJefeNuevo1,idZona, idRama, idGrupo, idMovimiento); 
+                    this.agregarMiembroGrupo(idMovimiento, idZona, idRama, idGrupo, idJefeNuevo1);
                 }else{
-                    await this.dao.asignarJefeGrupo(idJefeNuevo1, idZona, idRama, idGrupo, idMovimiento)
+                    await this.dao.asignarJefeGrupo(idJefeNuevo1, idZona, idRama, idGrupo, idMovimiento);
                 }
             }
             
             if(idJefeNuevo2 && idJefeNuevo2 != idJefeViejo1 && idJefeNuevo2 != idJefeViejo2){
                 if(isMonitor){
-                    await this.dao.asignarMonitorGrupo(idJefeNuevo2,idZona, idRama, idGrupo, idMovimiento)
+                    await this.dao.asignarMonitorGrupo(idJefeNuevo2,idZona, idRama, idGrupo, idMovimiento);
+                    this.agregarMiembroGrupo(idMovimiento, idZona, idRama, idGrupo, idJefeNuevo2);
                 }else{
-                    await this.dao.asignarJefeGrupo(idJefeNuevo2, idZona, idRama, idGrupo, idMovimiento)
+                    await this.dao.asignarJefeGrupo(idJefeNuevo2, idZona, idRama, idGrupo, idMovimiento);
                 }
             }
-            var grupo = this.getGrupo(idMovimiento, idZona, idRama, idGrupo);
+            
             if(grupo.nombre != nombre || grupo.isMonitor != isMonitor){
                 await this.dao.modificarGrupo(idMovimiento,idZona,idRama, idGrupo, isMonitor, nombre)
             }
