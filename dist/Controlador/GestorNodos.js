@@ -21,20 +21,20 @@ var GestorNodos = /*#__PURE__*/function () {
 
   (0, _createClass2["default"])(GestorNodos, [{
     key: "crearZona",
-    value: function crearZona(idZona, nombre) {
+    value: function crearZona(idZona, nombre, idEncargado1, idEncargado2) {
       if (this.zonas.has(idZona)) {
         throw {
           message: "Ya hay una zona con ese id"
         };
       }
 
-      this.zonas.set(idZona, new _Nodo["default"](idZona, nombre));
+      this.zonas.set(idZona, new _Nodo["default"](idZona, nombre, idEncargado1, idEncargado2, false));
     }
   }, {
     key: "crearRama",
-    value: function crearRama(idZona, idRama, nombre) {
+    value: function crearRama(idZona, idRama, nombre, idEncargado1, idEncargado2) {
       var zona = this.getZona(idZona);
-      zona.agregar(new _Nodo["default"](idRama, nombre));
+      zona.agregar(new _Nodo["default"](idRama, nombre, idEncargado1, idEncargado2, false));
     }
   }, {
     key: "agregarMiembro",
@@ -44,15 +44,21 @@ var GestorNodos = /*#__PURE__*/function () {
     }
   }, {
     key: "crearGrupo",
-    value: function crearGrupo(idZona, idRama, idGrupo, nombre, idEncargado1, idEncargado2, isJefe) {
+    value: function crearGrupo(idZona, idRama, idGrupo, nombre, idEncargado1, idEncargado2, isMonitor) {
       var rama = this.getRama(idZona, idRama);
-      rama.agregar(new _Nodo["default"](idGrupo, nombre, idEncargado1, idEncargado2, isJefe));
+      rama.agregar(new _Nodo["default"](idGrupo, nombre, idEncargado1, idEncargado2, isMonitor));
     }
   }, {
     key: "consultarRamas",
     value: function consultarRamas(idZona) {
       var zona = this.getZona(idZona);
       return zona.composites;
+    }
+  }, {
+    key: "eliminarDeGrupo",
+    value: function eliminarDeGrupo(idZona, idRama, idGrupo, idMiembro) {
+      var grupo = this.getGrupo(idZona, idRama, idGrupo);
+      grupo.eliminar(idMiembro);
     }
   }, {
     key: "consultarGrupos",
@@ -65,6 +71,26 @@ var GestorNodos = /*#__PURE__*/function () {
     value: function consultarMiembrosGrupo(idZona, idRama, idGrupo) {
       var grupo = this.getGrupo(idZona, idRama, idGrupo);
       return grupo.composites;
+    }
+  }, {
+    key: "consultarMiembrosNodo",
+    value: function consultarMiembrosNodo(nodo) {
+      var miembros = [];
+      var nodos = nodo.composites;
+      nodos.forEach(function (value, key) {
+        if (value.encargado1 && !miembros.find(function (element) {
+          return element == value.encargado1;
+        })) {
+          miembros.push(value.encargado1);
+        }
+
+        if (value.encargado2 && !miembros.find(function (element) {
+          return element == value.encargado2;
+        })) {
+          miembros.push(value.encargado2);
+        }
+      });
+      return miembros;
     }
   }, {
     key: "getZona",

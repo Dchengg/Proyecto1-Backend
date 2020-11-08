@@ -28,15 +28,22 @@ var Nodo = /*#__PURE__*/function (_Component) {
 
   var _super = _createSuper(Nodo);
 
-  function Nodo(id, nombre, encargado1, encargado2, isJefe) {
+  function Nodo(id, nombre, encargado1, encargado2, isMonitor) {
     var _this;
 
     (0, _classCallCheck2["default"])(this, Nodo);
     _this = _super.call(this, id, nombre);
     _this.composites = new Map();
-    _this.encargado1 = encargado1;
-    _this.encargado2 = encargado2;
-    _this.isJefe = isJefe;
+
+    if (encargado1) {
+      _this.encargado1 = encargado1;
+    }
+
+    if (encargado2) {
+      _this.encargado2 = encargado2;
+    }
+
+    _this.isMonitor = isMonitor;
     return _this;
   }
 
@@ -52,17 +59,39 @@ var Nodo = /*#__PURE__*/function (_Component) {
       this.composites.set(registro.id, registro);
     }
   }, {
+    key: "eliminar",
+    value: function eliminar(llave) {
+      this.composites["delete"](llave);
+    }
+  }, {
     key: "buscar",
     value: function buscar(llave) {
       var nodo = this.composites.get(llave);
       return nodo;
     }
   }, {
-    key: "modificar",
-    value: function modificar(registro) {}
+    key: "asignarEncargados",
+    value: function asignarEncargados(miembro, miembro2, isMonitor) {
+      if (miembro) {
+        this.encargado1 = miembro;
+      }
+
+      if (miembro2) {
+        this.encargado2 = miembro2;
+      }
+
+      this.isMonitor = isMonitor;
+    }
   }, {
-    key: "eliminar",
-    value: function eliminar(llave) {}
+    key: "setEncargado1",
+    value: function setEncargado1(idEncargado1) {
+      this.encargado1 = idEncargado1;
+    }
+  }, {
+    key: "setEncargado2",
+    value: function setEncargado2(idEncargado2) {
+      this.encargado2 = idEncargado2;
+    }
   }]);
   return Nodo;
 }(_Component2["default"]);

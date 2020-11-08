@@ -27,6 +27,7 @@ var Movimiento = function Movimiento(cedula, idAsesor, nombre, direccionWeb, log
   this.senas = senas;
   this.gMiembros = new _GestorMiembros["default"]();
   this.gNodos = new _GestorNodos["default"]();
+  this.telefonos = [];
 };
 
 exports["default"] = Movimiento;

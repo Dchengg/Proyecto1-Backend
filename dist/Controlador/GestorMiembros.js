@@ -23,14 +23,12 @@ var GestorMiembros = /*#__PURE__*/function () {
     key: "crearMiembro",
     value: function crearMiembro(idMiembro, nombre, celular, email, provincia, canton, distrito, senas, posible_monitor) {
       if (this.miembros.has(idMiembro)) {
-        throw {
-          message: "Ya hay un miembro con esa cedula"
-        };
+        console.log("Ya hay un miembro con esa cedula");
+      } else {
+        var miembro = new _Miembro["default"](idMiembro, nombre, celular, email, provincia, canton, distrito, senas, posible_monitor);
+        this.miembros.set(idMiembro, miembro);
+        return miembro;
       }
-
-      var miembro = new _Miembro["default"](idMiembro, nombre, celular, email, provincia, canton, distrito, senas, posible_monitor);
-      this.miembros.set(idMiembro, miembro);
-      return miembro;
     }
   }, {
     key: "modificarMiembro",
