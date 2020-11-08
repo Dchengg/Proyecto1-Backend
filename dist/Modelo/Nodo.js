@@ -34,15 +34,8 @@ var Nodo = /*#__PURE__*/function (_Component) {
     (0, _classCallCheck2["default"])(this, Nodo);
     _this = _super.call(this, id, nombre);
     _this.composites = new Map();
-
-    if (encargado1) {
-      _this.encargado1 = encargado1;
-    }
-
-    if (encargado2) {
-      _this.encargado2 = encargado2;
-    }
-
+    _this.encargado1 = encargado1;
+    _this.encargado2 = encargado2;
     _this.isMonitor = isMonitor;
     return _this;
   }

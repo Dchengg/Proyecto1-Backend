@@ -389,6 +389,10 @@ var DAO = /*#__PURE__*/function () {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
+                if (!idMonitor2) {
+                  idMonitor2 = "";
+                }
+
                 return _context2.abrupt("return", this.client.query("select * from insertarGrupo('" + idMovimiento + "', " + idZona + ", " + idRama + ", '" + idGrupo + "', " + bMonitores + ", '" + pNombre + "','" + idMonitor1 + "','" + idMonitor2 + "')").then(function (res) {
                   console.table(res.rows);
                   return res.rows;
@@ -396,7 +400,7 @@ var DAO = /*#__PURE__*/function () {
                   throw err;
                 }));
 
-              case 1:
+              case 2:
               case "end":
                 return _context2.stop();
             }

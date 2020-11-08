@@ -109,21 +109,22 @@ var Controlador = /*#__PURE__*/function () {
           while (1) {
             switch (_context3.prev = _context3.next) {
               case 0:
-                if (!idEncargado2) {
-                  idEncargado2 = "";
-                }
-
                 if (!nombre) {
                   nombre = idZona + idRama + idGrupo;
                 }
 
-                _context3.next = 4;
+                _context3.next = 3;
                 return this.dao.insertarGrupo(idMovimiento, idZona, idRama, idGrupo, isMonitor, nombre, idEncargado1, idEncargado2);
 
-              case 4:
+              case 3:
                 this.agregarGrupo(idMovimiento, idZona, idRama, idGrupo, nombre, isMonitor, idEncargado1, idEncargado2);
+                this.agregarMiembroGrupo(idMovimiento, idZona, idRama, idGrupo, idEncargado1);
 
-              case 5:
+                if (idEncargado2) {
+                  this.agregarMiembroGrupo(idMovimiento, idZona, idRama, idGrupo, idEncargado2);
+                }
+
+              case 6:
               case "end":
                 return _context3.stop();
             }
@@ -567,107 +568,119 @@ var Controlador = /*#__PURE__*/function () {
     key: "modificarGrupo",
     value: function () {
       var _modificarGrupo = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee11(idMovimiento, idZona, idRama, idGrupo, nombre, isMonitor, idJefeNuevo1, idJefeNuevo2, idJefeViejo1, idJefeViejo2) {
-        var rama, grupo;
+        var movimiento, rama, grupo;
         return _regenerator["default"].wrap(function _callee11$(_context11) {
           while (1) {
             switch (_context11.prev = _context11.next) {
               case 0:
                 _context11.prev = 0;
+                movimiento = this.getMovimiento(idMovimiento);
                 rama = this.getRama(idMovimiento, idZona, idRama);
+                grupo = this.getGrupo(idMovimiento, idZona, idRama, idGrupo);
 
                 if (!(idJefeNuevo1 != idJefeViejo1 && idJefeViejo1 && idJefeNuevo2 != idJefeViejo1)) {
-                  _context11.next = 6;
+                  _context11.next = 9;
                   break;
                 }
 
                 this.verificarEliminarJefe(rama, idJefeViejo1);
-                _context11.next = 6;
+                _context11.next = 8;
                 return this.dao.eliminarJefeGrupo(idJefeViejo1, idZona, idRama, idGrupo, idMovimiento);
 
-              case 6:
+              case 8:
+                if (grupo.isMonitor) {
+                  movimiento.gNodos.eliminarDeGrupo(idZona, idRama, idGrupo, idJefeViejo1);
+                }
+
+              case 9:
                 if (!(idJefeNuevo2 != idJefeViejo2 && idJefeViejo2 && idJefeNuevo1 != idJefeViejo2)) {
-                  _context11.next = 10;
+                  _context11.next = 14;
                   break;
                 }
 
                 this.verificarEliminarJefe(rama, idJefeViejo2);
-                _context11.next = 10;
+                _context11.next = 13;
                 return this.dao.eliminarJefeGrupo(idJefeViejo2, idZona, idRama, idGrupo, idMovimiento);
 
-              case 10:
-                if (!(idJefeNuevo1 && idJefeNuevo1 != idJefeViejo1 && idJefeNuevo1 != idJefeViejo2)) {
-                  _context11.next = 18;
-                  break;
+              case 13:
+                if (grupo.isMonitor) {
+                  movimiento.gNodos.eliminarDeGrupo(idZona, idRama, idGrupo, idJefeViejo2);
                 }
-
-                if (!isMonitor) {
-                  _context11.next = 16;
-                  break;
-                }
-
-                _context11.next = 14;
-                return this.dao.asignarMonitorGrupo(idJefeNuevo1, idZona, idRama, idGrupo, idMovimiento);
 
               case 14:
-                _context11.next = 18;
-                break;
-
-              case 16:
-                _context11.next = 18;
-                return this.dao.asignarJefeGrupo(idJefeNuevo1, idZona, idRama, idGrupo, idMovimiento);
-
-              case 18:
-                if (!(idJefeNuevo2 && idJefeNuevo2 != idJefeViejo1 && idJefeNuevo2 != idJefeViejo2)) {
-                  _context11.next = 26;
+                if (!(idJefeNuevo1 && idJefeNuevo1 != idJefeViejo1 && idJefeNuevo1 != idJefeViejo2)) {
+                  _context11.next = 23;
                   break;
                 }
 
                 if (!isMonitor) {
-                  _context11.next = 24;
+                  _context11.next = 21;
                   break;
                 }
 
-                _context11.next = 22;
-                return this.dao.asignarMonitorGrupo(idJefeNuevo2, idZona, idRama, idGrupo, idMovimiento);
+                _context11.next = 18;
+                return this.dao.asignarMonitorGrupo(idJefeNuevo1, idZona, idRama, idGrupo, idMovimiento);
 
-              case 22:
-                _context11.next = 26;
+              case 18:
+                this.agregarMiembroGrupo(idMovimiento, idZona, idRama, idGrupo, idJefeNuevo1);
+                _context11.next = 23;
                 break;
 
-              case 24:
-                _context11.next = 26;
-                return this.dao.asignarJefeGrupo(idJefeNuevo2, idZona, idRama, idGrupo, idMovimiento);
+              case 21:
+                _context11.next = 23;
+                return this.dao.asignarJefeGrupo(idJefeNuevo1, idZona, idRama, idGrupo, idMovimiento);
 
-              case 26:
-                grupo = this.getGrupo(idMovimiento, idZona, idRama, idGrupo);
+              case 23:
+                if (!(idJefeNuevo2 && idJefeNuevo2 != idJefeViejo1 && idJefeNuevo2 != idJefeViejo2)) {
+                  _context11.next = 32;
+                  break;
+                }
 
-                if (!(grupo.nombre != nombre || grupo.isMonitor != isMonitor)) {
+                if (!isMonitor) {
                   _context11.next = 30;
                   break;
                 }
 
-                _context11.next = 30;
-                return this.dao.modificarGrupo(idMovimiento, idZona, idRama, idGrupo, isMonitor, nombre);
+                _context11.next = 27;
+                return this.dao.asignarMonitorGrupo(idJefeNuevo2, idZona, idRama, idGrupo, idMovimiento);
+
+              case 27:
+                this.agregarMiembroGrupo(idMovimiento, idZona, idRama, idGrupo, idJefeNuevo2);
+                _context11.next = 32;
+                break;
 
               case 30:
+                _context11.next = 32;
+                return this.dao.asignarJefeGrupo(idJefeNuevo2, idZona, idRama, idGrupo, idMovimiento);
+
+              case 32:
+                if (!(grupo.nombre != nombre || grupo.isMonitor != isMonitor)) {
+                  _context11.next = 35;
+                  break;
+                }
+
+                _context11.next = 35;
+                return this.dao.modificarGrupo(idMovimiento, idZona, idRama, idGrupo, isMonitor, nombre);
+
+              case 35:
                 grupo.nombre = nombre;
                 grupo.isMonitor = isMonitor;
                 grupo.setEncargado1(idJefeNuevo1);
                 grupo.setEncargado2(idJefeNuevo2);
-                _context11.next = 39;
+                _context11.next = 44;
                 break;
 
-              case 36:
-                _context11.prev = 36;
+              case 41:
+                _context11.prev = 41;
                 _context11.t0 = _context11["catch"](0);
                 throw _context11.t0;
 
-              case 39:
+              case 44:
               case "end":
                 return _context11.stop();
             }
           }
-        }, _callee11, this, [[0, 36]]);
+        }, _callee11, this, [[0, 41]]);
       }));
 
       function modificarGrupo(_x68, _x69, _x70, _x71, _x72, _x73, _x74, _x75, _x76, _x77) {
@@ -834,7 +847,7 @@ var Controlador = /*#__PURE__*/function () {
       }
 
       if (grupo.encargado2 && !miembros.has(grupo.encargado2)) {
-        miembros.set(grupo.encargado1, this.getMiembro(idMovimiento, grupo.encargado2));
+        miembros.set(grupo.encargado2, this.getMiembro(idMovimiento, grupo.encargado2));
       }
 
       return miembros;
