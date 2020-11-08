@@ -173,7 +173,7 @@ app.post('/modificar-movimiento', function(req,res){
 app.post('/modificar-zona', function(req,res){
     const { idZona, nombre, idJefeNuevo1, idJefeNuevo2, idJefeViejo1, idJefeViejo2} = req.body;
     try{
-        var promise = controlador.modificarZona(idMovimiento, idZona, nombre, idJefeNuevo1, idJefeNuevo2, idJefeViejo1, idJefeNuevo2, idJefeViejo2);
+        var promise = controlador.modificarZona(idMovimiento, idZona, nombre, idJefeNuevo1, idJefeNuevo2, idJefeViejo1, idJefeViejo2);
         Promise.resolve(promise)
             .finally(() => {
                 return res.json({ success: true })

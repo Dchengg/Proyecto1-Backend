@@ -156,11 +156,11 @@ export default class Controlador{
 
     async modificarZona(idMovimiento, idZona, nombre, idJefeNuevo1, idJefeNuevo2, idJefeViejo1, idJefeViejo2){
         try{
-            if(idJefeNuevo1 != idJefeViejo1 && idJefeNuevo1 && idJefeViejo1){
+            if(idJefeNuevo1 != idJefeViejo1 && idJefeViejo1 && idJefeNuevo2 != idJefeViejo1){
                 await this.dao.eliminarJefeZona(idJefeViejo1,idZona, idMovimiento)
             }
 
-            if(idJefeNuevo2 != idJefeViejo2 && idJefeNuevo2 && idJefeViejo2){
+            if(idJefeNuevo2 != idJefeViejo2 && idJefeViejo2 && idJefeNuevo1 != idJefeViejo2){
                 await this.dao.eliminarJefeZona(idJefeViejo2,idZona, idMovimiento)
             }
 
