@@ -635,8 +635,8 @@ export default class DAO{
             })
     }
 
-    async agregarAsesor(pCanton,pCedula,pCelular,pContrasena,pDistrito,pNombre,pPeriodoNombramiento,pProvincia,pSenales,pEmail){
-        return this.client.query("select * from agregarAsesor('"+pCanton+"', '"+pCedula+"', '"+pCelular+"', '"+pContrasena+"', '"+pDistrito+"', '"+pNombre+"', '"+pPeriodoNombramiento+"', '"+pProvincia+"', '"+pSenales+"', '"+pEmail+"')")
+    async agregarAsesor(pCanton,pCedula,pCelular,pContrasena,pDistrito,pNombre,pProvincia,pSenales,pEmail){
+        return this.client.query("select * from agregarAsesor('"+pCanton+"', '"+pCedula+"', '"+pCelular+"', '"+pContrasena+"', '"+pDistrito+"', '"+pNombre+"', '"+pProvincia+"', '"+pSenales+"', '"+pEmail+"')")
             .then(res => {
                 console.table(res.rows);
                 return res.rows;
@@ -646,8 +646,8 @@ export default class DAO{
             })
     }
 
-    async editarAsesor(pCanton,pCedula,pCelular,pContrasena,pDistrito,pNombre,pPeriodoNombramiento,pProvincia,pSenales,pEmail){
-        return this.client.query("select * from editorAsesor('"+pCanton+"', '"+pCedula+"', '"+pCelular+"', '"+pContrasena+"', '"+pDistrito+"', '"+pNombre+"', '"+pPeriodoNombramiento+"', '"+pProvincia+"', '"+pSenales+"', '"+pEmail+"')")
+    async editarAsesor(pCanton,pCedula,pCelular,pContrasena,pDistrito,pNombre,pProvincia,pSenales,pEmail){
+        return this.client.query("select * from editorAsesor('"+pCanton+"', '"+pCedula+"', '"+pCelular+"', '"+pContrasena+"', '"+pDistrito+"', '"+pNombre+"', '"+pProvincia+"', '"+pSenales+"', '"+pEmail+"')")
             .then(res => {
                 console.table(res.rows);
                 return res.rows;
@@ -657,8 +657,8 @@ export default class DAO{
             })
     }
 
-    async crearMovimiento(pCanton,pCedulaJuridica,pIdAsesor,pLogo,pDireccionWeb,pDistrito,pNombre,pProvincia,pPais,pSenales){
-        return this.client.query("select * from editorAsesor('"+pCanton+"', '"+pCedulaJuridica+"', '"+pIdAsesor+"', '"+pLogo+"', '"+pDireccionWeb+"', '"+pDistrito+"', '"+pNombre+"', '"+pProvincia+"', '"+pPais+"', '"+pSenales+"')")
+    async crearMovimiento(pCanton,pCedulaJuridica,pIdAsesor,pLogo,pDireccionWeb,pDistrito,pNombre,pProvincia,pPais,pSenales,pTelefonos){
+        return this.client.query("select * from editorAsesor('"+pCanton+"', '"+pCedulaJuridica+"', '"+pIdAsesor+"', '"+pLogo+"', '"+pDireccionWeb+"', '"+pDistrito+"', '"+pNombre+"', '"+pProvincia+"', '"+pPais+"', '"+pSenales+"', ARRAY["+pTelefonos+"])")
             .then(res => {
                 console.table(res.rows);
                 return res.rows;
