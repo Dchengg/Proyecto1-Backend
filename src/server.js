@@ -275,7 +275,7 @@ app.post('/get-miembro', function(req, res){
     try{
         var miembro = controlador.getMiembro(idMovimiento, idMiembro);
         var grupos;
-        var gruposPromise = controlador.getGruposMiembro(idMiembro)
+        var gruposPromise = controlador.getGruposMiembro(idMovimiento, idMiembro)
             .then(res => {
                 grupos = res;
             })
@@ -317,7 +317,7 @@ app.post('/consultar-ramas',function(req, res){
 app.post('/consultar-ramas-disponibles',function(req, res){
     const { idMiembro } = req.body;
     try{
-        controlador.consultarRamasDisponibles(idMiembro)
+        controlador.consultarRamasDisponibles(idMovimiento, idMiembro)
         .then( ramas => {
             return res.json({success: true, ramas})
         })
@@ -333,7 +333,7 @@ app.post('/consultar-ramas-disponibles',function(req, res){
 app.post('/consultar-ramas-miembro', function(req, res){
     const { idMiembro } = req.body;
     try{
-        controlador.consultarRamasMiembro(idMiembro)
+        controlador.consultarRamasMiembro(idMovimiento, idMiembro)
         .then( ramas => {
             return res.json({success:true, ramas})
         })

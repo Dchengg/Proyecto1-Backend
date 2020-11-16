@@ -56,7 +56,7 @@ export default class Controlador{
         if(movimiento.gMiembros.miembros.has(idMiembro)){
             throw {message: "Ya existe un miembro con ese id en el movimiento"}
         }
-        await this.dao.insertarMiembro(idMiembro, nombre, celular, email, provincia, canton, distrito, senas, posible_monitor)
+        await this.dao.insertarMiembro(idMovimiento, idMiembro, nombre, celular, email, provincia, canton, distrito, senas, posible_monitor)
         .catch(err => {
             throw err
         })
@@ -282,7 +282,7 @@ export default class Controlador{
     }
 
     async modificarMiembro(idMiembro, nombre, celular, email, provincia, canton, distrito, senas, posible_monitor, idMovimiento){
-        await this.dao.modificarMiembro(idMiembro, nombre, celular, email, provincia, canton, distrito, senas, posible_monitor);
+        await this.dao.modificarMiembro(idMovimiento, idMiembro, nombre, celular, email, provincia, canton, distrito, senas, posible_monitor);
         var movimiento =  this.getMovimiento(idMovimiento);
         var gMiembros = movimiento.gMiembros;
         gMiembros.modificarMiembro(idMiembro, nombre, celular, email, provincia, canton, distrito, senas, posible_monitor)
@@ -302,14 +302,14 @@ export default class Controlador{
         return movimiento.gNodos.consultarRamas(idZona); 
     }
 
-    async consultarRamasMiembro(idMiembro){
-        var ramas = await this.dao.ramasDeMiembros(idMiembro);
+    async consultarRamasMiembro(idMovimiento, idMiembro){
+        var ramas = await this.dao.ramasDeMiembros(idMiembro, idMovimiento);
         return ramas
     }
 
-    async consultarRamasDisponibles(idMiembro){
+    async consultarRamasDisponibles(idMovimiento, idMiembro){
         try{
-            var ramas = this.dao.otrasRamas(idMiembro)
+            var ramas = this.dao.otrasRamas(idMiembro, idMovimiento)
             return ramas;
         }catch(err){
             throw err
@@ -390,10 +390,10 @@ export default class Controlador{
         }
     }
 
-    async getGruposMiembro(idMiembro){
+    async getGruposMiembro(idMovimiento, idMiembro){
         try{
             var grupos = [];
-            const res = await this.dao.getGruposXMiembro(idMiembro);
+            const res = await this.dao.getGruposXMiembro(idMovimiento, idMiembro);
             for(var i in res){
                 var grupoInfo = res[i];
                 grupos.push(grupoInfo);
