@@ -441,7 +441,7 @@ app.post('/get-miembro', function (req, res) {
   try {
     var miembro = controlador.getMiembro(idMovimiento, idMiembro);
     var grupos;
-    var gruposPromise = controlador.getGruposMiembro(idMiembro).then(function (res) {
+    var gruposPromise = controlador.getGruposMiembro(idMovimiento, idMiembro).then(function (res) {
       grupos = res;
     });
     Promise.resolve(gruposPromise)["finally"](function () {
@@ -498,7 +498,7 @@ app.post('/consultar-ramas-disponibles', function (req, res) {
   var idMiembro = req.body.idMiembro;
 
   try {
-    controlador.consultarRamasDisponibles(idMiembro).then(function (ramas) {
+    controlador.consultarRamasDisponibles(idMovimiento, idMiembro).then(function (ramas) {
       return res.json({
         success: true,
         ramas: ramas
@@ -523,7 +523,7 @@ app.post('/consultar-ramas-miembro', function (req, res) {
   var idMiembro = req.body.idMiembro;
 
   try {
-    controlador.consultarRamasMiembro(idMiembro).then(function (ramas) {
+    controlador.consultarRamasMiembro(idMovimiento, idMiembro).then(function (ramas) {
       return res.json({
         success: true,
         ramas: ramas

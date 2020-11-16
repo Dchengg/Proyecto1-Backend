@@ -160,7 +160,7 @@ var Controlador = /*#__PURE__*/function () {
 
               case 3:
                 _context4.next = 5;
-                return this.dao.insertarMiembro(idMiembro, nombre, celular, email, provincia, canton, distrito, senas, posible_monitor)["catch"](function (err) {
+                return this.dao.insertarMiembro(idMovimiento, idMiembro, nombre, celular, email, provincia, canton, distrito, senas, posible_monitor)["catch"](function (err) {
                   throw err;
                 });
 
@@ -699,7 +699,7 @@ var Controlador = /*#__PURE__*/function () {
             switch (_context12.prev = _context12.next) {
               case 0:
                 _context12.next = 2;
-                return this.dao.modificarMiembro(idMiembro, nombre, celular, email, provincia, canton, distrito, senas, posible_monitor);
+                return this.dao.modificarMiembro(idMovimiento, idMiembro, nombre, celular, email, provincia, canton, distrito, senas, posible_monitor);
 
               case 2:
                 movimiento = this.getMovimiento(idMovimiento);
@@ -740,14 +740,14 @@ var Controlador = /*#__PURE__*/function () {
   }, {
     key: "consultarRamasMiembro",
     value: function () {
-      var _consultarRamasMiembro = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee13(idMiembro) {
+      var _consultarRamasMiembro = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee13(idMovimiento, idMiembro) {
         var ramas;
         return _regenerator["default"].wrap(function _callee13$(_context13) {
           while (1) {
             switch (_context13.prev = _context13.next) {
               case 0:
                 _context13.next = 2;
-                return this.dao.ramasDeMiembros(idMiembro);
+                return this.dao.ramasDeMiembros(idMiembro, idMovimiento);
 
               case 2:
                 ramas = _context13.sent;
@@ -761,7 +761,7 @@ var Controlador = /*#__PURE__*/function () {
         }, _callee13, this);
       }));
 
-      function consultarRamasMiembro(_x88) {
+      function consultarRamasMiembro(_x88, _x89) {
         return _consultarRamasMiembro.apply(this, arguments);
       }
 
@@ -770,14 +770,14 @@ var Controlador = /*#__PURE__*/function () {
   }, {
     key: "consultarRamasDisponibles",
     value: function () {
-      var _consultarRamasDisponibles = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee14(idMiembro) {
+      var _consultarRamasDisponibles = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee14(idMovimiento, idMiembro) {
         var ramas;
         return _regenerator["default"].wrap(function _callee14$(_context14) {
           while (1) {
             switch (_context14.prev = _context14.next) {
               case 0:
                 _context14.prev = 0;
-                ramas = this.dao.otrasRamas(idMiembro);
+                ramas = this.dao.otrasRamas(idMiembro, idMovimiento);
                 return _context14.abrupt("return", ramas);
 
               case 5:
@@ -793,7 +793,7 @@ var Controlador = /*#__PURE__*/function () {
         }, _callee14, this, [[0, 5]]);
       }));
 
-      function consultarRamasDisponibles(_x89) {
+      function consultarRamasDisponibles(_x90, _x91) {
         return _consultarRamasDisponibles.apply(this, arguments);
       }
 
@@ -829,7 +829,7 @@ var Controlador = /*#__PURE__*/function () {
         }, _callee15, this);
       }));
 
-      function consultarGrupoDeMiembroEnRama(_x90, _x91, _x92, _x93) {
+      function consultarGrupoDeMiembroEnRama(_x92, _x93, _x94, _x95) {
         return _consultarGrupoDeMiembroEnRama.apply(this, arguments);
       }
 
@@ -904,7 +904,7 @@ var Controlador = /*#__PURE__*/function () {
         }, _callee16, this);
       }));
 
-      function consultarMonitoresProbables(_x94, _x95, _x96, _x97) {
+      function consultarMonitoresProbables(_x96, _x97, _x98, _x99) {
         return _consultarMonitoresProbables.apply(this, arguments);
       }
 
@@ -934,7 +934,7 @@ var Controlador = /*#__PURE__*/function () {
         }, _callee17, this);
       }));
 
-      function consultarMonitoresZona(_x98, _x99) {
+      function consultarMonitoresZona(_x100, _x101) {
         return _consultarMonitoresZona.apply(this, arguments);
       }
 
@@ -968,7 +968,7 @@ var Controlador = /*#__PURE__*/function () {
   }, {
     key: "getGruposMiembro",
     value: function () {
-      var _getGruposMiembro = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee18(idMiembro) {
+      var _getGruposMiembro = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee18(idMovimiento, idMiembro) {
         var grupos, res, i, grupoInfo;
         return _regenerator["default"].wrap(function _callee18$(_context18) {
           while (1) {
@@ -977,7 +977,7 @@ var Controlador = /*#__PURE__*/function () {
                 _context18.prev = 0;
                 grupos = [];
                 _context18.next = 4;
-                return this.dao.getGruposXMiembro(idMiembro);
+                return this.dao.getGruposXMiembro(idMovimiento, idMiembro);
 
               case 4:
                 res = _context18.sent;
@@ -1002,7 +1002,7 @@ var Controlador = /*#__PURE__*/function () {
         }, _callee18, this, [[0, 9]]);
       }));
 
-      function getGruposMiembro(_x100) {
+      function getGruposMiembro(_x102, _x103) {
         return _getGruposMiembro.apply(this, arguments);
       }
 
