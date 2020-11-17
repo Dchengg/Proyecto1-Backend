@@ -21,12 +21,13 @@ app.use(logger('dev'));
 
 app.use(session({
   secret: 'secret word',
+  name: 'socialseekers',
   resave: false,
-  saveUninitialized: true,
+  saveUninitialized: false,
   cookie: {   
       httpOnly: false,
       secure: true, 
-      sameSite: 'none'
+      sameSite: 'strict'
     }
 }))
 

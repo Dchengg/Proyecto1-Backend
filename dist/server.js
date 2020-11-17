@@ -30,8 +30,10 @@ app.use(logger('dev')); //app.set('trust proxy', 1);
 
 app.use(session({
   secret: 'secret word',
+  name: 'socialseekers',
   resave: false,
-  saveUninitialized: true,
+  saveUninitialized: false,
+  store: store,
   cookie: {
     httpOnly: false,
     secure: true,
