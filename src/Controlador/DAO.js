@@ -635,8 +635,19 @@ export default class DAO{
             })
     }
 
+    async eliminarAsesor(pCedula){
+        return this.client.query("select * from eliminarAsesor('"+pCedula+"')")
+            .then(res => {
+                console.table(res.rows);
+                return res.rows;
+            })
+            .catch(err => {
+                throw err
+            })
+    }
+
     async editarAsesor(pCanton,pCedula,pCelular,pContrasena,pDistrito,pNombre,pProvincia,pSenales,pEmail){
-        return this.client.query("select * from editorAsesor('"+pCanton+"', '"+pCedula+"', '"+pCelular+"', '"+pContrasena+"', '"+pDistrito+"', '"+pNombre+"', '"+pProvincia+"', '"+pSenales+"', '"+pEmail+"')")
+        return this.client.query("select * from editarAsesor('"+pCanton+"', '"+pCedula+"', '"+pCelular+"', '"+pContrasena+"', '"+pDistrito+"', '"+pNombre+"', '"+pProvincia+"', '"+pSenales+"', '"+pEmail+"')")
             .then(res => {
                 console.table(res.rows);
                 return res.rows;

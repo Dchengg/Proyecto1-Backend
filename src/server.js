@@ -92,6 +92,29 @@ app.post('/crear-miembro', function(req, res){
     }
 })
 
+app.post('/crear-movimiento', function(req, res){
+    const {cedulaJuridica,nombreMovimiento, direccionWeb, logo, pais, provinciaMovimiento, cantonMovimiento, distritoMovimiento
+        , telefonos, senasMovimiento,idAsesor, nombre, contrasena, celular, email, provincia, canton,distrito, senas } = req.body;
+    try{
+        controlador.crearAsesor(idAsesor, contrasena, nombre, email, celular, provincia, distrito, canton, senas)
+        .then( () => {
+            controlador.crearMovimiento(cedulaJuridica, idAsesor, nombreMovimiento, direccionWeb, logo, pais, provinciaMovimiento, cantonMovimiento, distritoMovimiento, senasMovimiento, telefonos)
+            .then( () => {
+                return res.json({success: true});
+            })
+            .catch( err => {
+                controlador.eliminarAsesor(idAsesor);
+                return res.json({success: false, error: {message: err.message}});
+            })
+        })
+        .catch( err => {
+            return res.json({success: false, error:{ message: err.message}})
+        })
+    }catch(err){
+        return res.json({success: false, error: err})
+    }
+})
+
 app.post('/crear-zona', function(req,res){
     const { nombre } = req.body
     try{
@@ -142,6 +165,21 @@ app.post('/crear-grupo', function(req,res){
 //////////////////////////////
 ///   MODIFY
 //////////////////////////////
+
+app.post('/modificar-asesor', function(req, res){
+    const {idAsesor, nombre, contrasena, celular, email, provincia, canton,distrito, senas} = req.body;
+    try{
+        controlador.modificarAsesor(idMovimiento, idAsesor, contrasena, nombre, email, celular, provincia, distrito, canton, senas)
+        .then( () => {
+            return res.json({success: true})
+        })
+        .catch( err => {
+            return res.json({success: false, error: {message: err.message}})
+        })
+    }catch(err) {
+        return res.json({success: false, error: err})
+    }
+})
 
 app.post('/modificar-miembro', function(req, res){
     const {idMiembro, nombre, celular, email, provincia, canton,distrito, senas, posible_monitor} = req.body;
