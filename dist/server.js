@@ -26,8 +26,8 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(bodyParser.json()); //quitar en producción
 
-app.use(logger('dev')); //app.set('trust proxy', 1);
-
+app.use(logger('dev'));
+app.set('trust proxy', 1);
 app.use(session({
   secret: 'secret word',
   key: 'sid',
