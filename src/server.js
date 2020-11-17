@@ -17,13 +17,14 @@ app.use(bodyParser.json());
 //quitar en producción
 app.use(logger('dev'));
 
+app.set('trust proxy', 1) // trust first proxy
 app.use(session({
   secret: 'secret word',
   resave: false,
   saveUninitialized: true,
   cookie: { 
       httpOnly: false,  
-      secure: true
+      secure: false
     }
 }))
 
