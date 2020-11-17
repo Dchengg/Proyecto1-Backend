@@ -25,38 +25,31 @@ var Controlador = /*#__PURE__*/function () {
   function Controlador() {
     (0, _classCallCheck2["default"])(this, Controlador);
     this.movimientos = new Map();
-    this.dao = new _DAO["default"](); //this.movimientos.set(1,new Movimiento("1","123","movimiento","http:..","cool","CR","SJ","P","C","D","Del palo de limón, tres cuadras norte :v"))
+    this.dao = new _DAO["default"]();
   }
 
   (0, _createClass2["default"])(Controlador, [{
     key: "crearMovimiento",
-    value: function crearMovimiento(cedulaJuridica, idAsesor, nombre, direccionWeb, logo, pais, provimicia, canton, distrito, senas) {
-      if (this.movimientos.has(cedulaJuridica)) {
-        throw {
-          message: "Movimiento con el id: " + cedulaJuridica + " ya existe"
-        };
-      }
-
-      this.movimientos.set(cedulaJuridica, new _Movimiento["default"](cedulaJuridica, idAsesor, nombre, direccionWeb, logo, pais, provimicia, canton, distrito, senas));
-    }
-  }, {
-    key: "crearZonaNueva",
     value: function () {
-      var _crearZonaNueva = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee(idMovimiento, nombre) {
-        var _this = this;
-
+      var _crearMovimiento = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee(cedulaJuridica, idAsesor, nombre, direccionWeb, logo, pais, provincia, canton, distrito, senas, telefonos) {
         return _regenerator["default"].wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                _context.next = 2;
-                return this.dao.insertarZona(idMovimiento, nombre).then(function (res) {
-                  _this.agregarZona(idMovimiento, res[0].id_zona.toString(), nombre);
-                })["catch"](function (err) {
-                  throw err;
-                });
+                if (!this.movimientos.has(cedulaJuridica)) {
+                  _context.next = 2;
+                  break;
+                }
+
+                throw {
+                  message: "Movimiento con el id: " + cedulaJuridica + " ya existe"
+                };
 
               case 2:
+                _context.next = 4;
+                return this.dao.crearMovimiento(canton, cedulaJuridica, idAsesor, logo, direccionWeb, distrito, nombre, provincia, pais, senas, telefonos);
+
+              case 4:
               case "end":
                 return _context.stop();
             }
@@ -64,28 +57,22 @@ var Controlador = /*#__PURE__*/function () {
         }, _callee, this);
       }));
 
-      function crearZonaNueva(_x, _x2) {
-        return _crearZonaNueva.apply(this, arguments);
+      function crearMovimiento(_x, _x2, _x3, _x4, _x5, _x6, _x7, _x8, _x9, _x10, _x11) {
+        return _crearMovimiento.apply(this, arguments);
       }
 
-      return crearZonaNueva;
+      return crearMovimiento;
     }()
   }, {
-    key: "crearRamaNueva",
+    key: "crearAsesor",
     value: function () {
-      var _crearRamaNueva = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee2(idMovimiento, idZona, nombre) {
-        var _this2 = this;
-
+      var _crearAsesor = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee2(idAsesor, contrasena, nombre, email, celular, provincia, distrito, canton, senales) {
         return _regenerator["default"].wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
                 _context2.next = 2;
-                return this.dao.insertarRama(idMovimiento, idZona, nombre).then(function (res) {
-                  _this2.agregarRama(idMovimiento, idZona, res[0].id_rama.toString(), nombre);
-                })["catch"](function (err) {
-                  throw err;
-                });
+                return this.dao.agregarAsesor(canton, idAsesor, celular, contrasena, distrito, nombre, provincia, senales, email);
 
               case 2:
               case "end":
@@ -95,7 +82,94 @@ var Controlador = /*#__PURE__*/function () {
         }, _callee2, this);
       }));
 
-      function crearRamaNueva(_x3, _x4, _x5) {
+      function crearAsesor(_x12, _x13, _x14, _x15, _x16, _x17, _x18, _x19, _x20) {
+        return _crearAsesor.apply(this, arguments);
+      }
+
+      return crearAsesor;
+    }()
+  }, {
+    key: "eliminarAsesor",
+    value: function () {
+      var _eliminarAsesor = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee3(idAsesor) {
+        return _regenerator["default"].wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                _context3.next = 2;
+                return this.dao.eliminarAsesor(idAsesor);
+
+              case 2:
+              case "end":
+                return _context3.stop();
+            }
+          }
+        }, _callee3, this);
+      }));
+
+      function eliminarAsesor(_x21) {
+        return _eliminarAsesor.apply(this, arguments);
+      }
+
+      return eliminarAsesor;
+    }()
+  }, {
+    key: "crearZonaNueva",
+    value: function () {
+      var _crearZonaNueva = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee4(idMovimiento, nombre) {
+        var _this = this;
+
+        return _regenerator["default"].wrap(function _callee4$(_context4) {
+          while (1) {
+            switch (_context4.prev = _context4.next) {
+              case 0:
+                _context4.next = 2;
+                return this.dao.insertarZona(idMovimiento, nombre).then(function (res) {
+                  _this.agregarZona(idMovimiento, res[0].id_zona.toString(), nombre);
+                })["catch"](function (err) {
+                  throw err;
+                });
+
+              case 2:
+              case "end":
+                return _context4.stop();
+            }
+          }
+        }, _callee4, this);
+      }));
+
+      function crearZonaNueva(_x22, _x23) {
+        return _crearZonaNueva.apply(this, arguments);
+      }
+
+      return crearZonaNueva;
+    }()
+  }, {
+    key: "crearRamaNueva",
+    value: function () {
+      var _crearRamaNueva = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee5(idMovimiento, idZona, nombre) {
+        var _this2 = this;
+
+        return _regenerator["default"].wrap(function _callee5$(_context5) {
+          while (1) {
+            switch (_context5.prev = _context5.next) {
+              case 0:
+                _context5.next = 2;
+                return this.dao.insertarRama(idMovimiento, idZona, nombre).then(function (res) {
+                  _this2.agregarRama(idMovimiento, idZona, res[0].id_rama.toString(), nombre);
+                })["catch"](function (err) {
+                  throw err;
+                });
+
+              case 2:
+              case "end":
+                return _context5.stop();
+            }
+          }
+        }, _callee5, this);
+      }));
+
+      function crearRamaNueva(_x24, _x25, _x26) {
         return _crearRamaNueva.apply(this, arguments);
       }
 
@@ -104,16 +178,16 @@ var Controlador = /*#__PURE__*/function () {
   }, {
     key: "crearGrupoNuevo",
     value: function () {
-      var _crearGrupoNuevo = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee3(idMovimiento, idZona, idRama, idGrupo, nombre, idEncargado1, idEncargado2, isMonitor) {
-        return _regenerator["default"].wrap(function _callee3$(_context3) {
+      var _crearGrupoNuevo = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee6(idMovimiento, idZona, idRama, idGrupo, nombre, idEncargado1, idEncargado2, isMonitor) {
+        return _regenerator["default"].wrap(function _callee6$(_context6) {
           while (1) {
-            switch (_context3.prev = _context3.next) {
+            switch (_context6.prev = _context6.next) {
               case 0:
                 if (!nombre) {
                   nombre = idZona + idRama + idGrupo;
                 }
 
-                _context3.next = 3;
+                _context6.next = 3;
                 return this.dao.insertarGrupo(idMovimiento, idZona, idRama, idGrupo, isMonitor, nombre, idEncargado1, idEncargado2);
 
               case 3:
@@ -126,13 +200,13 @@ var Controlador = /*#__PURE__*/function () {
 
               case 6:
               case "end":
-                return _context3.stop();
+                return _context6.stop();
             }
           }
-        }, _callee3, this);
+        }, _callee6, this);
       }));
 
-      function crearGrupoNuevo(_x6, _x7, _x8, _x9, _x10, _x11, _x12, _x13) {
+      function crearGrupoNuevo(_x27, _x28, _x29, _x30, _x31, _x32, _x33, _x34) {
         return _crearGrupoNuevo.apply(this, arguments);
       }
 
@@ -141,16 +215,16 @@ var Controlador = /*#__PURE__*/function () {
   }, {
     key: "crearMiembroNuevo",
     value: function () {
-      var _crearMiembroNuevo = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee4(idMiembro, nombre, celular, email, provincia, canton, distrito, senas, posible_monitor, idMovimiento, idZona, idRama, idGrupo) {
+      var _crearMiembroNuevo = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee7(idMiembro, nombre, celular, email, provincia, canton, distrito, senas, posible_monitor, idMovimiento, idZona, idRama, idGrupo) {
         var movimiento;
-        return _regenerator["default"].wrap(function _callee4$(_context4) {
+        return _regenerator["default"].wrap(function _callee7$(_context7) {
           while (1) {
-            switch (_context4.prev = _context4.next) {
+            switch (_context7.prev = _context7.next) {
               case 0:
                 movimiento = this.getMovimiento(idMovimiento);
 
                 if (!movimiento.gMiembros.miembros.has(idMiembro)) {
-                  _context4.next = 3;
+                  _context7.next = 3;
                   break;
                 }
 
@@ -159,13 +233,13 @@ var Controlador = /*#__PURE__*/function () {
                 };
 
               case 3:
-                _context4.next = 5;
+                _context7.next = 5;
                 return this.dao.insertarMiembro(idMovimiento, idMiembro, nombre, celular, email, provincia, canton, distrito, senas, posible_monitor)["catch"](function (err) {
                   throw err;
                 });
 
               case 5:
-                _context4.next = 7;
+                _context7.next = 7;
                 return this.dao.insertarMiembroAGrupo(idGrupo, idMiembro, idRama, idZona, idMovimiento)["catch"](function (err) {
                   throw err;
                 });
@@ -175,13 +249,13 @@ var Controlador = /*#__PURE__*/function () {
 
               case 8:
               case "end":
-                return _context4.stop();
+                return _context7.stop();
             }
           }
-        }, _callee4, this);
+        }, _callee7, this);
       }));
 
-      function crearMiembroNuevo(_x14, _x15, _x16, _x17, _x18, _x19, _x20, _x21, _x22, _x23, _x24, _x25, _x26) {
+      function crearMiembroNuevo(_x35, _x36, _x37, _x38, _x39, _x40, _x41, _x42, _x43, _x44, _x45, _x46, _x47) {
         return _crearMiembroNuevo.apply(this, arguments);
       }
 
@@ -190,13 +264,13 @@ var Controlador = /*#__PURE__*/function () {
   }, {
     key: "cambioDeGrupo",
     value: function () {
-      var _cambioDeGrupo = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee5(idMovimiento, idZona, idRama, idGrupoNuevo, idGrupoViejo, idMiembro) {
+      var _cambioDeGrupo = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee8(idMovimiento, idZona, idRama, idGrupoNuevo, idGrupoViejo, idMiembro) {
         var movimiento;
-        return _regenerator["default"].wrap(function _callee5$(_context5) {
+        return _regenerator["default"].wrap(function _callee8$(_context8) {
           while (1) {
-            switch (_context5.prev = _context5.next) {
+            switch (_context8.prev = _context8.next) {
               case 0:
-                _context5.next = 2;
+                _context8.next = 2;
                 return this.dao.cambioMiembroGrupo(idMiembro, idGrupoViejo, idGrupoNuevo, idRama, idZona, idMovimiento);
 
               case 2:
@@ -206,18 +280,29 @@ var Controlador = /*#__PURE__*/function () {
 
               case 5:
               case "end":
-                return _context5.stop();
+                return _context8.stop();
             }
           }
-        }, _callee5, this);
+        }, _callee8, this);
       }));
 
-      function cambioDeGrupo(_x27, _x28, _x29, _x30, _x31, _x32) {
+      function cambioDeGrupo(_x48, _x49, _x50, _x51, _x52, _x53) {
         return _cambioDeGrupo.apply(this, arguments);
       }
 
       return cambioDeGrupo;
     }()
+  }, {
+    key: "agregarMovimiento",
+    value: function agregarMovimiento(cedulaJuridica, idAsesor, nombre, direccionWeb, logo, pais, provincia, canton, distrito, senas, telefonos) {
+      this.movimientos.set(cedulaJuridica, new _Movimiento["default"](cedulaJuridica, idAsesor, nombre, direccionWeb, logo, pais, provincia, canton, distrito, senas));
+      var mov = this.getMovimiento(cedulaJuridica);
+      console.log(telefonos);
+
+      for (var i in telefonos) {
+        mov.telefonos.push(telefonos[i].celular);
+      }
+    }
   }, {
     key: "agregarZona",
     value: function agregarZona(idMovimiento, idZona, nombre, idEncargado1, idEncargado2) {
@@ -251,12 +336,12 @@ var Controlador = /*#__PURE__*/function () {
   }, {
     key: "agregarMiembroNuevoAGrupo",
     value: function () {
-      var _agregarMiembroNuevoAGrupo = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee6(idMovimiento, idZona, idRama, idGrupo, idMiembro) {
-        return _regenerator["default"].wrap(function _callee6$(_context6) {
+      var _agregarMiembroNuevoAGrupo = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee9(idMovimiento, idZona, idRama, idGrupo, idMiembro) {
+        return _regenerator["default"].wrap(function _callee9$(_context9) {
           while (1) {
-            switch (_context6.prev = _context6.next) {
+            switch (_context9.prev = _context9.next) {
               case 0:
-                _context6.next = 2;
+                _context9.next = 2;
                 return this.dao.insertarMiembroAGrupo(idGrupo, idMiembro, idRama, idZona, idMovimiento);
 
               case 2:
@@ -264,13 +349,13 @@ var Controlador = /*#__PURE__*/function () {
 
               case 3:
               case "end":
-                return _context6.stop();
+                return _context9.stop();
             }
           }
-        }, _callee6, this);
+        }, _callee9, this);
       }));
 
-      function agregarMiembroNuevoAGrupo(_x33, _x34, _x35, _x36, _x37) {
+      function agregarMiembroNuevoAGrupo(_x54, _x55, _x56, _x57, _x58) {
         return _agregarMiembroNuevoAGrupo.apply(this, arguments);
       }
 
@@ -279,14 +364,14 @@ var Controlador = /*#__PURE__*/function () {
   }, {
     key: "eliminarMiembroGrupo",
     value: function () {
-      var _eliminarMiembroGrupo = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee7(idMovimiento, idZona, idRama, idGrupo, idMiembro) {
+      var _eliminarMiembroGrupo = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee10(idMovimiento, idZona, idRama, idGrupo, idMiembro) {
         var movimiento;
-        return _regenerator["default"].wrap(function _callee7$(_context7) {
+        return _regenerator["default"].wrap(function _callee10$(_context10) {
           while (1) {
-            switch (_context7.prev = _context7.next) {
+            switch (_context10.prev = _context10.next) {
               case 0:
                 movimiento = this.getMovimiento(idMovimiento);
-                _context7.next = 3;
+                _context10.next = 3;
                 return this.dao.eliminarDeGrupo(idMiembro, idGrupo, idRama, idZona, idMovimiento);
 
               case 3:
@@ -294,13 +379,13 @@ var Controlador = /*#__PURE__*/function () {
 
               case 4:
               case "end":
-                return _context7.stop();
+                return _context10.stop();
             }
           }
-        }, _callee7, this);
+        }, _callee10, this);
       }));
 
-      function eliminarMiembroGrupo(_x38, _x39, _x40, _x41, _x42) {
+      function eliminarMiembroGrupo(_x59, _x60, _x61, _x62, _x63) {
         return _eliminarMiembroGrupo.apply(this, arguments);
       }
 
@@ -339,11 +424,11 @@ var Controlador = /*#__PURE__*/function () {
   }, {
     key: "modificarMovimiento",
     value: function () {
-      var _modificarMovimiento = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee8(idMovimiento, nombre, direccionWeb, logo, pais, provincia, canton, distrito, senas, telefonos) {
+      var _modificarMovimiento = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee11(idMovimiento, nombre, direccionWeb, logo, pais, provincia, canton, distrito, senas, telefonos) {
         var movimiento, i;
-        return _regenerator["default"].wrap(function _callee8$(_context8) {
+        return _regenerator["default"].wrap(function _callee11$(_context11) {
           while (1) {
-            switch (_context8.prev = _context8.next) {
+            switch (_context11.prev = _context11.next) {
               case 0:
                 movimiento = this.getMovimiento(idMovimiento);
                 movimiento.telefonos = [];
@@ -352,7 +437,7 @@ var Controlador = /*#__PURE__*/function () {
                   movimiento.telefonos.push(telefonos[i]);
                 }
 
-                _context8.next = 5;
+                _context11.next = 5;
                 return this.dao.modificarMovimiento(idMovimiento, nombre, pais, provincia, canton, distrito, senas, direccionWeb, logo, movimiento.telefonos);
 
               case 5:
@@ -368,13 +453,13 @@ var Controlador = /*#__PURE__*/function () {
 
               case 14:
               case "end":
-                return _context8.stop();
+                return _context11.stop();
             }
           }
-        }, _callee8, this);
+        }, _callee11, this);
       }));
 
-      function modificarMovimiento(_x43, _x44, _x45, _x46, _x47, _x48, _x49, _x50, _x51, _x52) {
+      function modificarMovimiento(_x64, _x65, _x66, _x67, _x68, _x69, _x70, _x71, _x72, _x73) {
         return _modificarMovimiento.apply(this, arguments);
       }
 
@@ -383,81 +468,81 @@ var Controlador = /*#__PURE__*/function () {
   }, {
     key: "modificarZona",
     value: function () {
-      var _modificarZona = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee9(idMovimiento, idZona, nombre, idJefeNuevo1, idJefeNuevo2, idJefeViejo1, idJefeViejo2) {
+      var _modificarZona = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee12(idMovimiento, idZona, nombre, idJefeNuevo1, idJefeNuevo2, idJefeViejo1, idJefeViejo2) {
         var zona;
-        return _regenerator["default"].wrap(function _callee9$(_context9) {
+        return _regenerator["default"].wrap(function _callee12$(_context12) {
           while (1) {
-            switch (_context9.prev = _context9.next) {
+            switch (_context12.prev = _context12.next) {
               case 0:
-                _context9.prev = 0;
+                _context12.prev = 0;
 
                 if (!(idJefeNuevo1 != idJefeViejo1 && idJefeViejo1 && idJefeNuevo2 != idJefeViejo1)) {
-                  _context9.next = 4;
+                  _context12.next = 4;
                   break;
                 }
 
-                _context9.next = 4;
+                _context12.next = 4;
                 return this.dao.eliminarJefeZona(idJefeViejo1, idZona, idMovimiento);
 
               case 4:
                 if (!(idJefeNuevo2 != idJefeViejo2 && idJefeViejo2 && idJefeNuevo1 != idJefeViejo2)) {
-                  _context9.next = 7;
+                  _context12.next = 7;
                   break;
                 }
 
-                _context9.next = 7;
+                _context12.next = 7;
                 return this.dao.eliminarJefeZona(idJefeViejo2, idZona, idMovimiento);
 
               case 7:
                 if (!(idJefeNuevo1 && idJefeNuevo1 != idJefeViejo1 && idJefeNuevo1 != idJefeViejo2)) {
-                  _context9.next = 10;
+                  _context12.next = 10;
                   break;
                 }
 
-                _context9.next = 10;
+                _context12.next = 10;
                 return this.dao.asignarJefeZona(idJefeNuevo1, idZona, idMovimiento);
 
               case 10:
                 if (!(idJefeNuevo2 && idJefeNuevo2 != idJefeViejo1 && idJefeNuevo2 != idJefeViejo2)) {
-                  _context9.next = 13;
+                  _context12.next = 13;
                   break;
                 }
 
-                _context9.next = 13;
+                _context12.next = 13;
                 return this.dao.asignarJefeZona(idJefeNuevo2, idZona, idMovimiento);
 
               case 13:
                 zona = this.getZona(idMovimiento, idZona);
 
                 if (!(zona.nombre != nombre)) {
-                  _context9.next = 17;
+                  _context12.next = 17;
                   break;
                 }
 
-                _context9.next = 17;
+                _context12.next = 17;
                 return this.dao.modificarZona(idMovimiento, idZona, nombre);
 
               case 17:
                 zona.nombre = nombre;
                 zona.setEncargado1(idJefeNuevo1);
                 zona.setEncargado2(idJefeNuevo2);
-                _context9.next = 25;
+                _context12.next = 25;
                 break;
 
               case 22:
-                _context9.prev = 22;
-                _context9.t0 = _context9["catch"](0);
-                throw _context9.t0;
+                _context12.prev = 22;
+                _context12.t0 = _context12["catch"](0);
+                throw _context12.t0;
 
               case 25:
               case "end":
-                return _context9.stop();
+                return _context12.stop();
             }
           }
-        }, _callee9, this, [[0, 22]]);
+        }, _callee12, this, [[0, 22]]);
       }));
 
-      function modificarZona(_x53, _x54, _x55, _x56, _x57, _x58, _x59) {
+      function modificarZona(_x74, _x75, _x76, _x77, _x78, _x79, _x80) {
         return _modificarZona.apply(this, arguments);
       }
 
@@ -481,84 +566,84 @@ var Controlador = /*#__PURE__*/function () {
   }, {
     key: "modificarRama",
     value: function () {
-      var _modificarRama = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee10(idMovimiento, idZona, idRama, nombre, idJefeNuevo1, idJefeNuevo2, idJefeViejo1, idJefeViejo2) {
+      var _modificarRama = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee13(idMovimiento, idZona, idRama, nombre, idJefeNuevo1, idJefeNuevo2, idJefeViejo1, idJefeViejo2) {
         var zona, rama;
-        return _regenerator["default"].wrap(function _callee10$(_context10) {
+        return _regenerator["default"].wrap(function _callee13$(_context13) {
           while (1) {
-            switch (_context10.prev = _context10.next) {
+            switch (_context13.prev = _context13.next) {
               case 0:
-                _context10.prev = 0;
+                _context13.prev = 0;
                 zona = this.getZona(idMovimiento, idZona);
 
                 if (!(idJefeNuevo1 != idJefeViejo1 && idJefeViejo1 && idJefeNuevo2 != idJefeViejo1)) {
-                  _context10.next = 6;
+                  _context13.next = 6;
                   break;
                 }
 
                 this.verificarEliminarJefe(zona, idJefeViejo1);
-                _context10.next = 6;
+                _context13.next = 6;
                 return this.dao.eliminarJefeRama(idJefeViejo1, idZona, idRama, idMovimiento);
 
               case 6:
                 if (!(idJefeNuevo2 != idJefeViejo2 && idJefeViejo2 && idJefeNuevo1 != idJefeViejo2)) {
-                  _context10.next = 10;
+                  _context13.next = 10;
                   break;
                 }
 
                 this.verificarEliminarJefe(zona, idJefeViejo2);
-                _context10.next = 10;
+                _context13.next = 10;
                 return this.dao.eliminarJefeRama(idJefeViejo2, idZona, idRama, idMovimiento);
 
               case 10:
                 if (!(idJefeNuevo1 && idJefeNuevo1 != idJefeViejo1 && idJefeNuevo1 != idJefeViejo2)) {
-                  _context10.next = 13;
+                  _context13.next = 13;
                   break;
                 }
 
-                _context10.next = 13;
+                _context13.next = 13;
                 return this.dao.asignarJefeRama(idJefeNuevo1, idZona, idRama, idMovimiento);
 
               case 13:
                 if (!(idJefeNuevo2 && idJefeNuevo2 != idJefeViejo1 && idJefeNuevo2 != idJefeViejo2)) {
-                  _context10.next = 16;
+                  _context13.next = 16;
                   break;
                 }
 
-                _context10.next = 16;
+                _context13.next = 16;
                 return this.dao.asignarJefeRama(idJefeNuevo2, idZona, idRama, idMovimiento);
 
               case 16:
                 rama = this.getRama(idMovimiento, idZona, idRama);
 
                 if (!(rama.nombre != nombre)) {
-                  _context10.next = 20;
+                  _context13.next = 20;
                   break;
                 }
 
-                _context10.next = 20;
+                _context13.next = 20;
                 return this.dao.modificarRama(idMovimiento, idZona, idRama, nombre);
 
               case 20:
                 rama.nombre = nombre;
                 rama.setEncargado1(idJefeNuevo1);
                 rama.setEncargado2(idJefeNuevo2);
-                _context10.next = 28;
+                _context13.next = 28;
                 break;
 
               case 25:
-                _context10.prev = 25;
-                _context10.t0 = _context10["catch"](0);
-                throw _context10.t0;
+                _context13.prev = 25;
+                _context13.t0 = _context13["catch"](0);
+                throw _context13.t0;
 
               case 28:
               case "end":
-                return _context10.stop();
+                return _context13.stop();
             }
           }
-        }, _callee10, this, [[0, 25]]);
+        }, _callee13, this, [[0, 25]]);
       }));
 
-      function modificarRama(_x60, _x61, _x62, _x63, _x64, _x65, _x66, _x67) {
+      function modificarRama(_x81, _x82, _x83, _x84, _x85, _x86, _x87, _x88) {
         return _modificarRama.apply(this, arguments);
       }
 
@@ -567,24 +652,24 @@ var Controlador = /*#__PURE__*/function () {
   }, {
     key: "modificarGrupo",
     value: function () {
-      var _modificarGrupo = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee11(idMovimiento, idZona, idRama, idGrupo, nombre, isMonitor, idJefeNuevo1, idJefeNuevo2, idJefeViejo1, idJefeViejo2) {
+      var _modificarGrupo = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee14(idMovimiento, idZona, idRama, idGrupo, nombre, isMonitor, idJefeNuevo1, idJefeNuevo2, idJefeViejo1, idJefeViejo2) {
         var movimiento, rama, grupo;
-        return _regenerator["default"].wrap(function _callee11$(_context11) {
+        return _regenerator["default"].wrap(function _callee14$(_context14) {
           while (1) {
-            switch (_context11.prev = _context11.next) {
+            switch (_context14.prev = _context14.next) {
               case 0:
-                _context11.prev = 0;
+                _context14.prev = 0;
                 movimiento = this.getMovimiento(idMovimiento);
                 rama = this.getRama(idMovimiento, idZona, idRama);
                 grupo = this.getGrupo(idMovimiento, idZona, idRama, idGrupo);
 
                 if (!(idJefeNuevo1 != idJefeViejo1 && idJefeViejo1 && idJefeNuevo2 != idJefeViejo1)) {
-                  _context11.next = 9;
+                  _context14.next = 9;
                   break;
                 }
 
                 this.verificarEliminarJefe(rama, idJefeViejo1);
-                _context11.next = 8;
+                _context14.next = 8;
                 return this.dao.eliminarJefeGrupo(idJefeViejo1, idZona, idRama, idGrupo, idMovimiento);
 
               case 8:
@@ -594,12 +679,12 @@ var Controlador = /*#__PURE__*/function () {
 
               case 9:
                 if (!(idJefeNuevo2 != idJefeViejo2 && idJefeViejo2 && idJefeNuevo1 != idJefeViejo2)) {
-                  _context11.next = 14;
+                  _context14.next = 14;
                   break;
                 }
 
                 this.verificarEliminarJefe(rama, idJefeViejo2);
-                _context11.next = 13;
+                _context14.next = 13;
                 return this.dao.eliminarJefeGrupo(idJefeViejo2, idZona, idRama, idGrupo, idMovimiento);
 
               case 13:
@@ -609,57 +694,57 @@ var Controlador = /*#__PURE__*/function () {
 
               case 14:
                 if (!(idJefeNuevo1 && idJefeNuevo1 != idJefeViejo1 && idJefeNuevo1 != idJefeViejo2)) {
-                  _context11.next = 23;
+                  _context14.next = 23;
                   break;
                 }
 
                 if (!isMonitor) {
-                  _context11.next = 21;
+                  _context14.next = 21;
                   break;
                 }
 
-                _context11.next = 18;
+                _context14.next = 18;
                 return this.dao.asignarMonitorGrupo(idJefeNuevo1, idZona, idRama, idGrupo, idMovimiento);
 
               case 18:
                 this.agregarMiembroGrupo(idMovimiento, idZona, idRama, idGrupo, idJefeNuevo1);
-                _context11.next = 23;
+                _context14.next = 23;
                 break;
 
               case 21:
-                _context11.next = 23;
+                _context14.next = 23;
                 return this.dao.asignarJefeGrupo(idJefeNuevo1, idZona, idRama, idGrupo, idMovimiento);
 
               case 23:
                 if (!(idJefeNuevo2 && idJefeNuevo2 != idJefeViejo1 && idJefeNuevo2 != idJefeViejo2)) {
-                  _context11.next = 32;
+                  _context14.next = 32;
                   break;
                 }
 
                 if (!isMonitor) {
-                  _context11.next = 30;
+                  _context14.next = 30;
                   break;
                 }
 
-                _context11.next = 27;
+                _context14.next = 27;
                 return this.dao.asignarMonitorGrupo(idJefeNuevo2, idZona, idRama, idGrupo, idMovimiento);
 
               case 27:
                 this.agregarMiembroGrupo(idMovimiento, idZona, idRama, idGrupo, idJefeNuevo2);
-                _context11.next = 32;
+                _context14.next = 32;
                 break;
 
               case 30:
-                _context11.next = 32;
+                _context14.next = 32;
                 return this.dao.asignarJefeGrupo(idJefeNuevo2, idZona, idRama, idGrupo, idMovimiento);
 
               case 32:
                 if (!(grupo.nombre != nombre || grupo.isMonitor != isMonitor)) {
-                  _context11.next = 35;
+                  _context14.next = 35;
                   break;
                 }
 
-                _context11.next = 35;
+                _context14.next = 35;
                 return this.dao.modificarGrupo(idMovimiento, idZona, idRama, idGrupo, isMonitor, nombre);
 
               case 35:
@@ -667,38 +752,69 @@ var Controlador = /*#__PURE__*/function () {
                 grupo.isMonitor = isMonitor;
                 grupo.setEncargado1(idJefeNuevo1);
                 grupo.setEncargado2(idJefeNuevo2);
-                _context11.next = 44;
+                _context14.next = 44;
                 break;
 
               case 41:
-                _context11.prev = 41;
-                _context11.t0 = _context11["catch"](0);
-                throw _context11.t0;
+                _context14.prev = 41;
+                _context14.t0 = _context14["catch"](0);
+                throw _context14.t0;
 
               case 44:
               case "end":
-                return _context11.stop();
+                return _context14.stop();
             }
           }
-        }, _callee11, this, [[0, 41]]);
+        }, _callee14, this, [[0, 41]]);
       }));
 
-      function modificarGrupo(_x68, _x69, _x70, _x71, _x72, _x73, _x74, _x75, _x76, _x77) {
+      function modificarGrupo(_x89, _x90, _x91, _x92, _x93, _x94, _x95, _x96, _x97, _x98) {
         return _modificarGrupo.apply(this, arguments);
       }
 
       return modificarGrupo;
     }()
   }, {
+    key: "modificarAsesor",
+    value: function () {
+      var _modificarAsesor = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee15(idMovimiento, idAsesor, contrasena, nombre, email, celular, provincia, distrito, canton, senales) {
+        var movimiento, gMiembros;
+        return _regenerator["default"].wrap(function _callee15$(_context15) {
+          while (1) {
+            switch (_context15.prev = _context15.next) {
+              case 0:
+                _context15.next = 2;
+                return this.dao.editarAsesor(canton, idAsesor, celular, contrasena, distrito, nombre, provincia, senales, email);
+
+              case 2:
+                movimiento = this.getMovimiento(idMovimiento);
+                gMiembros = movimiento.gMiembros;
+                gMiembros.modificarMiembro(idAsesor, nombre, celular, email, provincia, canton, distrito, senales, false);
+
+              case 5:
+              case "end":
+                return _context15.stop();
+            }
+          }
+        }, _callee15, this);
+      }));
+
+      function modificarAsesor(_x99, _x100, _x101, _x102, _x103, _x104, _x105, _x106, _x107, _x108) {
+        return _modificarAsesor.apply(this, arguments);
+      }
+
+      return modificarAsesor;
+    }()
+  }, {
     key: "modificarMiembro",
     value: function () {
-      var _modificarMiembro = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee12(idMiembro, nombre, celular, email, provincia, canton, distrito, senas, posible_monitor, idMovimiento) {
+      var _modificarMiembro = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee16(idMiembro, nombre, celular, email, provincia, canton, distrito, senas, posible_monitor, idMovimiento) {
         var movimiento, gMiembros;
-        return _regenerator["default"].wrap(function _callee12$(_context12) {
+        return _regenerator["default"].wrap(function _callee16$(_context16) {
           while (1) {
-            switch (_context12.prev = _context12.next) {
+            switch (_context16.prev = _context16.next) {
               case 0:
-                _context12.next = 2;
+                _context16.next = 2;
                 return this.dao.modificarMiembro(idMovimiento, idMiembro, nombre, celular, email, provincia, canton, distrito, senas, posible_monitor);
 
               case 2:
@@ -708,13 +824,13 @@ var Controlador = /*#__PURE__*/function () {
 
               case 5:
               case "end":
-                return _context12.stop();
+                return _context16.stop();
             }
           }
-        }, _callee12, this);
+        }, _callee16, this);
       }));
 
-      function modificarMiembro(_x78, _x79, _x80, _x81, _x82, _x83, _x84, _x85, _x86, _x87) {
+      function modificarMiembro(_x109, _x110, _x111, _x112, _x113, _x114, _x115, _x116, _x117, _x118) {
         return _modificarMiembro.apply(this, arguments);
       }
 
@@ -740,28 +856,28 @@ var Controlador = /*#__PURE__*/function () {
   }, {
     key: "consultarRamasMiembro",
     value: function () {
-      var _consultarRamasMiembro = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee13(idMovimiento, idMiembro) {
+      var _consultarRamasMiembro = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee17(idMovimiento, idMiembro) {
         var ramas;
-        return _regenerator["default"].wrap(function _callee13$(_context13) {
+        return _regenerator["default"].wrap(function _callee17$(_context17) {
           while (1) {
-            switch (_context13.prev = _context13.next) {
+            switch (_context17.prev = _context17.next) {
               case 0:
-                _context13.next = 2;
+                _context17.next = 2;
                 return this.dao.ramasDeMiembros(idMiembro, idMovimiento);
 
               case 2:
-                ramas = _context13.sent;
-                return _context13.abrupt("return", ramas);
+                ramas = _context17.sent;
+                return _context17.abrupt("return", ramas);
 
               case 4:
               case "end":
-                return _context13.stop();
+                return _context17.stop();
             }
           }
-        }, _callee13, this);
+        }, _callee17, this);
       }));
 
-      function consultarRamasMiembro(_x88, _x89) {
+      function consultarRamasMiembro(_x119, _x120) {
         return _consultarRamasMiembro.apply(this, arguments);
       }
 
@@ -770,30 +886,30 @@ var Controlador = /*#__PURE__*/function () {
   }, {
     key: "consultarRamasDisponibles",
     value: function () {
-      var _consultarRamasDisponibles = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee14(idMovimiento, idMiembro) {
+      var _consultarRamasDisponibles = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee18(idMovimiento, idMiembro) {
         var ramas;
-        return _regenerator["default"].wrap(function _callee14$(_context14) {
+        return _regenerator["default"].wrap(function _callee18$(_context18) {
           while (1) {
-            switch (_context14.prev = _context14.next) {
+            switch (_context18.prev = _context18.next) {
               case 0:
-                _context14.prev = 0;
+                _context18.prev = 0;
                 ramas = this.dao.otrasRamas(idMiembro, idMovimiento);
-                return _context14.abrupt("return", ramas);
+                return _context18.abrupt("return", ramas);
 
               case 5:
-                _context14.prev = 5;
-                _context14.t0 = _context14["catch"](0);
-                throw _context14.t0;
+                _context18.prev = 5;
+                _context18.t0 = _context18["catch"](0);
+                throw _context18.t0;
 
               case 8:
               case "end":
-                return _context14.stop();
+                return _context18.stop();
             }
           }
-        }, _callee14, this, [[0, 5]]);
+        }, _callee18, this, [[0, 5]]);
       }));
 
-      function consultarRamasDisponibles(_x90, _x91) {
+      function consultarRamasDisponibles(_x121, _x122) {
         return _consultarRamasDisponibles.apply(this, arguments);
       }
 
@@ -808,28 +924,28 @@ var Controlador = /*#__PURE__*/function () {
   }, {
     key: "consultarGrupoDeMiembroEnRama",
     value: function () {
-      var _consultarGrupoDeMiembroEnRama = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee15(idMovimiento, idZona, idRama, idMiembro) {
+      var _consultarGrupoDeMiembroEnRama = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee19(idMovimiento, idZona, idRama, idMiembro) {
         var grupos;
-        return _regenerator["default"].wrap(function _callee15$(_context15) {
+        return _regenerator["default"].wrap(function _callee19$(_context19) {
           while (1) {
-            switch (_context15.prev = _context15.next) {
+            switch (_context19.prev = _context19.next) {
               case 0:
-                _context15.next = 2;
+                _context19.next = 2;
                 return this.dao.grupoDeMiembroEnRama(idMovimiento, idZona, idRama, idMiembro);
 
               case 2:
-                grupos = _context15.sent;
-                return _context15.abrupt("return", grupos);
+                grupos = _context19.sent;
+                return _context19.abrupt("return", grupos);
 
               case 4:
               case "end":
-                return _context15.stop();
+                return _context19.stop();
             }
           }
-        }, _callee15, this);
+        }, _callee19, this);
       }));
 
-      function consultarGrupoDeMiembroEnRama(_x92, _x93, _x94, _x95) {
+      function consultarGrupoDeMiembroEnRama(_x123, _x124, _x125, _x126) {
         return _consultarGrupoDeMiembroEnRama.apply(this, arguments);
       }
 
@@ -883,28 +999,28 @@ var Controlador = /*#__PURE__*/function () {
   }, {
     key: "consultarMonitoresProbables",
     value: function () {
-      var _consultarMonitoresProbables = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee16(idMovimiento, idZona, idRama, idGrupo) {
+      var _consultarMonitoresProbables = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee20(idMovimiento, idZona, idRama, idGrupo) {
         var monitores;
-        return _regenerator["default"].wrap(function _callee16$(_context16) {
+        return _regenerator["default"].wrap(function _callee20$(_context20) {
           while (1) {
-            switch (_context16.prev = _context16.next) {
+            switch (_context20.prev = _context20.next) {
               case 0:
-                _context16.next = 2;
+                _context20.next = 2;
                 return this.dao.monitoresProbables(idMovimiento, idZona, idRama, idGrupo);
 
               case 2:
-                monitores = _context16.sent;
-                return _context16.abrupt("return", monitores);
+                monitores = _context20.sent;
+                return _context20.abrupt("return", monitores);
 
               case 4:
               case "end":
-                return _context16.stop();
+                return _context20.stop();
             }
           }
-        }, _callee16, this);
+        }, _callee20, this);
       }));
 
-      function consultarMonitoresProbables(_x96, _x97, _x98, _x99) {
+      function consultarMonitoresProbables(_x127, _x128, _x129, _x130) {
         return _consultarMonitoresProbables.apply(this, arguments);
       }
 
@@ -913,28 +1029,28 @@ var Controlador = /*#__PURE__*/function () {
   }, {
     key: "consultarMonitoresZona",
     value: function () {
-      var _consultarMonitoresZona = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee17(idMovimiento, idZona) {
+      var _consultarMonitoresZona = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee21(idMovimiento, idZona) {
         var monitores;
-        return _regenerator["default"].wrap(function _callee17$(_context17) {
+        return _regenerator["default"].wrap(function _callee21$(_context21) {
           while (1) {
-            switch (_context17.prev = _context17.next) {
+            switch (_context21.prev = _context21.next) {
               case 0:
-                _context17.next = 2;
+                _context21.next = 2;
                 return this.dao.todosLosMonitores(idMovimiento, idZona);
 
               case 2:
-                monitores = _context17.sent;
-                return _context17.abrupt("return", monitores);
+                monitores = _context21.sent;
+                return _context21.abrupt("return", monitores);
 
               case 4:
               case "end":
-                return _context17.stop();
+                return _context21.stop();
             }
           }
-        }, _callee17, this);
+        }, _callee21, this);
       }));
 
-      function consultarMonitoresZona(_x100, _x101) {
+      function consultarMonitoresZona(_x131, _x132) {
         return _consultarMonitoresZona.apply(this, arguments);
       }
 
@@ -968,41 +1084,41 @@ var Controlador = /*#__PURE__*/function () {
   }, {
     key: "getGruposMiembro",
     value: function () {
-      var _getGruposMiembro = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee18(idMovimiento, idMiembro) {
+      var _getGruposMiembro = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee22(idMovimiento, idMiembro) {
         var grupos, res, i, grupoInfo;
-        return _regenerator["default"].wrap(function _callee18$(_context18) {
+        return _regenerator["default"].wrap(function _callee22$(_context22) {
           while (1) {
-            switch (_context18.prev = _context18.next) {
+            switch (_context22.prev = _context22.next) {
               case 0:
-                _context18.prev = 0;
+                _context22.prev = 0;
                 grupos = [];
-                _context18.next = 4;
-                return this.dao.getGruposXMiembro(idMovimiento, idMiembro);
+                _context22.next = 4;
+                return this.dao.getGruposXMiembro(idMiembro, idMovimiento);
 
               case 4:
-                res = _context18.sent;
+                res = _context22.sent;
 
                 for (i in res) {
                   grupoInfo = res[i];
                   grupos.push(grupoInfo);
                 }
 
-                return _context18.abrupt("return", grupos);
+                return _context22.abrupt("return", grupos);
 
               case 9:
-                _context18.prev = 9;
-                _context18.t0 = _context18["catch"](0);
-                throw _context18.t0;
+                _context22.prev = 9;
+                _context22.t0 = _context22["catch"](0);
+                throw _context22.t0;
 
               case 12:
               case "end":
-                return _context18.stop();
+                return _context22.stop();
             }
           }
-        }, _callee18, this, [[0, 9]]);
+        }, _callee22, this, [[0, 9]]);
       }));
 
-      function getGruposMiembro(_x102, _x103) {
+      function getGruposMiembro(_x133, _x134) {
         return _getGruposMiembro.apply(this, arguments);
       }
 

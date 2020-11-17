@@ -34,14 +34,13 @@ var Creador = /*#__PURE__*/function () {
         var movimiento = res[0];
 
         try {
-          _this.controlador.crearMovimiento(movimiento.cedula_juridica, cedulaAsesor, movimiento.nombre, movimiento.direccion_web, movimiento.logo, movimiento.pais, movimiento.provincia, movimiento.canton, movimiento.distrito, movimiento.senales);
-
           _this.dao.getTelefonoMovimiento(movimiento.cedula_juridica).then(function (telefono) {
-            var mov = _this.controlador.getMovimiento(movimiento.cedula_juridica);
+            _this.controlador.agregarMovimiento(movimiento.cedula_juridica, cedulaAsesor, movimiento.nombre, movimiento.direccion_web, movimiento.logo, movimiento.pais, movimiento.provincia, movimiento.canton, movimiento.distrito, movimiento.senales, telefono);
+            /*var mov = this.controlador.getMovimiento(movimiento.cedula_juridica);
+            for(var i in telefono){
+                mov.telefonos.push(telefono[i].celular);
+            }*/
 
-            for (var i in telefono) {
-              mov.telefonos.push(telefono[i].celular);
-            }
           });
 
           _this.cargarZonasMovimiento(movimiento.cedula_juridica);

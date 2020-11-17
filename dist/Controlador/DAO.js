@@ -1225,12 +1225,12 @@ var DAO = /*#__PURE__*/function () {
   }, {
     key: "agregarAsesor",
     value: function () {
-      var _agregarAsesor = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee30(pCanton, pCedula, pCelular, pContrasena, pDistrito, pNombre, pPeriodoNombramiento, pProvincia, pSenales, pEmail) {
+      var _agregarAsesor = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee30(pCanton, pCedula, pCelular, pContrasena, pDistrito, pNombre, pProvincia, pSenales, pEmail) {
         return _regenerator["default"].wrap(function _callee30$(_context30) {
           while (1) {
             switch (_context30.prev = _context30.next) {
               case 0:
-                return _context30.abrupt("return", this.client.query("select * from agregarAsesor('" + pCanton + "', '" + pCedula + "', '" + pCelular + "', '" + pContrasena + "', '" + pDistrito + "', '" + pNombre + "', '" + pPeriodoNombramiento + "', '" + pProvincia + "', '" + pSenales + "', '" + pEmail + "')").then(function (res) {
+                return _context30.abrupt("return", this.client.query("select * from agregarAsesor('" + pCanton + "', '" + pCedula + "', '" + pCelular + "', '" + pContrasena + "', '" + pDistrito + "', '" + pNombre + "', '" + pProvincia + "', '" + pSenales + "', '" + pEmail + "')").then(function (res) {
                   console.table(res.rows);
                   return res.rows;
                 })["catch"](function (err) {
@@ -1245,21 +1245,21 @@ var DAO = /*#__PURE__*/function () {
         }, _callee30, this);
       }));
 
-      function agregarAsesor(_x126, _x127, _x128, _x129, _x130, _x131, _x132, _x133, _x134, _x135) {
+      function agregarAsesor(_x126, _x127, _x128, _x129, _x130, _x131, _x132, _x133, _x134) {
         return _agregarAsesor.apply(this, arguments);
       }
 
       return agregarAsesor;
     }()
   }, {
-    key: "editarAsesor",
+    key: "eliminarAsesor",
     value: function () {
-      var _editarAsesor = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee31(pCanton, pCedula, pCelular, pContrasena, pDistrito, pNombre, pPeriodoNombramiento, pProvincia, pSenales, pEmail) {
+      var _eliminarAsesor = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee31(pCedula) {
         return _regenerator["default"].wrap(function _callee31$(_context31) {
           while (1) {
             switch (_context31.prev = _context31.next) {
               case 0:
-                return _context31.abrupt("return", this.client.query("select * from editorAsesor('" + pCanton + "', '" + pCedula + "', '" + pCelular + "', '" + pContrasena + "', '" + pDistrito + "', '" + pNombre + "', '" + pPeriodoNombramiento + "', '" + pProvincia + "', '" + pSenales + "', '" + pEmail + "')").then(function (res) {
+                return _context31.abrupt("return", this.client.query("select * from eliminarAsesor('" + pCedula + "')").then(function (res) {
                   console.table(res.rows);
                   return res.rows;
                 })["catch"](function (err) {
@@ -1274,21 +1274,21 @@ var DAO = /*#__PURE__*/function () {
         }, _callee31, this);
       }));
 
-      function editarAsesor(_x136, _x137, _x138, _x139, _x140, _x141, _x142, _x143, _x144, _x145) {
-        return _editarAsesor.apply(this, arguments);
+      function eliminarAsesor(_x135) {
+        return _eliminarAsesor.apply(this, arguments);
       }
 
-      return editarAsesor;
+      return eliminarAsesor;
     }()
   }, {
-    key: "crearMovimiento",
+    key: "editarAsesor",
     value: function () {
-      var _crearMovimiento = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee32(pCanton, pCedulaJuridica, pIdAsesor, pLogo, pDireccionWeb, pDistrito, pNombre, pProvincia, pPais, pSenales) {
+      var _editarAsesor = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee32(pCanton, pCedula, pCelular, pContrasena, pDistrito, pNombre, pProvincia, pSenales, pEmail) {
         return _regenerator["default"].wrap(function _callee32$(_context32) {
           while (1) {
             switch (_context32.prev = _context32.next) {
               case 0:
-                return _context32.abrupt("return", this.client.query("select * from editorAsesor('" + pCanton + "', '" + pCedulaJuridica + "', '" + pIdAsesor + "', '" + pLogo + "', '" + pDireccionWeb + "', '" + pDistrito + "', '" + pNombre + "', '" + pProvincia + "', '" + pPais + "', '" + pSenales + "')").then(function (res) {
+                return _context32.abrupt("return", this.client.query("select * from editarAsesor('" + pCanton + "', '" + pCedula + "', '" + pCelular + "', '" + pContrasena + "', '" + pDistrito + "', '" + pNombre + "', '" + pProvincia + "', '" + pSenales + "', '" + pEmail + "')").then(function (res) {
                   console.table(res.rows);
                   return res.rows;
                 })["catch"](function (err) {
@@ -1303,7 +1303,36 @@ var DAO = /*#__PURE__*/function () {
         }, _callee32, this);
       }));
 
-      function crearMovimiento(_x146, _x147, _x148, _x149, _x150, _x151, _x152, _x153, _x154, _x155) {
+      function editarAsesor(_x136, _x137, _x138, _x139, _x140, _x141, _x142, _x143, _x144) {
+        return _editarAsesor.apply(this, arguments);
+      }
+
+      return editarAsesor;
+    }()
+  }, {
+    key: "crearMovimiento",
+    value: function () {
+      var _crearMovimiento = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee33(pCanton, pCedulaJuridica, pIdAsesor, pLogo, pDireccionWeb, pDistrito, pNombre, pProvincia, pPais, pSenales, pTelefonos) {
+        return _regenerator["default"].wrap(function _callee33$(_context33) {
+          while (1) {
+            switch (_context33.prev = _context33.next) {
+              case 0:
+                return _context33.abrupt("return", this.client.query("select * from crearMovimiento('" + pCanton + "', '" + pCedulaJuridica + "', '" + pIdAsesor + "', '" + pLogo + "', '" + pDireccionWeb + "', '" + pDistrito + "', '" + pNombre + "', '" + pProvincia + "', '" + pPais + "', '" + pSenales + "', ARRAY[" + pTelefonos + "])").then(function (res) {
+                  console.table(res.rows);
+                  return res.rows;
+                })["catch"](function (err) {
+                  throw err;
+                }));
+
+              case 1:
+              case "end":
+                return _context33.stop();
+            }
+          }
+        }, _callee33, this);
+      }));
+
+      function crearMovimiento(_x145, _x146, _x147, _x148, _x149, _x150, _x151, _x152, _x153, _x154, _x155) {
         return _crearMovimiento.apply(this, arguments);
       }
 
