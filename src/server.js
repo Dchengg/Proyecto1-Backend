@@ -3,7 +3,6 @@ const session = require('express-session')
 const cors = require('cors')
 const logger = require('morgan');
 const bodyParser = require('body-parser');
-const { shouldSendSameSiteNone } = require('should-send-same-site-none');
 import Controlador from './Controlador/Controlador';
 import ControladorLogin from './Controlador/ControladorLogin';
 
@@ -17,8 +16,6 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 //quitar en producción
 app.use(logger('dev'));
-app.use(shouldSendSameSiteNone);
-//app.set('trust proxy', 1);
 
 app.use(session({
   secret: 'secret word',
@@ -46,7 +43,6 @@ var idMovimiento = '4000042145';
 
 
 app.get('/', function(req, res){
-    res.cookie("foo", "bar", { sameSite: "none", secure: true });
     return res.json({success: true, message: "You just connected to the social seekers API, welcome :D"})
 })
 

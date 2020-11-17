@@ -16,9 +16,6 @@ var logger = require('morgan');
 
 var bodyParser = require('body-parser');
 
-var _require = require('should-send-same-site-none'),
-    shouldSendSameSiteNone = _require.shouldSendSameSiteNone;
-
 var app = express();
 app.use(cors({
   origin: ["http://localhost:4200", "https://social-seekers-bbb14.web.app"],
@@ -30,8 +27,6 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json()); //quitar en producción
 
 app.use(logger('dev'));
-app.use(shouldSendSameSiteNone); //app.set('trust proxy', 1);
-
 app.use(session({
   secret: 'secret word',
   name: 'socialseekers',
@@ -54,10 +49,6 @@ var controladorLogin = new _ControladorLogin["default"](controlador); //var crea
 var idMovimiento = '4000042145'; //creador.iniciarAPI();
 
 app.get('/', function (req, res) {
-  res.cookie("foo", "bar", {
-    sameSite: "none",
-    secure: true
-  });
   return res.json({
     success: true,
     message: "You just connected to the social seekers API, welcome :D"
@@ -82,7 +73,8 @@ app.post('/iniciar-sesion', function (req, res) {
       if (loggedIn) {
         req.session.idAsesor = id;
         return res.json({
-          success: true
+          success: true,
+          movimiento: idMovimiento
         });
       }
 
