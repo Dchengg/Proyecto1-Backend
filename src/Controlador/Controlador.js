@@ -6,6 +6,7 @@ export default class Controlador{
     constructor(){
         this.movimientos = new Map();
         this.dao = new DAO();
+        this.movimientos.set("39123123",new Movimiento("39123123","123","movimiento","http:..","cool","CR","SJ","P","C","D","Del palo de limón, tres cuadras norte :v"))
     }
      
     async crearMovimiento(cedulaJuridica, idAsesor,nombre, direccionWeb, logo, pais, provincia, canton, distrito, senas, telefonos){
@@ -25,24 +26,29 @@ export default class Controlador{
     }
 
     async crearZonaNueva(idMovimiento, nombre){
+        var idZona;
         await this.dao.insertarZona(idMovimiento, nombre)
         .then(res => {
             this.agregarZona(idMovimiento, res[0].id_zona.toString(), nombre);
+            idZona = res[0].id_zona.toString();
         })
         .catch(err => {
             throw err
         })
-        
+        return idZona;
     }
 
     async crearRamaNueva(idMovimiento, idZona, nombre){
+        var idRama;
         await this.dao.insertarRama(idMovimiento,idZona,nombre)
         .then(res => {
             this.agregarRama(idMovimiento, idZona, res[0].id_rama.toString(), nombre)
+            idRama = res[0].id_rama.toString();
         })
         .catch(err => {
             throw err
         })
+        return idRama;
     }
 
     async crearGrupoNuevo(idMovimiento, idZona, idRama, idGrupo, nombre, idEncargado1, idEncargado2, isMonitor){
@@ -72,6 +78,11 @@ export default class Controlador{
             throw err
         })
         this.agregarMiembro(idMiembro, nombre, celular, email, provincia, canton, distrito, senas, posible_monitor, idMovimiento, idZona, idRama, idGrupo);
+    }
+
+    async crearMiembroNuevoSinGrupo(idMiembro, nombre, celular, email, provincia, canton,distrito, senas, posible_monitor, idMovimiento){
+        await this.dao.insertarMiembro(idMovimiento, idMiembro, nombre, celular, email, provincia, canton, distrito, senas, posible_monitor);
+        this.agregarMiembroAMovimiento(idMovimiento,idMiembro, nombre, celular, email, provincia, canton, distrito, senas, posible_monitor);
     }
 
     async cambioDeGrupo(idMovimiento, idZona, idRama, idGrupoNuevo, idGrupoViejo, idMiembro){
