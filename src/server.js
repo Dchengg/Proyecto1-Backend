@@ -46,17 +46,20 @@ var idMovimiento = '4000042145';
 
 
 app.get('/', function(req, res){
+    res.cookie("foo", "bar", { sameSite: "none", secure: true });
     return res.json({success: true, message: "You just connected to the social seekers API, welcome :D"})
 })
 
 app.post('/iniciar-sesion', function(req, res){
     const { id, pass } = req.body;
     try{
+        var idMovimiento;
         var loggedIn;
         var logInPromise = controladorLogin.verificarCombinación(id, pass)
             .then(res => {
                 loggedIn = res.encontrado;
-                req.session.idMovimiento = res.idMovimiento
+                req.session.idMovimiento = res.idMovimiento;
+                idMovimiento = res.idMovimiento;
             })
             .catch(err => {
                 throw err

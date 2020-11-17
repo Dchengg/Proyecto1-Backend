@@ -54,6 +54,10 @@ var controladorLogin = new _ControladorLogin["default"](controlador); //var crea
 var idMovimiento = '4000042145'; //creador.iniciarAPI();
 
 app.get('/', function (req, res) {
+  res.cookie("foo", "bar", {
+    sameSite: "none",
+    secure: true
+  });
   return res.json({
     success: true,
     message: "You just connected to the social seekers API, welcome :D"
@@ -65,10 +69,12 @@ app.post('/iniciar-sesion', function (req, res) {
       pass = _req$body.pass;
 
   try {
+    var idMovimiento;
     var loggedIn;
     var logInPromise = controladorLogin.verificarCombinación(id, pass).then(function (res) {
       loggedIn = res.encontrado;
       req.session.idMovimiento = res.idMovimiento;
+      idMovimiento = res.idMovimiento;
     })["catch"](function (err) {
       throw err;
     });
