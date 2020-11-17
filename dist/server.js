@@ -33,11 +33,10 @@ app.use(session({
   name: 'socialseekers',
   resave: false,
   saveUninitialized: false,
-  store: store,
   cookie: {
     httpOnly: false,
     secure: true,
-    sameSite: 'none'
+    sameSite: "none"
   }
 })); //The local port is 3001
 
