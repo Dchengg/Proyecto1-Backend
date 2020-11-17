@@ -48,11 +48,13 @@ app.get('/', function(req, res){
 app.post('/iniciar-sesion', function(req, res){
     const { id, pass } = req.body;
     try{
+        var idMovimiento;
         var loggedIn;
         var logInPromise = controladorLogin.verificarCombinación(id, pass)
             .then(res => {
                 loggedIn = res.encontrado;
                 req.session.idMovimiento = res.idMovimiento
+                idMovimiento = res.idMovimiento;
             })
             .catch(err => {
                 throw err
@@ -61,7 +63,7 @@ app.post('/iniciar-sesion', function(req, res){
             .finally(() => {
                 if(loggedIn){
                     req.session.idAsesor = id;
-                    return res.json({ success: true});
+                    return res.json({ success: true, movimiento: idMovimiento});
                 }
                 return res.json({ success: false});
             })
