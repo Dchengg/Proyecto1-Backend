@@ -50,6 +50,9 @@ var Controlador = /*#__PURE__*/function () {
                 return this.dao.crearMovimiento(canton, cedulaJuridica, idAsesor, logo, direccionWeb, distrito, nombre, provincia, pais, senas, telefonos);
 
               case 4:
+                this.agregarMovimiento(cedulaJuridica, idAsesor, nombre, direccionWeb, logo, pais, provincia, canton, distrito, senas, telefonos);
+
+              case 5:
               case "end":
                 return _context.stop();
             }
