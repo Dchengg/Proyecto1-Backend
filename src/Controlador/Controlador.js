@@ -6,16 +6,22 @@ export default class Controlador{
     constructor(){
         this.movimientos = new Map();
         this.dao = new DAO();
-        //this.movimientos.set(1,new Movimiento("1","123","movimiento","http:..","cool","CR","SJ","P","C","D","Del palo de limón, tres cuadras norte :v"))
     }
      
-    crearMovimiento(cedulaJuridica, idAsesor,nombre, direccionWeb, logo, pais, provimicia, canton, distrito, senas){
+    async crearMovimiento(cedulaJuridica, idAsesor,nombre, direccionWeb, logo, pais, provincia, canton, distrito, senas, telefonos){
         if(this.movimientos.has(cedulaJuridica)){
             throw { message: "Movimiento con el id: " + cedulaJuridica +" ya existe"}
         }
-        this.movimientos.set(cedulaJuridica, new Movimiento(cedulaJuridica, idAsesor, nombre, direccionWeb, logo, pais, provimicia, canton, distrito, senas))
+        await this.dao.crearMovimiento(canton, cedulaJuridica, idAsesor, logo, direccionWeb, distrito, nombre, provincia, pais, senas, telefonos);
     }
 
+    async crearAsesor(idAsesor, contrasena, nombre, email, celular, provincia, distrito, canton, senales){
+        await this.dao.agregarAsesor(canton, idAsesor, celular, contrasena, distrito, nombre, provincia, senales, email);
+    }
+
+    async eliminarAsesor(idAsesor){
+        await this.dao.eliminarAsesor(idAsesor);
+    }
 
     async crearZonaNueva(idMovimiento, nombre){
         await this.dao.insertarZona(idMovimiento, nombre)
@@ -74,6 +80,14 @@ export default class Controlador{
         movimiento.gNodos.eliminarDeGrupo(idZona, idRama, idGrupoViejo, idMiembro);
     }
 
+    agregarMovimiento(cedulaJuridica, idAsesor,nombre, direccionWeb, logo, pais, provincia, canton, distrito, senas, telefonos){
+        this.movimientos.set(cedulaJuridica, new Movimiento(cedulaJuridica, idAsesor, nombre, direccionWeb, logo, pais, provincia, canton, distrito, senas));
+        var mov = this.getMovimiento(cedulaJuridica);
+        console.log(telefonos)
+        for(var i in telefonos){
+            mov.telefonos.push(telefonos[i].celular);
+        }
+    }
 
     agregarZona(idMovimiento, idZona, nombre, idEncargado1, idEncargado2){
         var movimiento = this.getMovimiento(idMovimiento);
@@ -281,6 +295,13 @@ export default class Controlador{
         }
     }
 
+    async modificarAsesor(idMovimiento, idAsesor, contrasena, nombre, email, celular, provincia, distrito, canton, senales){
+        await this.dao.editarAsesor(canton, idAsesor, celular, contrasena, distrito, nombre, provincia, senales, email);
+        var movimiento = this.getMovimiento(idMovimiento);
+        var gMiembros = movimiento.gMiembros;
+        gMiembros.modificarMiembro(idAsesor, nombre, celular, email, provincia, canton, distrito, senales, false);
+    }
+
     async modificarMiembro(idMiembro, nombre, celular, email, provincia, canton, distrito, senas, posible_monitor, idMovimiento){
         await this.dao.modificarMiembro(idMovimiento, idMiembro, nombre, celular, email, provincia, canton, distrito, senas, posible_monitor);
         var movimiento =  this.getMovimiento(idMovimiento);
@@ -315,7 +336,6 @@ export default class Controlador{
             throw err
         }
     }
-
 
     consultarGrupos(idMovimiento, idZona, idRama){
         var movimiento = this.getMovimiento(idMovimiento);
@@ -393,7 +413,7 @@ export default class Controlador{
     async getGruposMiembro(idMovimiento, idMiembro){
         try{
             var grupos = [];
-            const res = await this.dao.getGruposXMiembro(idMovimiento, idMiembro);
+            const res = await this.dao.getGruposXMiembro(idMiembro, idMovimiento);
             for(var i in res){
                 var grupoInfo = res[i];
                 grupos.push(grupoInfo);
