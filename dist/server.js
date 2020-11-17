@@ -32,7 +32,7 @@ app.use(session({
   resave: false,
   saveUninitialized: true,
   cookie: {
-    httpOnly: true,
+    httpOnly: false,
     secure: false
   }
 })); //The local port is 3001

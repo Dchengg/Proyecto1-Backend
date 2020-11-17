@@ -22,7 +22,7 @@ app.use(session({
   resave: false,
   saveUninitialized: true,
   cookie: { 
-      httpOnly: true,  
+      httpOnly: false,  
       secure: false
     }
 }))
