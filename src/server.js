@@ -21,13 +21,12 @@ app.use(logger('dev'));
 
 app.use(session({
   secret: 'secret word',
-  key: 'sid',
-  resave: true,
+  resave: false,
   saveUninitialized: true,
   cookie: {   
       httpOnly: false,
-      secure: true, 
-      proxy: true
+      secure: false, 
+      sameSite: 'none'
     }
 }))
 

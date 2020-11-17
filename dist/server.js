@@ -30,13 +30,12 @@ app.use(logger('dev')); //app.set('trust proxy', 1);
 
 app.use(session({
   secret: 'secret word',
-  key: 'sid',
-  resave: true,
+  resave: false,
   saveUninitialized: true,
   cookie: {
     httpOnly: false,
-    secure: true,
-    proxy: true
+    secure: false,
+    sameSite: 'none'
   }
 })); //The local port is 3001
 
