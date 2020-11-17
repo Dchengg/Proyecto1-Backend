@@ -17,7 +17,7 @@ app.use(bodyParser.json());
 //quitar en producción
 app.use(logger('dev'));
 
-app.set('trust proxy', 1);
+//app.set('trust proxy', 1);
 
 app.use(session({
   secret: 'secret word',
@@ -26,7 +26,8 @@ app.use(session({
   saveUninitialized: true,
   cookie: {   
       httpOnly: false,
-      secure: true
+      secure: true, 
+      proxy: true
     }
 }))
 
