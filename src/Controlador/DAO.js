@@ -647,7 +647,7 @@ export default class DAO{
     }
 
     async crearMovimiento(pCanton,pCedulaJuridica,pIdAsesor,pLogo,pDireccionWeb,pDistrito,pNombre,pProvincia,pPais,pSenales,pTelefonos){
-        return this.client.query("select * from editorAsesor('"+pCanton+"', '"+pCedulaJuridica+"', '"+pIdAsesor+"', '"+pLogo+"', '"+pDireccionWeb+"', '"+pDistrito+"', '"+pNombre+"', '"+pProvincia+"', '"+pPais+"', '"+pSenales+"', ARRAY["+pTelefonos+"])")
+        return this.client.query("select * from crearMovimiento('"+pCanton+"', '"+pCedulaJuridica+"', '"+pIdAsesor+"', '"+pLogo+"', '"+pDireccionWeb+"', '"+pDistrito+"', '"+pNombre+"', '"+pProvincia+"', '"+pPais+"', '"+pSenales+"', ARRAY["+pTelefonos+"])")
             .then(res => {
                 console.table(res.rows);
                 return res.rows;
