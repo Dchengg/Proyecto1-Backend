@@ -16,6 +16,9 @@ var logger = require('morgan');
 
 var bodyParser = require('body-parser');
 
+var _require = require('should-send-same-site-none'),
+    shouldSendSameSiteNone = _require.shouldSendSameSiteNone;
+
 var app = express();
 app.use(cors({
   origin: ["http://localhost:4200", "https://social-seekers-bbb14.web.app"],
@@ -26,7 +29,8 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(bodyParser.json()); //quitar en producción
 
-app.use(logger('dev')); //app.set('trust proxy', 1);
+app.use(logger('dev'));
+app.use(shouldSendSameSiteNone); //app.set('trust proxy', 1);
 
 app.use(session({
   secret: 'secret word',
