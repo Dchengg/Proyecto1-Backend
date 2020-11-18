@@ -556,21 +556,13 @@ app.post('/iniciar-estructura-movimiento', function(req, res){
     const { idMovimiento, nombreZona, nombreRama, idGrupo, nombreGrupo, idMiembro, idMiembro2,
          nombreMiembro, celular, email, provincia, canton,distrito, senas, posible_monitor } = req.body;
     try{
-        controlador.crearZonaNueva(idMovimiento, nombreZona)
-        .then( (idZona) => {
-            controlador.crearRamaNueva(idMovimiento, idZona , nombreRama)
-            .then( (idRama) => {
-                controlador.crearMiembroNuevoSinGrupo(idMiembro, nombreMiembro, celular, email, provincia, canton, distrito, senas, posible_monitor, idMovimiento)
-                .then( () => {
-                    controlador.crearGrupoNuevo(idMovimiento, idZona, idRama, idGrupo, nombreGrupo, idMiembro, idMiembro2, posible_monitor)
-                    .then(() => {
-                        return res.json({success: true})
-                    })
-                })
-            })
+        controlador.crearEstructuraBase(idMovimiento, nombreZona, nombreRama, idGrupo, nombreGrupo, idMiembro, idMiembro2,
+            nombreMiembro, celular, email, provincia, canton,distrito, senas, posible_monitor)
+        .then( () => {
+            return res.json({success: true})
         })
-        .catch(err => {
-            return res.json({success: false, error: {message: err.message }})
+        .catch( err => {
+            return res.json({success: false, err: {message: err.message}})
         })
     }catch(err){
         return res.json({ success: false, error: err})
