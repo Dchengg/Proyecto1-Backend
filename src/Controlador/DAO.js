@@ -12,7 +12,7 @@ const connection = {
 };
 
 //export default class DAO{ ??
-export default class DAO{
+class DAO{
     constructor(){
         this.client = new Client(connection);
         try{
@@ -58,7 +58,7 @@ export default class DAO{
 
 
     getZonas(){
-        return this.client.query(`select * from Zona `)
+        return this.client.query(`select * from Miembro `)
             .then(res => {
                 console.table(res.rows)
                 return res.rows;
@@ -99,7 +99,6 @@ export default class DAO{
         this.client.query("select * from Rama")
             .then(res => {
                 console.table(res.rows)
-                this.client.end()
                 return res.rows;
             })
             .catch(err => {
@@ -263,6 +262,18 @@ export default class DAO{
             })
     }
 
+    getMiembroGruposXMovimiento(idMovimiento,idMiembro){
+        this.client.query("select * from GrupoMiembros inner join Miembro on Miembro.cedula=GrupoMiembros.id_miembro where GrupoMiembros.id_movimiento = '"+idMovimiento+"' and Miembro.cedula= '"+idMiembro+"'")
+            .then(res => {
+                console.table(res.rows);
+                return res.rows;
+            })
+            .catch(err => {
+                console.log(err)
+                this.client.end()
+            })
+    }
+
     getMiembroXMovimiento(idMovimiento){
         return this.client.query("select * from GrupoMiembros inner join Miembro on Miembro.cedula=GrupoMiembros.id_miembro where GrupoMiembros.id_movimiento = '"+idMovimiento+"'")
             .then(res => {
@@ -370,7 +381,7 @@ export default class DAO{
             })
     }
 
-    async getMiembrosXGrupo(idGrupo,idmMovimiento){
+    async getMiembrosXGrupo(idGrupo,idMovimiento){
         return this.client.query("select * from Miembro inner join GrupoMiembros on Miembro.cedula=GrupoMiembros.id_miembro where GrupoMiembros.id_grupo = "+idGrupo+" AND GrupoMiembros.id_movimiento = '"+idMovimiento+"'")
             .then(res => {
                 console.table(res.rows)
@@ -668,3 +679,10 @@ export default class DAO{
             })
     }
 }
+
+dao = new DAO();
+//dao.getZonas();
+dao.getMiembroGruposXMovimiento('4000042145','117940925');
+//dao. getMiembrosXGrupo(idGrupo,idMovimiento);
+//Cedulas: '117940925'      '117520337'     '187957412'
+//movimientos: '4000042145'     '39123123'      '1234567890'
