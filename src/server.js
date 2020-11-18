@@ -561,7 +561,7 @@ app.post('/iniciar-estructura-movimiento', function(req, res){
             return res.json({success: true})
         })
         .catch( err => {
-            return res.json({success: false, err: {message: err.message}})
+            return res.json({success: false, error: {message: err.message}})
         })
     }catch(err){
         return res.json({ success: false, error: err})

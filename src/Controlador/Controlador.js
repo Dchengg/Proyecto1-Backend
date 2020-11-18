@@ -40,11 +40,14 @@ export default class Controlador{
     async crearEstructuraBase(idMovimiento, nombreZona, nombreRama, idGrupo, nombreGrupo, idMiembro, idMiembro2,
         nombreMiembro, celular, email, provincia, canton,distrito, senas, posible_monitor){
         await this.dao.insertarZona(idMovimiento, nombreZona)
-        .then(idZona => {
-            this.dao.insertarRama(idMovimiento,idZona,nombreRama)
-            .then(idRama => {
+        .then(resZona => {
+            this.dao.insertarRama(idMovimiento,resZona[0].id_zona.toString(),nombreRama)
+            .then(resRama => {
                 this.dao.insertarMiembro(idMovimiento, idMiembro, nombreMiembro, celular, email, provincia, canton, distrito, senas, posible_monitor);
-                this.dao.insertarGrupo(idMovimiento, idZona, idRama, idGrupo, isMonitor, nombreGrupo, idMiembro);
+                if(!nombreGrupo){
+                    nombreGrupo = resZona[0].id_zona.toString()+resRama[0].id_rama.toString()+idGrupo;
+                }
+                this.dao.insertarGrupo(idMovimiento, resZona[0].id_zona.toString(), resRama[0].id_rama.toString(), idGrupo, true, nombreGrupo, idMiembro);
             })
         })
     }
