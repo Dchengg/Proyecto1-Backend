@@ -13,7 +13,6 @@ export default class Controlador{
             throw { message: "Movimiento con el id: " + cedulaJuridica +" ya existe"}
         }
         await this.dao.crearMovimiento(canton, cedulaJuridica, idAsesor, logo, direccionWeb, distrito, nombre, provincia, pais, senas, telefonos);
-        this.agregarMovimiento(cedulaJuridica, idAsesor, nombre, direccionWeb, logo, pais, provincia, canton, distrito, senas, telefonos);
     }
 
     async crearAsesor(idAsesor, contrasena, nombre, email, celular, provincia, distrito, canton, senales){
