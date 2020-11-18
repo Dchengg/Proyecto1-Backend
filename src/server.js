@@ -187,7 +187,12 @@ app.post('/modificar-miembro', function(req, res){
     const {idMovimiento, idMiembro, nombre, celular, email, provincia, canton,distrito, senas, posible_monitor} = req.body;
     try{
         controlador.modificarMiembro(idMiembro, nombre, celular, email, provincia, canton, distrito, senas, posible_monitor, idMovimiento)
-        return res.json({success: true})
+        .then( () => {
+            return res.json({success: true})
+        })
+        .catch( err => {
+            return res.json({success: false, error: { message: err.message}})
+        })
     }catch(err){
         console.log(err);
         return res.json({success: false, error: err})
