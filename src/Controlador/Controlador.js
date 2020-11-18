@@ -6,7 +6,6 @@ export default class Controlador{
     constructor(){
         this.movimientos = new Map();
         this.dao = new DAO();
-        this.movimientos.set("39123123",new Movimiento("39123123","123","movimiento","http:..","cool","CR","SJ","P","C","D","Del palo de limón, tres cuadras norte :v"))
     }
      
     async crearMovimiento(cedulaJuridica, idAsesor,nombre, direccionWeb, logo, pais, provincia, canton, distrito, senas, telefonos){
@@ -36,6 +35,18 @@ export default class Controlador{
             throw err
         })
         return idZona;
+    }
+
+    async crearEstructuraBase(idMovimiento, nombreZona, nombreRama, idGrupo, nombreGrupo, idMiembro, idMiembro2,
+        nombreMiembro, celular, email, provincia, canton,distrito, senas, posible_monitor){
+        await this.dao.insertarZona(idMovimiento, nombreZona)
+        .then(idZona => {
+            this.dao.insertarRama(idMovimiento,idZona,nombreRama)
+            .then(idRama => {
+                this.dao.insertarMiembro(idMovimiento, idMiembro, nombreMiembro, celular, email, provincia, canton, distrito, senas, posible_monitor);
+                this.dao.insertarGrupo(idMovimiento, idZona, idRama, idGrupo, isMonitor, nombreGrupo, idMiembro);
+            })
+        })
     }
 
     async crearRamaNueva(idMovimiento, idZona, nombre){
