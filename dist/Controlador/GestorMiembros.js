@@ -24,6 +24,7 @@ var GestorMiembros = /*#__PURE__*/function () {
     value: function crearMiembro(idMiembro, nombre, celular, email, provincia, canton, distrito, senas, posible_monitor) {
       if (this.miembros.has(idMiembro)) {
         console.log("Ya hay un miembro con esa cedula");
+        console.log(this.miembros.get(idMiembro));
       } else {
         var miembro = new _Miembro["default"](idMiembro, nombre, celular, email, provincia, canton, distrito, senas, posible_monitor);
         this.miembros.set(idMiembro, miembro);

@@ -45,8 +45,7 @@ app.listen(API_PORT, function () {
 });
 var controlador = new _Controlador["default"]();
 var controladorLogin = new _ControladorLogin["default"](controlador); //var creador = new Creador(controlador);
-
-var idMovimiento = '4000042145'; //creador.iniciarAPI();
+//creador.iniciarAPI();
 
 app.get('/', function (req, res) {
   return res.json({
@@ -103,6 +102,7 @@ app.post('/crear-miembro', function (req, res) {
       distrito = _req$body2.distrito,
       senas = _req$body2.senas,
       posible_monitor = _req$body2.posible_monitor,
+      idMovimiento = _req$body2.idMovimiento,
       idZona = _req$body2.idZona,
       idRama = _req$body2.idRama,
       idGrupo = _req$body2.idGrupo;
@@ -181,7 +181,9 @@ app.post('/crear-movimiento', function (req, res) {
   }
 });
 app.post('/crear-zona', function (req, res) {
-  var nombre = req.body.nombre;
+  var _req$body4 = req.body,
+      idMovimiento = _req$body4.idMovimiento,
+      nombre = _req$body4.nombre;
 
   try {
     controlador.crearZonaNueva(idMovimiento, nombre).then(function () {
@@ -204,9 +206,10 @@ app.post('/crear-zona', function (req, res) {
   }
 });
 app.post('/crear-rama', function (req, res) {
-  var _req$body4 = req.body,
-      idZona = _req$body4.idZona,
-      nombre = _req$body4.nombre;
+  var _req$body5 = req.body,
+      idMovimiento = _req$body5.idMovimiento,
+      idZona = _req$body5.idZona,
+      nombre = _req$body5.nombre;
 
   try {
     controlador.crearRamaNueva(idMovimiento, idZona, nombre).then(function () {
@@ -229,14 +232,15 @@ app.post('/crear-rama', function (req, res) {
   }
 });
 app.post('/crear-grupo', function (req, res) {
-  var _req$body5 = req.body,
-      idZona = _req$body5.idZona,
-      idRama = _req$body5.idRama,
-      idGrupo = _req$body5.idGrupo,
-      nombre = _req$body5.nombre,
-      idEncargado1 = _req$body5.idEncargado1,
-      idEncargado2 = _req$body5.idEncargado2,
-      isMonitor = _req$body5.isMonitor;
+  var _req$body6 = req.body,
+      idMovimiento = _req$body6.idMovimiento,
+      idZona = _req$body6.idZona,
+      idRama = _req$body6.idRama,
+      idGrupo = _req$body6.idGrupo,
+      nombre = _req$body6.nombre,
+      idEncargado1 = _req$body6.idEncargado1,
+      idEncargado2 = _req$body6.idEncargado2,
+      isMonitor = _req$body6.isMonitor;
 
   try {
     controlador.crearGrupoNuevo(idMovimiento, idZona, idRama, idGrupo, nombre, idEncargado1, idEncargado2, isMonitor).then(function () {
@@ -263,16 +267,17 @@ app.post('/crear-grupo', function (req, res) {
 //////////////////////////////
 
 app.post('/modificar-asesor', function (req, res) {
-  var _req$body6 = req.body,
-      idAsesor = _req$body6.idAsesor,
-      nombre = _req$body6.nombre,
-      contrasena = _req$body6.contrasena,
-      celular = _req$body6.celular,
-      email = _req$body6.email,
-      provincia = _req$body6.provincia,
-      canton = _req$body6.canton,
-      distrito = _req$body6.distrito,
-      senas = _req$body6.senas;
+  var _req$body7 = req.body,
+      idMovimiento = _req$body7.idMovimiento,
+      idAsesor = _req$body7.idAsesor,
+      nombre = _req$body7.nombre,
+      contrasena = _req$body7.contrasena,
+      celular = _req$body7.celular,
+      email = _req$body7.email,
+      provincia = _req$body7.provincia,
+      canton = _req$body7.canton,
+      distrito = _req$body7.distrito,
+      senas = _req$body7.senas;
 
   try {
     controlador.modificarAsesor(idMovimiento, idAsesor, contrasena, nombre, email, celular, provincia, distrito, canton, senas).then(function () {
@@ -295,16 +300,17 @@ app.post('/modificar-asesor', function (req, res) {
   }
 });
 app.post('/modificar-miembro', function (req, res) {
-  var _req$body7 = req.body,
-      idMiembro = _req$body7.idMiembro,
-      nombre = _req$body7.nombre,
-      celular = _req$body7.celular,
-      email = _req$body7.email,
-      provincia = _req$body7.provincia,
-      canton = _req$body7.canton,
-      distrito = _req$body7.distrito,
-      senas = _req$body7.senas,
-      posible_monitor = _req$body7.posible_monitor;
+  var _req$body8 = req.body,
+      idMovimiento = _req$body8.idMovimiento,
+      idMiembro = _req$body8.idMiembro,
+      nombre = _req$body8.nombre,
+      celular = _req$body8.celular,
+      email = _req$body8.email,
+      provincia = _req$body8.provincia,
+      canton = _req$body8.canton,
+      distrito = _req$body8.distrito,
+      senas = _req$body8.senas,
+      posible_monitor = _req$body8.posible_monitor;
 
   try {
     controlador.modificarMiembro(idMiembro, nombre, celular, email, provincia, canton, distrito, senas, posible_monitor, idMovimiento);
@@ -320,16 +326,17 @@ app.post('/modificar-miembro', function (req, res) {
   }
 });
 app.post('/modificar-movimiento', function (req, res) {
-  var _req$body8 = req.body,
-      nombre = _req$body8.nombre,
-      direccionWeb = _req$body8.direccionWeb,
-      logo = _req$body8.logo,
-      pais = _req$body8.pais,
-      provincia = _req$body8.provincia,
-      canton = _req$body8.canton,
-      distrito = _req$body8.distrito,
-      senas = _req$body8.senas,
-      telefonos = _req$body8.telefonos;
+  var _req$body9 = req.body,
+      idMovimiento = _req$body9.idMovimiento,
+      nombre = _req$body9.nombre,
+      direccionWeb = _req$body9.direccionWeb,
+      logo = _req$body9.logo,
+      pais = _req$body9.pais,
+      provincia = _req$body9.provincia,
+      canton = _req$body9.canton,
+      distrito = _req$body9.distrito,
+      senas = _req$body9.senas,
+      telefonos = _req$body9.telefonos;
 
   try {
     controlador.modificarMovimiento(idMovimiento, nombre, direccionWeb, logo, pais, provincia, canton, distrito, senas, telefonos).then(function () {
@@ -355,13 +362,14 @@ app.post('/modificar-movimiento', function (req, res) {
   }
 });
 app.post('/modificar-zona', function (req, res) {
-  var _req$body9 = req.body,
-      idZona = _req$body9.idZona,
-      nombre = _req$body9.nombre,
-      idJefeNuevo1 = _req$body9.idJefeNuevo1,
-      idJefeNuevo2 = _req$body9.idJefeNuevo2,
-      idJefeViejo1 = _req$body9.idJefeViejo1,
-      idJefeViejo2 = _req$body9.idJefeViejo2;
+  var _req$body10 = req.body,
+      idMovimiento = _req$body10.idMovimiento,
+      idZona = _req$body10.idZona,
+      nombre = _req$body10.nombre,
+      idJefeNuevo1 = _req$body10.idJefeNuevo1,
+      idJefeNuevo2 = _req$body10.idJefeNuevo2,
+      idJefeViejo1 = _req$body10.idJefeViejo1,
+      idJefeViejo2 = _req$body10.idJefeViejo2;
 
   try {
     var promise = controlador.modificarZona(idMovimiento, idZona, nombre, idJefeNuevo1, idJefeNuevo2, idJefeViejo1, idJefeViejo2);
@@ -381,14 +389,15 @@ app.post('/modificar-zona', function (req, res) {
   }
 });
 app.post('/modificar-rama', function (req, res) {
-  var _req$body10 = req.body,
-      idZona = _req$body10.idZona,
-      idRama = _req$body10.idRama,
-      nombre = _req$body10.nombre,
-      idJefeNuevo1 = _req$body10.idJefeNuevo1,
-      idJefeNuevo2 = _req$body10.idJefeNuevo2,
-      idJefeViejo1 = _req$body10.idJefeViejo1,
-      idJefeViejo2 = _req$body10.idJefeViejo2;
+  var _req$body11 = req.body,
+      idMovimiento = _req$body11.idMovimiento,
+      idZona = _req$body11.idZona,
+      idRama = _req$body11.idRama,
+      nombre = _req$body11.nombre,
+      idJefeNuevo1 = _req$body11.idJefeNuevo1,
+      idJefeNuevo2 = _req$body11.idJefeNuevo2,
+      idJefeViejo1 = _req$body11.idJefeViejo1,
+      idJefeViejo2 = _req$body11.idJefeViejo2;
 
   try {
     controlador.modificarRama(idMovimiento, idZona, idRama, nombre, idJefeNuevo1, idJefeNuevo2, idJefeViejo1, idJefeViejo2).then(function () {
@@ -412,16 +421,17 @@ app.post('/modificar-rama', function (req, res) {
   }
 });
 app.post('/modificar-grupo', function (req, res) {
-  var _req$body11 = req.body,
-      idZona = _req$body11.idZona,
-      idRama = _req$body11.idRama,
-      idGrupo = _req$body11.idGrupo,
-      nombre = _req$body11.nombre,
-      isMonitor = _req$body11.isMonitor,
-      idJefeNuevo1 = _req$body11.idJefeNuevo1,
-      idJefeNuevo2 = _req$body11.idJefeNuevo2,
-      idJefeViejo1 = _req$body11.idJefeViejo1,
-      idJefeViejo2 = _req$body11.idJefeViejo2;
+  var _req$body12 = req.body,
+      idMovimiento = _req$body12.idMovimiento,
+      idZona = _req$body12.idZona,
+      idRama = _req$body12.idRama,
+      idGrupo = _req$body12.idGrupo,
+      nombre = _req$body12.nombre,
+      isMonitor = _req$body12.isMonitor,
+      idJefeNuevo1 = _req$body12.idJefeNuevo1,
+      idJefeNuevo2 = _req$body12.idJefeNuevo2,
+      idJefeViejo1 = _req$body12.idJefeViejo1,
+      idJefeViejo2 = _req$body12.idJefeViejo2;
 
   try {
     controlador.modificarGrupo(idMovimiento, idZona, idRama, idGrupo, nombre, isMonitor, idJefeNuevo1, idJefeNuevo2, idJefeViejo1, idJefeViejo2).then(function () {
@@ -449,7 +459,8 @@ app.post('/modificar-grupo', function (req, res) {
 //////////////////////////////
 
 app.post('/get-movimiento', function (req, res) {
-  //const { idMovimiento } = req.body;
+  var idMovimiento = req.body.idMovimiento;
+
   try {
     var movimiento = controlador.getMovimiento(idMovimiento);
     return res.json({
@@ -465,7 +476,9 @@ app.post('/get-movimiento', function (req, res) {
   }
 });
 app.post('/get-zona', function (req, res) {
-  var idZona = req.body.idZona;
+  var _req$body13 = req.body,
+      idMovimiento = _req$body13.idMovimiento,
+      idZona = _req$body13.idZona;
   console.log(idZona);
 
   try {
@@ -484,9 +497,10 @@ app.post('/get-zona', function (req, res) {
   }
 });
 app.post('/get-rama', function (req, res) {
-  var _req$body12 = req.body,
-      idZona = _req$body12.idZona,
-      idRama = _req$body12.idRama;
+  var _req$body14 = req.body,
+      idMovimiento = _req$body14.idMovimiento,
+      idZona = _req$body14.idZona,
+      idRama = _req$body14.idRama;
 
   try {
     var rama = controlador.getRama(idMovimiento, idZona, idRama);
@@ -504,10 +518,11 @@ app.post('/get-rama', function (req, res) {
   }
 });
 app.post('/get-grupo', function (req, res) {
-  var _req$body13 = req.body,
-      idZona = _req$body13.idZona,
-      idRama = _req$body13.idRama,
-      idGrupo = _req$body13.idGrupo;
+  var _req$body15 = req.body,
+      idMovimiento = _req$body15.idMovimiento,
+      idZona = _req$body15.idZona,
+      idRama = _req$body15.idRama,
+      idGrupo = _req$body15.idGrupo;
 
   try {
     var grupo = controlador.getGrupo(idMovimiento, idZona, idRama, idGrupo);
@@ -525,7 +540,9 @@ app.post('/get-grupo', function (req, res) {
   }
 });
 app.post('/get-miembro', function (req, res) {
-  var idMiembro = req.body.idMiembro;
+  var _req$body16 = req.body,
+      idMovimiento = _req$body16.idMovimiento,
+      idMiembro = _req$body16.idMiembro;
 
   try {
     var miembro = controlador.getMiembro(idMovimiento, idMiembro);
@@ -552,7 +569,9 @@ app.post('/get-miembro', function (req, res) {
 ///   Returns an array of values
 //////////////////////////////
 
-app.get('/consultar-zonas', function (req, res) {
+app.post('/consultar-zonas', function (req, res) {
+  var idMovimiento = req.body.idMovimiento;
+
   try {
     var zonas = controlador.consultarZonas(idMovimiento);
     return res.json({
@@ -567,7 +586,9 @@ app.get('/consultar-zonas', function (req, res) {
   }
 });
 app.post('/consultar-ramas', function (req, res) {
-  var idZona = req.body.idZona;
+  var _req$body17 = req.body,
+      idMovimiento = _req$body17.idMovimiento,
+      idZona = _req$body17.idZona;
 
   try {
     var ramas = controlador.consultarRamas(idMovimiento, idZona);
@@ -584,7 +605,9 @@ app.post('/consultar-ramas', function (req, res) {
   }
 });
 app.post('/consultar-ramas-disponibles', function (req, res) {
-  var idMiembro = req.body.idMiembro;
+  var _req$body18 = req.body,
+      idMovimiento = _req$body18.idMovimiento,
+      idMiembro = _req$body18.idMiembro;
 
   try {
     controlador.consultarRamasDisponibles(idMovimiento, idMiembro).then(function (ramas) {
@@ -609,7 +632,9 @@ app.post('/consultar-ramas-disponibles', function (req, res) {
   }
 });
 app.post('/consultar-ramas-miembro', function (req, res) {
-  var idMiembro = req.body.idMiembro;
+  var _req$body19 = req.body,
+      idMovimiento = _req$body19.idMovimiento,
+      idMiembro = _req$body19.idMiembro;
 
   try {
     controlador.consultarRamasMiembro(idMovimiento, idMiembro).then(function (ramas) {
@@ -634,9 +659,10 @@ app.post('/consultar-ramas-miembro', function (req, res) {
   }
 });
 app.post('/consultar-grupos', function (req, res) {
-  var _req$body14 = req.body,
-      idZona = _req$body14.idZona,
-      idRama = _req$body14.idRama;
+  var _req$body20 = req.body,
+      idMovimiento = _req$body20.idMovimiento,
+      idZona = _req$body20.idZona,
+      idRama = _req$body20.idRama;
 
   try {
     var grupos = controlador.consultarGrupos(idMovimiento, idZona, idRama);
@@ -653,10 +679,11 @@ app.post('/consultar-grupos', function (req, res) {
   }
 });
 app.post('/consultar-grupo-miembro-en-rama', function (req, res) {
-  var _req$body15 = req.body,
-      idZona = _req$body15.idZona,
-      idRama = _req$body15.idRama,
-      idMiembro = _req$body15.idMiembro;
+  var _req$body21 = req.body,
+      idMovimiento = _req$body21.idMovimiento,
+      idZona = _req$body21.idZona,
+      idRama = _req$body21.idRama,
+      idMiembro = _req$body21.idMiembro;
 
   try {
     controlador.consultarGrupoDeMiembroEnRama(idMovimiento, idZona, idRama, idMiembro).then(function (grupo) {
@@ -681,10 +708,11 @@ app.post('/consultar-grupo-miembro-en-rama', function (req, res) {
   }
 });
 app.post('/consultar-miembros-grupo', function (req, res) {
-  var _req$body16 = req.body,
-      idZona = _req$body16.idZona,
-      idRama = _req$body16.idRama,
-      idGrupo = _req$body16.idGrupo;
+  var _req$body22 = req.body,
+      idMovimiento = _req$body22.idMovimiento,
+      idZona = _req$body22.idZona,
+      idRama = _req$body22.idRama,
+      idGrupo = _req$body22.idGrupo;
 
   try {
     var miembros = controlador.consultarMiembrosGrupo(idMovimiento, idZona, idRama, idGrupo);
@@ -701,9 +729,10 @@ app.post('/consultar-miembros-grupo', function (req, res) {
   }
 });
 app.post('/consultar-miembros-rama', function (req, res) {
-  var _req$body17 = req.body,
-      idZona = _req$body17.idZona,
-      idRama = _req$body17.idRama;
+  var _req$body23 = req.body,
+      idMovimiento = _req$body23.idMovimiento,
+      idZona = _req$body23.idZona,
+      idRama = _req$body23.idRama;
 
   try {
     var miembros = controlador.consultarMiembrosRama(idMovimiento, idZona, idRama);
@@ -720,7 +749,9 @@ app.post('/consultar-miembros-rama', function (req, res) {
   }
 });
 app.post('/consultar-miembros-zona', function (req, res) {
-  var idZona = req.body.idZona;
+  var _req$body24 = req.body,
+      idMovimiento = _req$body24.idMovimiento,
+      idZona = _req$body24.idZona;
 
   try {
     var miembros = controlador.consultarMiembrosZona(idMovimiento, idZona);
@@ -737,10 +768,11 @@ app.post('/consultar-miembros-zona', function (req, res) {
   }
 });
 app.post('/consultar-monitores-probables', function (req, res) {
-  var _req$body18 = req.body,
-      idZona = _req$body18.idZona,
-      idRama = _req$body18.idRama,
-      idGrupo = _req$body18.idGrupo;
+  var _req$body25 = req.body,
+      idMovimiento = _req$body25.idMovimiento,
+      idZona = _req$body25.idZona,
+      idRama = _req$body25.idRama,
+      idGrupo = _req$body25.idGrupo;
 
   try {
     controlador.consultarMonitoresProbables(idMovimiento, idZona, idRama, idGrupo).then(function (monitores) {
@@ -765,7 +797,9 @@ app.post('/consultar-monitores-probables', function (req, res) {
   }
 });
 app.post('/consultar-monitores-zona', function (req, res) {
-  var idZona = req.body.idZona;
+  var _req$body26 = req.body,
+      idMovimiento = _req$body26.idMovimiento,
+      idZona = _req$body26.idZona;
 
   try {
     controlador.consultarMonitoresZona(idMovimiento, idZona).then(function (monitores) {
@@ -793,11 +827,12 @@ app.post('/consultar-monitores-zona', function (req, res) {
 //////////////////////////////
 
 app.post('/agregar-miembro-grupo', function (req, res) {
-  var _req$body19 = req.body,
-      idZona = _req$body19.idZona,
-      idRama = _req$body19.idRama,
-      idGrupo = _req$body19.idGrupo,
-      idMiembro = _req$body19.idMiembro;
+  var _req$body27 = req.body,
+      idMovimiento = _req$body27.idMovimiento,
+      idZona = _req$body27.idZona,
+      idRama = _req$body27.idRama,
+      idGrupo = _req$body27.idGrupo,
+      idMiembro = _req$body27.idMiembro;
 
   try {
     controlador.agregarMiembroNuevoAGrupo(idMovimiento, idZona, idRama, idGrupo, idMiembro).then(function () {
@@ -821,28 +856,15 @@ app.post('/agregar-miembro-grupo', function (req, res) {
   }
 });
 app.post('/cambio-de-grupo', function (req, res) {
-  var _req$body20 = req.body,
-      idZona = _req$body20.idZona,
-      idRama = _req$body20.idRama,
-      idGrupoViejo = _req$body20.idGrupoViejo,
-      idGrupoNuevo = _req$body20.idGrupoNuevo,
-      idMiembro = _req$body20.idMiembro;
+  var _req$body28 = req.body,
+      idMovimiento = _req$body28.idMovimiento,
+      idZona = _req$body28.idZona,
+      idRama = _req$body28.idRama,
+      idGrupoViejo = _req$body28.idGrupoViejo,
+      idGrupoNuevo = _req$body28.idGrupoNuevo,
+      idMiembro = _req$body28.idMiembro;
 
   try {
-    /*controlador.agregarMiembroNuevoAGrupo(idMovimiento, idZona, idRama, idGrupoNuevo, idMiembro)
-    .then( () => {
-        controlador.eliminarMiembroGrupo(idMovimiento, idZona, idRama, idGrupoViejo, idMiembro)
-        .then( () => {
-            return res.json({ success: true});
-        })
-        .catch(err => {
-            controlador.eliminarMiembroGrupo(idMovimiento, idZona, idRama, idGrupoNuevo, idMiembro);
-            throw err
-        })
-    })
-    .catch( err => {
-        return res.json({success: false, error: {message: err.message}})
-    })*/
     controlador.cambioDeGrupo(idMovimiento, idZona, idRama, idGrupoNuevo, idGrupoViejo, idMiembro).then(function () {
       return res.json({
         success: true
@@ -864,13 +886,14 @@ app.post('/cambio-de-grupo', function (req, res) {
   }
 });
 app.post('/asignar-encargado-grupo', function (req, res) {
-  var _req$body21 = req.body,
-      idZona = _req$body21.idZona,
-      idRama = _req$body21.idRama,
-      idGrupo = _req$body21.idGrupo,
-      idMiembro = _req$body21.idMiembro,
-      idMiembro2 = _req$body21.idMiembro2,
-      isMonitor = _req$body21.isMonitor;
+  var _req$body29 = req.body,
+      idMovimiento = _req$body29.idMovimiento,
+      idZona = _req$body29.idZona,
+      idRama = _req$body29.idRama,
+      idGrupo = _req$body29.idGrupo,
+      idMiembro = _req$body29.idMiembro,
+      idMiembro2 = _req$body29.idMiembro2,
+      isMonitor = _req$body29.isMonitor;
 
   try {
     controlador.asignarEncargadoGrupo(idMovimiento, idZona, idRama, idGrupo, idMiembro, idMiembro2, isMonitor);
@@ -886,12 +909,13 @@ app.post('/asignar-encargado-grupo', function (req, res) {
   }
 });
 app.post('/asignar-encargado-rama', function (req, res) {
-  var _req$body22 = req.body,
-      idZona = _req$body22.idZona,
-      idRama = _req$body22.idRama,
-      idMiembro = _req$body22.idMiembro,
-      idMiembro2 = _req$body22.idMiembro2,
-      isMonitor = _req$body22.isMonitor;
+  var _req$body30 = req.body,
+      idMovimiento = _req$body30.idMovimiento,
+      idZona = _req$body30.idZona,
+      idRama = _req$body30.idRama,
+      idMiembro = _req$body30.idMiembro,
+      idMiembro2 = _req$body30.idMiembro2,
+      isMonitor = _req$body30.isMonitor;
 
   try {
     controlador.asignarEncargadoRama(idMovimiento, idZona, idRama, idMiembro, idMiembro2, idMiembro2, isMonitor);
@@ -907,11 +931,12 @@ app.post('/asignar-encargado-rama', function (req, res) {
   }
 });
 app.post('/asignar-encargado-zona', function (req, res) {
-  var _req$body23 = req.body,
-      idZona = _req$body23.idZona,
-      idMiembro = _req$body23.idMiembro,
-      idMiembro2 = _req$body23.idMiembro2,
-      isMonitor = _req$body23.isMonitor;
+  var _req$body31 = req.body,
+      idMovimiento = _req$body31.idMovimiento,
+      idZona = _req$body31.idZona,
+      idMiembro = _req$body31.idMiembro,
+      idMiembro2 = _req$body31.idMiembro2,
+      isMonitor = _req$body31.isMonitor;
 
   try {
     controlador.asignarEncargadoZona(idMovimiento, idZona, idMiembro, idMiembro2, idMiembro2, isMonitor);
@@ -926,24 +951,41 @@ app.post('/asignar-encargado-zona', function (req, res) {
     });
   }
 });
-app.get('/showSession', function (req, res) {
-  res.send(req.session);
-  res.end(); //return res.json({success: true, session: session.userName})
-});
-/*
-var idZona = "1";
-var idRama = "1";
-var idGrupo = "1";
-controlador.crearZona(idZona, "Caribe");
-controlador.crearRama(idZona, idRama, "Juvenil");
-controlador.crearGrupo(idZona, idRama, idGrupo, "SCOUTS");
-var idMiembro = "123";
-var nombre = "Diego";
-var celular = "12324";
-var email = "email";
-var provincia = "San José";
-var canton = "Santa Ana";
-var distrito = "brasil";
-controlador.crearMiembro(idMiembro, nombre, celular, email, provincia, canton,distrito, "", "", idZona, idRama, idGrupo);
+app.post('/iniciar-estructura-movimiento', function (req, res) {
+  var _req$body32 = req.body,
+      idMovimiento = _req$body32.idMovimiento,
+      nombreZona = _req$body32.nombreZona,
+      nombreRama = _req$body32.nombreRama,
+      idGrupo = _req$body32.idGrupo,
+      nombreGrupo = _req$body32.nombreGrupo,
+      idMiembro = _req$body32.idMiembro,
+      idMiembro2 = _req$body32.idMiembro2,
+      nombreMiembro = _req$body32.nombreMiembro,
+      celular = _req$body32.celular,
+      email = _req$body32.email,
+      provincia = _req$body32.provincia,
+      canton = _req$body32.canton,
+      distrito = _req$body32.distrito,
+      senas = _req$body32.senas,
+      posible_monitor = _req$body32.posible_monitor;
 
-controlador.crearGrupo(idZona, idRama, "2", "here","123");*/
+  try {
+    controlador.crearEstructuraBase(idMovimiento, nombreZona, nombreRama, idGrupo, nombreGrupo, idMiembro, idMiembro2, nombreMiembro, celular, email, provincia, canton, distrito, senas, posible_monitor).then(function () {
+      return res.json({
+        success: true
+      });
+    })["catch"](function (err) {
+      return res.json({
+        success: false,
+        err: {
+          message: err.message
+        }
+      });
+    });
+  } catch (err) {
+    return res.json({
+      success: false,
+      error: err
+    });
+  }
+});
