@@ -50,9 +50,6 @@ var Controlador = /*#__PURE__*/function () {
                 return this.dao.crearMovimiento(canton, cedulaJuridica, idAsesor, logo, direccionWeb, distrito, nombre, provincia, pais, senas, telefonos);
 
               case 4:
-                this.agregarMovimiento(cedulaJuridica, idAsesor, nombre, direccionWeb, logo, pais, provincia, canton, distrito, senas, telefonos);
-
-              case 5:
               case "end":
                 return _context.stop();
             }
@@ -164,11 +161,15 @@ var Controlador = /*#__PURE__*/function () {
             switch (_context5.prev = _context5.next) {
               case 0:
                 _context5.next = 2;
-                return this.dao.insertarZona(idMovimiento, nombreZona).then(function (idZona) {
-                  _this2.dao.insertarRama(idMovimiento, idZona, nombreRama).then(function (idRama) {
+                return this.dao.insertarZona(idMovimiento, nombreZona).then(function (resZona) {
+                  _this2.dao.insertarRama(idMovimiento, resZona[0].id_zona.toString(), nombreRama).then(function (resRama) {
                     _this2.dao.insertarMiembro(idMovimiento, idMiembro, nombreMiembro, celular, email, provincia, canton, distrito, senas, posible_monitor);
 
-                    _this2.dao.insertarGrupo(idMovimiento, idZona, idRama, idGrupo, isMonitor, nombreGrupo, idMiembro);
+                    if (!nombreGrupo) {
+                      nombreGrupo = resZona[0].id_zona.toString() + resRama[0].id_rama.toString() + idGrupo;
+                    }
+
+                    _this2.dao.insertarGrupo(idMovimiento, resZona[0].id_zona.toString(), resRama[0].id_rama.toString(), idGrupo, true, nombreGrupo, idMiembro);
                   });
                 });
 

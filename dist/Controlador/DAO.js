@@ -351,7 +351,9 @@ var DAO = /*#__PURE__*/function () {
     value: function getMiembroXMovimiento(idMovimiento) {
       var _this17 = this;
 
-      return this.client.query("select * from GrupoMiembros inner join Miembro on Miembro.cedula=GrupoMiembros.id_miembro where GrupoMiembros.id_movimiento = '" + idMovimiento + "'").then(function (res) {
+      //select * from GrupoMiembros inner join Miembro on Miembro.cedula=GrupoMiembros.id_miembro where GrupoMiembros.id_movimiento = '"+idMovimiento+"' and Miembro.id_movimiento= '"+idMovimiento+"'
+      //"select * from GrupoMiembros inner join Miembro on Miembro.cedula=GrupoMiembros.id_miembro where GrupoMiembros.id_movimiento = '"+idMovimiento+"'"
+      return this.client.query("select * from GrupoMiembros inner join Miembro on Miembro.cedula=GrupoMiembros.id_miembro where GrupoMiembros.id_movimiento = '" + idMovimiento + "' and Miembro.id_movimiento= '" + idMovimiento + "'").then(function (res) {
         console.table(res.rows);
         return res.rows;
       })["catch"](function (err) {

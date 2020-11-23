@@ -22,9 +22,13 @@ app.use(cors({
   credentials: true
 }));
 app.use(bodyParser.urlencoded({
-  extended: false
+  limit: '50mb',
+  extended: true,
+  parameterLimit: 50000
 }));
-app.use(bodyParser.json()); //quitar en producción
+app.use(bodyParser.json({
+  limit: '50mb'
+})); //quitar en producción
 
 app.use(logger('dev'));
 app.use(session({
@@ -313,9 +317,17 @@ app.post('/modificar-miembro', function (req, res) {
       posible_monitor = _req$body8.posible_monitor;
 
   try {
-    controlador.modificarMiembro(idMiembro, nombre, celular, email, provincia, canton, distrito, senas, posible_monitor, idMovimiento);
-    return res.json({
-      success: true
+    controlador.modificarMiembro(idMiembro, nombre, celular, email, provincia, canton, distrito, senas, posible_monitor, idMovimiento).then(function () {
+      return res.json({
+        success: true
+      });
+    })["catch"](function (err) {
+      return res.json({
+        success: false,
+        error: {
+          message: err.message
+        }
+      });
     });
   } catch (err) {
     console.log(err);
@@ -977,7 +989,7 @@ app.post('/iniciar-estructura-movimiento', function (req, res) {
     })["catch"](function (err) {
       return res.json({
         success: false,
-        err: {
+        error: {
           message: err.message
         }
       });
