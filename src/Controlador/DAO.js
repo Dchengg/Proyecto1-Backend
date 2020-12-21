@@ -21,21 +21,28 @@ export default class DAO{
             console.log(err)
         }
     }
+
+    async getMovimiento(idMovimiento){
+        return this.client.query(`select * from Movimiento where cedula_juridica = '${idMovimiento}'`)
+        .then(res => {
+            return res.rows;
+        })
+        .catch(err => {
+            console.log(err)
+        })
+    }
     
-    getMovimiento(id){
-        this.client.query(`select * from Movimiento where cedula_juridica = '${id}'`)
-            .then(res => {
-                console.table(res.rows)
-                this.client.end()
-                return res.rows;
-            })
-            .catch(err => {
-                console.log(err)
-                this.client.end()
-            })
+    async getMovimientos(){
+        return this.client.query(`select * from getMovimientos()`)
+        .then(res => {
+            return res.rows;
+        })
+        .catch(err => {
+            console.log(err)
+        })
     }
 
-    getMovimientoXAsesor(id_asesor){
+    async getMovimientoXAsesor(id_asesor){
         return this.client.query(`select * from Movimiento where id_asesor = '${id_asesor}'`)
             .then(res => {
                 return res.rows;
@@ -227,14 +234,14 @@ export default class DAO{
 
     getGruposMiembroxMiembro(idMiembro,idMovimiento){
         //Grupos donde esta y el rol
-        this.client.query("select * from GrupoMiembros inner join GrupoMiembrosRol on GrupoMiembros.id_lider = GrupoMiembrosRol.id_lider where GrupoMiembros.id_miembro='"+idMiembro+"' AND GrupoMiembros.id_movimiento = '"+idMovimiento+"'")
+        return this.client.query("select * from GrupoMiembros inner join GrupoMiembrosRol on GrupoMiembros.id_lider = GrupoMiembrosRol.id_lider where GrupoMiembros.id_miembro='"+idMiembro+"' AND GrupoMiembros.id_movimiento = '"+idMovimiento+"'")
             .then(res => {
                 console.table(res.rows)
                 return res.rows;
             })
             .catch(err => {
                 console.log(err)
-                this.client.end()
+                throw err
             })
     }
 
@@ -296,6 +303,17 @@ export default class DAO{
             })
             .catch(err => {
                 console.log(err)
+            })
+    }
+
+    async inicioSesion(pCedula, pContrasena, idMovimiento){
+        return this.client.query(`select * from iniciosesion('${pCedula}','${pContrasena}','${idMovimiento}')`)
+            .then(res => {
+                console.table(res.rows);
+                return res.rows;
+            })
+            .catch(err => {
+                throw err
             })
     }
     

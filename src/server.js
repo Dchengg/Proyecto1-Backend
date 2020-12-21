@@ -47,15 +47,19 @@ app.get('/', function(req, res){
 })
 
 app.post('/iniciar-sesion', function(req, res){
-    const { id, pass } = req.body;
+    const { id, pass, idMovimiento} = req.body;
     try{
-        var idMovimiento;
-        var loggedIn;
-        var logInPromise = controladorLogin.verificarCombinación(id, pass)
+        controladorLogin.verificarCombinación(id, pass, idMovimiento)
+            .then(userType => {
+                return res.json({success: true, movimiento: idMovimiento, user: userType})
+            })
+            .catch(err => {
+                return res.json({ success: false, error: err.message})
+            })
+       /* var logInPromise = controladorLogin.verificarCombinación(id, pass, idMovimiento)
             .then(res => {
                 loggedIn = res.encontrado;
                 req.session.idMovimiento = res.idMovimiento
-                idMovimiento = res.idMovimiento;
             })
             .catch(err => {
                 throw err
@@ -66,10 +70,13 @@ app.post('/iniciar-sesion', function(req, res){
                     req.session.idAsesor = id;
                     return res.json({ success: true, movimiento: idMovimiento});
                 }
-                return res.json({ success: false});
             })
+            .catch(err => {
+                throw err
+            })*/
         
     }catch(err){
+        console.log(err)
         return res.json({ success: false, error: err });
     }
 })

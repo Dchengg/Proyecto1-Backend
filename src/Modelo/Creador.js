@@ -9,26 +9,23 @@ export default class Creador{
     }
 
 
-    cargarMovimiento(cedulaAsesor){
-        var cedula_juridica;
-        cedula_juridica=this.dao.getMovimientoXAsesor(cedulaAsesor)
+    cargarMovimiento(cedula_juridica){
+        this.dao.getMovimiento(cedula_juridica)
             .then(res => {
                 var movimiento = res[0];
                 try{
                     this.dao.getTelefonoMovimiento(movimiento.cedula_juridica)
                     .then(telefono => {
-                        this.controlador.agregarMovimiento(movimiento.cedula_juridica, cedulaAsesor, movimiento.nombre, movimiento.direccion_web, movimiento.logo, movimiento.pais, movimiento.provincia, movimiento.canton, movimiento.distrito, movimiento.senales, telefono);
+                        this.controlador.agregarMovimiento(movimiento.cedula_juridica, movimiento._id_asesor, movimiento.nombre, movimiento.direccion_web, movimiento.logo, movimiento.pais, movimiento.provincia, movimiento.canton, movimiento.distrito, movimiento.senales, telefono);
                         /*var mov = this.controlador.getMovimiento(movimiento.cedula_juridica);
                         for(var i in telefono){
                             mov.telefonos.push(telefono[i].celular);
                         }*/
                     })
                     this.cargarZonasMovimiento(movimiento.cedula_juridica);
-                    cedula_juridica = movimiento.cedula_juridica;
-                    this.dao.getAsesor(cedulaAsesor)
+                    this.dao.getAsesor(movimiento.id_asesor)
                         .then(res=> {
                             var miembro =  res[0];
-                            console.log(cedula_juridica)
                             this.controlador.agregarMiembroAMovimiento(cedula_juridica,miembro.cedula, miembro.nombre, miembro.celular, miembro.email, miembro.provincia, miembro.canton, miembro.distrito, miembro.senales, miembro.b_monitor);
                         })
                 }catch(err){
