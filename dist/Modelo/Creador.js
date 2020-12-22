@@ -26,16 +26,15 @@ var Creador = /*#__PURE__*/function () {
 
   (0, _createClass2["default"])(Creador, [{
     key: "cargarMovimiento",
-    value: function cargarMovimiento(cedulaAsesor) {
+    value: function cargarMovimiento(cedula_juridica) {
       var _this = this;
 
-      var cedula_juridica;
-      cedula_juridica = this.dao.getMovimientoXAsesor(cedulaAsesor).then(function (res) {
+      this.dao.getMovimiento(cedula_juridica).then(function (res) {
         var movimiento = res[0];
 
         try {
           _this.dao.getTelefonoMovimiento(movimiento.cedula_juridica).then(function (telefono) {
-            _this.controlador.agregarMovimiento(movimiento.cedula_juridica, cedulaAsesor, movimiento.nombre, movimiento.direccion_web, movimiento.logo, movimiento.pais, movimiento.provincia, movimiento.canton, movimiento.distrito, movimiento.senales, telefono);
+            _this.controlador.agregarMovimiento(movimiento.cedula_juridica, movimiento._id_asesor, movimiento.nombre, movimiento.direccion_web, movimiento.logo, movimiento.pais, movimiento.provincia, movimiento.canton, movimiento.distrito, movimiento.senales, telefono);
             /*var mov = this.controlador.getMovimiento(movimiento.cedula_juridica);
             for(var i in telefono){
                 mov.telefonos.push(telefono[i].celular);
@@ -45,11 +44,8 @@ var Creador = /*#__PURE__*/function () {
 
           _this.cargarZonasMovimiento(movimiento.cedula_juridica);
 
-          cedula_juridica = movimiento.cedula_juridica;
-
-          _this.dao.getAsesor(cedulaAsesor).then(function (res) {
+          _this.dao.getAsesor(movimiento.id_asesor).then(function (res) {
             var miembro = res[0];
-            console.log(cedula_juridica);
 
             _this.controlador.agregarMiembroAMovimiento(cedula_juridica, miembro.cedula, miembro.nombre, miembro.celular, miembro.email, miembro.provincia, miembro.canton, miembro.distrito, miembro.senales, miembro.b_monitor);
           });

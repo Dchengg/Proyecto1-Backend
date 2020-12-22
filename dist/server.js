@@ -60,32 +60,42 @@ app.get('/', function (req, res) {
 app.post('/iniciar-sesion', function (req, res) {
   var _req$body = req.body,
       id = _req$body.id,
-      pass = _req$body.pass;
+      pass = _req$body.pass,
+      idMovimiento = _req$body.idMovimiento;
 
   try {
-    var idMovimiento;
-    var loggedIn;
-    var logInPromise = controladorLogin.verificarCombinación(id, pass).then(function (res) {
-      loggedIn = res.encontrado;
-      req.session.idMovimiento = res.idMovimiento;
-      idMovimiento = res.idMovimiento;
-    })["catch"](function (err) {
-      throw err;
-    });
-    Promise.resolve(logInPromise)["finally"](function () {
-      if (loggedIn) {
-        req.session.idAsesor = id;
-        return res.json({
-          success: true,
-          movimiento: idMovimiento
-        });
-      }
-
+    controladorLogin.verificarCombinación(id, pass, idMovimiento).then(function (userType) {
       return res.json({
-        success: false
+        success: true,
+        movimiento: idMovimiento,
+        user: userType
+      });
+    })["catch"](function (err) {
+      return res.json({
+        success: false,
+        error: err.message
       });
     });
+    /* var logInPromise = controladorLogin.verificarCombinación(id, pass, idMovimiento)
+         .then(res => {
+             loggedIn = res.encontrado;
+             req.session.idMovimiento = res.idMovimiento
+         })
+         .catch(err => {
+             throw err
+         })
+     Promise.resolve(logInPromise)
+         .finally(() => {
+             if(loggedIn){
+                 req.session.idAsesor = id;
+                 return res.json({ success: true, movimiento: idMovimiento});
+             }
+         })
+         .catch(err => {
+             throw err
+         })*/
   } catch (err) {
+    console.log(err);
     return res.json({
       success: false,
       error: err
