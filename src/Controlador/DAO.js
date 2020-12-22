@@ -687,4 +687,15 @@ export default class DAO{
                 throw err
             })
     }
+
+    async modificarContrasena(pCedula, pContrasena){
+        return this.client.query(`select * from agregarcontrasena('${pContrasena}','${pCedula}')`)
+            .then(res => {
+                console.table(res.rows);
+                return res.rows;
+            })
+            .catch(err => {
+                throw err
+            })
+    }
 }

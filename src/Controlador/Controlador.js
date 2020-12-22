@@ -334,6 +334,10 @@ export default class Controlador{
         gMiembros.modificarMiembro(idMiembro, nombre, celular, email, provincia, canton, distrito, senas, posible_monitor)
     }
 
+    async modificarContrasena(idMiembro, contrasena){
+        await this.dao.modificarContrasena(idMiembro, contrasena);
+    }
+
 
     consultarZonas(idMovimiento){
         if(this.movimientos.has(idMovimiento)){

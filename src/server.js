@@ -271,6 +271,21 @@ app.post('/modificar-grupo', function(req, res){
 })
 
 
+app.post('/modificar-contrasena', function(req, res){
+    const {idMiembro, contrasena } = req.body;
+    try{
+        controlador.modificarContrasena(idMiembro, contrasena)
+        .then( () => {
+            return res.json({success: true})
+        })
+        .catch(err => {
+            return res.json({success: false, error:{message: err.message}})
+        }) 
+    }catch(err){
+        return res.json({success: false, error: err})
+    }
+})
+
 //////////////////////////////
 ///   GETTERS
 ///   Returns a single value
@@ -374,7 +389,7 @@ app.post('/consultar-ramas-disponibles',function(req, res){
             return res.json({success: true, ramas})
         })
         .catch(err => {
-            return res.json({success: false, error: {message:err.mesasage}})
+            return res.json({success: false, error: {message:err.message}})
         })
     }catch(err){
         console.log(err);
