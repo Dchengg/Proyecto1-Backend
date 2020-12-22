@@ -453,6 +453,15 @@ export default class Controlador{
         }
     }
 
+    async getMovimientos(){
+        try{
+            var movimientos = await this.dao.getMovimientos(); 
+            return movimientos;
+        }catch(err){
+            throw err;
+        }
+    }
+
     getZona(idMovimiento, idZona){
         var movimiento = this.getMovimiento(idMovimiento);
         var zona = movimiento.gNodos.getZona(idZona);

@@ -291,6 +291,23 @@ app.post('/modificar-contrasena', function(req, res){
 ///   Returns a single value
 //////////////////////////////
 
+app.get('/get-movimientos', function(req, res){
+    try{
+        var movimientos
+        var movimientosPromise = controlador.getMovimientos()
+        .then(res => {
+            movimientos = res;
+        })
+        Promise.resolve(movimientosPromise)
+            .finally( () => {
+                return res.json({success: true, movimientos: movimientos})
+            }) 
+    }catch(err){
+        console.log(err);
+        return res.json({success: false, error: err})
+    }
+})
+
 app.post('/get-movimiento', function(req, res){
     const { idMovimiento } = req.body;
     try{
@@ -298,7 +315,7 @@ app.post('/get-movimiento', function(req, res){
         return res.json({ success: true,  movimiento: movimiento })
     }catch(err){
         console.log(err);
-        return res.json({ success: true, error: err })
+        return res.json({ success: false, error: err })
     }
 })
 
