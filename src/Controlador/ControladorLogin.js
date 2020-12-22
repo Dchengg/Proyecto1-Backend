@@ -41,9 +41,18 @@ export default class ControladorLogin{
     
     async obtenerPermisos(idMiembro, idMovimiento){
         var rolesUsuario = await this.dao.getGruposMiembroxMiembro(idMiembro, idMovimiento);
-        var contador = 5;
-        rolesUsuario = rolesUsuario.sort( (a,b) => {return a.id_lider - b.id_lider});
-        return rolesUsuario[0].nombre_lider;
+        var prioridad = [4,3,2,1,5];
+        var nombre_rol;
+        var contador = 0;
+        while(contador < prioridad.length){
+            var roles = rolesUsuario.find(rol => rol.id_lider == prioridad[contador]);
+            if(roles){
+                nombre_rol = roles.nombre_lider
+                break;
+            }
+            contador++;
+        }
+        return nombre_rol;
     }
 
 }
