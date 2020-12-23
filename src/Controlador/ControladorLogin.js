@@ -17,7 +17,7 @@ export default class ControladorLogin{
                 var userType = await this.dao.inicioSesion(id, pass, idMovimiento);
                 await this.creador.cargarMovimiento(idMovimiento);
                 if(userType[0].encontrado){
-                    return "Asesor";
+                    return {nivel_acceso: 6, id_lider: 6, nombre_rol: "Asesor"};
                 }else{
                     return this.obtenerPermisos(id, idMovimiento);
                 }
@@ -44,6 +44,7 @@ export default class ControladorLogin{
         var prioridad = [4,3,2,1,5];
         var id_lider;
         var nombre_rol;
+        var nivel_acceso = 5;
         var contador = 0;
         while(contador < prioridad.length){
             var roles = rolesUsuario.find(rol => rol.id_lider == prioridad[contador]);
@@ -52,9 +53,10 @@ export default class ControladorLogin{
                 id_lider = roles.id_lider;
                 break;
             }
+            nivel_acceso--;
             contador++;
         }
-        return {id_lider,nombre_rol};
+        return {nivel_acceso,id_lider,nombre_rol};
     }
 
 }
