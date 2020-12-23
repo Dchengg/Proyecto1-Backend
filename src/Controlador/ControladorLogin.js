@@ -15,7 +15,7 @@ export default class ControladorLogin{
             var movimientos = await this.dao.getMovimientos();
             if(movimientos.find(element => element.id_movimiento == idMovimiento)){
                 var userType = await this.dao.inicioSesion(id, pass, idMovimiento);
-                //await this.creador.cargarMovimiento(idMovimiento);
+                await this.creador.cargarMovimiento(idMovimiento);
                 if(userType[0].encontrado){
                     return "Asesor";
                 }else{
