@@ -308,6 +308,26 @@ app.get('/get-movimientos', function(req, res){
     }
 })
 
+app.post('/get-movimientos-miembro', function(req, res){
+    const { idMiembro } = req.body;
+    try{
+        var movimientos
+        var movimientosPromise = controlador.getMovimientosMiembro(idMiembro)
+        .then(res => {
+            movimientos = res;
+        })
+        .catch(err => {
+            return res.json({success: false, error: {message: err.message}})
+        })
+        Promise.resolve(movimientosPromise)
+            .finally( () => {
+                return res.json({success: true, movimientos: movimientos})
+            }) 
+    }catch(err){
+        return res.json({success: false, error: err})
+    }
+})
+
 app.post('/get-movimiento', function(req, res){
     const { idMovimiento } = req.body;
     try{
@@ -427,6 +447,71 @@ app.post('/consultar-ramas-miembro', function(req, res){
     }catch(err){
         console.log(err);
         return res.json({success:false, error: err})
+    }
+})
+
+
+app.post('/consultar-zonas-lider', function(req, res){
+    const { idMovimiento, idMiembro} = req.body;
+    try{
+        controlador.consultarZonasLider(idMovimiento, idMiembro)
+        .then( zonas => {
+            return res.json({success: true, zonas})
+        })
+        .catch(err => {
+            return res.json({success: false, error: {message: err.message}})
+        })
+    }catch(err){
+        console.log(err);
+        return res.json({success: false, error: err})
+    }
+})
+
+app.post('/consultar-ramas-lider', function(req, res){
+    const { idMovimiento, idMiembro} = req.body;
+    try{
+        controlador.consultarRamasLider(idMovimiento, idMiembro)
+        .then( ramas => {
+            return res.json({success: true, ramas})
+        })
+        .catch(err => {
+            return res.json({success: false, error: {message: err.message}})
+        })
+    }catch(err){
+        console.log(err);
+        return res.json({success: false, error: err})
+    }
+})
+
+app.post('/consultar-grupos-lider', function(req, res){
+    const { idMovimiento, idZona, idRama, idMiembro} = req.body;
+    try{
+        controlador.consultarGruposLider(idMovimiento, idZona, idRama, idMiembro)
+        .then( grupos => {
+            return res.json({success: true, grupos})
+        })
+        .catch(err => {
+            return res.json({success: false, error: {message: err.message}})
+        })
+    }catch(err){
+        console.log(err);
+        return res.json({success: false, error: err})
+    }
+})
+
+app.post('/consultar-grupos-miembro', function(req, res){
+    const { idMovimiento, idMiembro} = req.body;
+    try{
+        controlador.getGruposMiembro(idMovimiento, idMiembro)
+        .then( grupos => {
+            return res.json({success: true, grupos})
+        })
+        .catch(err => {
+            return res.json({success: false, error: {message: err.message}})
+        })
+    }catch(err){
+        console.log(err);
+        return res.json({success: false, error: err})
     }
 })
 
