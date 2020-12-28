@@ -352,10 +352,26 @@ export default class Controlador{
         return movimiento.gNodos.consultarRamas(idZona); 
     }
 
+    async consultarZonasLider(idMovimiento, idMiembro){
+        var zonas = await this.dao.zonasDeLider(idMiembro, idMovimiento);
+        return zonas;
+    }
+
+    async consultarRamasLider(idMovimiento, idMiembro){
+        var ramas = this.dao.ramasDeLider(idMiembro, idMovimiento);
+        return ramas;
+    }
+
+    async consultarGruposLider(idMovimiento, idZona, idRama, idMiembro,){
+        var grupos = this.dao.gruposDeLider(idMiembro, idMovimiento, idZona, idRama);
+        return grupos;
+    }
+
     async consultarRamasMiembro(idMovimiento, idMiembro){
         var ramas = await this.dao.ramasDeMiembros(idMiembro, idMovimiento);
-        return ramas
+        return ramas;
     }
+
 
     async consultarRamasDisponibles(idMovimiento, idMiembro){
         try{
@@ -460,6 +476,16 @@ export default class Controlador{
         }catch(err){
             throw err;
         }
+    }
+
+    async getMovimientosMiembro(idMiembro){
+        try{
+            var movimientos = await this.dao.getMovimientosXMiembro(idMiembro);
+            return movimientos;
+        }catch(err){
+            throw err;
+        }
+        
     }
 
     getZona(idMovimiento, idZona){

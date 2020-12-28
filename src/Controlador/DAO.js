@@ -42,6 +42,17 @@ export default class DAO{
         })
     }
 
+    async getMovimientosXMiembro(pCedula){
+        return this.client.query(`select * from getmovimientosXmiembro('${pCedula}')`)
+            .then(res => {
+                console.table(res.rows);
+                return res.rows;
+            })
+            .catch(err => {
+                throw err
+            })
+    }
+
     async getMovimientoXAsesor(id_asesor){
         return this.client.query(`select * from Movimiento where id_asesor = '${id_asesor}'`)
             .then(res => {
@@ -74,6 +85,10 @@ export default class DAO{
                 console.log(err)
                 this.client.end()
             })
+    }
+
+    async getZonasLider(pCedula, pIdMovimiento){
+
     }
 
 
@@ -633,6 +648,39 @@ export default class DAO{
             })
     }
 
+    async zonasDeLider(pCedula, pIdMovimiento){
+        return this.client.query("select * from zonasdelider('"+pCedula+"', '"+pIdMovimiento+"')")
+        .then(res => {
+            console.table(res.rows);
+            return res.rows;
+        })
+        .catch(err => {
+            throw err
+        })
+    }
+
+    async ramasDeLider(pCedula, pIdMovimiento){
+        return this.client.query("select * from ramasdelider('"+pCedula+"', '"+pIdMovimiento+"')")
+        .then(res => {
+            console.table(res.rows);
+            return res.rows;
+        })
+        .catch(err => {
+            throw err
+        })
+    }
+
+    async gruposDeLider(pCedula, pIdMovimiento, pIdZona, pIdRama){
+        return this.client.query("select * from gruposdelider('"+pCedula+"', '"+pIdMovimiento+"', '"+pIdZona+"', '"+pIdRama+"')")
+        .then(res => {
+            console.table(res.rows);
+            return res.rows;
+        })
+        .catch(err => {
+            throw err
+        })
+    }
+
     async grupoDeMiembroEnRama(pIdMovimiento,pIdZona,pIdRama,pCedula){
         return this.client.query("select * from grupoDeMiembroEnRama('"+pIdMovimiento+"', "+pIdZona+", "+pIdRama+", '"+pCedula+"')")
             .then(res => {
@@ -699,3 +747,4 @@ export default class DAO{
             })
     }
 }
+
