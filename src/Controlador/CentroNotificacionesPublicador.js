@@ -1,3 +1,5 @@
+import ReporteGeneralStrategy from "../Modelo/ReporteGeneralStrategy";
+
 //import DAO from './DAO'
 export default class CentroNotificacionesPublicador{
 //class CentroNotificacionesPublicador{
@@ -17,7 +19,11 @@ export default class CentroNotificacionesPublicador{
     
     notificarReporte(tipo){
         if(tipo=="General"){
+            var reporte=new ReporteGeneralStrategy();
+            return reporte.reportar();
         }else{
+            var reporte=new ReporteTipadoStrategy();
+            return reporte.reportar();
         }
     }
 

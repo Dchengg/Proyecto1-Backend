@@ -743,6 +743,14 @@ class DAO{
                 throw err
             })
     }
+
+    async getAllNoticias(){
+
+    }
+
+    async getNoticiasTipo(){
+
+    }
 }
 
 // '117940925' │ '60283895' │     null      │ 'Desamparados' │ 'arielAraya193@gmail.com' │  'Ariel Araya Corrales'
