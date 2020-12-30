@@ -357,19 +357,39 @@ export default class Controlador{
         return zonas;
     }
 
-    async consultarRamasLider(idMovimiento, idMiembro){
-        var ramas = this.dao.ramasDeLider(idMiembro, idMovimiento);
+    async consultarRamasLider(idMovimiento, idZona, idMiembro){
+        var ramas = await this.dao.ramasDeLider(idMiembro, idMovimiento, idZona);
         return ramas;
     }
 
     async consultarGruposLider(idMovimiento, idZona, idRama, idMiembro,){
-        var grupos = this.dao.gruposDeLider(idMiembro, idMovimiento, idZona, idRama);
+        var grupos = await this.dao.gruposDeLider(idMiembro, idMovimiento, idZona, idRama);
         return grupos;
+    }
+
+    async consultarGruposMiembro(idMovimiento, idZona, idRama, idMiembro){
+        var grupos = await this.dao.gruposDeMiembro(idMiembro, idMovimiento, idZona, idRama)
+        return grupos
+    }
+
+    async consultarZonasMiembro(idMovimiento, idMiembro){
+        var zonas = await this.dao.zonasMiembro(idMiembro, idMovimiento);
+        return zonas;
     }
 
     async consultarRamasMiembro(idMovimiento, idMiembro){
         var ramas = await this.dao.ramasDeMiembros(idMiembro, idMovimiento);
         return ramas;
+    }
+
+    async consultarTodasLasRamasMiembro(idMovimiento, idMiembro, idZona){
+        var ramas = await this.dao.todasRamasDeMiembro(idMiembro, idMovimiento, idZona);
+        return ramas;
+    }
+
+    async consultarTodosLosGruposMiembro(idMovimiento, idMiembro){
+        var grupos = await this.dao.todosGruposDeMiembro(idMiembro, idMovimiento);
+        return grupos;
     }
 
 
