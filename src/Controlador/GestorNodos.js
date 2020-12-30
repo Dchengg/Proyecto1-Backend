@@ -82,9 +82,15 @@ export default class GestorNodos{
     }
 
     consultarMiembrosMovimiento(){
-        var miembros = [];
-        this.zonas.forEach(function(value, key){
-            miembros.push(this.consultarTodosLosMiembrosNodo(value))
+        var miembros = new Map();
+        var self = this;
+        this.zonas.forEach(function(zona, Zonakey){
+            var miembrosNodo = self.consultarTodosLosMiembrosNodo(zona);
+            miembrosNodo.forEach(function(value, key){
+                if(!miembros.has(key)){
+                    miembros.set(key,value);
+                }
+            })
         })
         return miembros;
     }
