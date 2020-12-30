@@ -505,6 +505,6 @@ export default class Controlador{
         }else{
             throw { message: "No se tiene la información necesaria para crear noticia."}
         }
-        this.centroNotificaciones.crearNoticia(idEmisor,idMovimiento,idZona,idRama,idGrupo,detallesNoticia,null);
+        this.centroNotificaciones.crearNoticia(idEmisor,tituloNoticia,detallesNoticia,idMovimiento,idZona,idRama,idGrupo,null);
     }    
 }

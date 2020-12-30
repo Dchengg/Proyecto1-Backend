@@ -1,14 +1,18 @@
+//import DAO from './DAO'
 export default class CentroNotificacionesPublicador{
+//class CentroNotificacionesPublicador{
     constructor(pDao){
         this.dao = pDao;
         //this.reporteStrategy = pReporteStrategy;
     }
 
-    crearNoticia(idEmisor,idMovimiento, idZona, idRama, idGrupo, detallesNoticia,receptores){
+    crearNoticia(idEmisor,tituloNoticia, detallesNoticia,idMovimiento, idZona, idRama, idGrupo,receptores){
         //Falta imagen
-        this.dao.crearNoticia(detallesNoticia, idEmisor, idMovimiento,idZona,idRama,idGrupo);
+        var idNoticia=this.dao.crearNoticia(tituloNoticia,detallesNoticia, idEmisor, idMovimiento,idZona,idRama,idGrupo);
         //Luego aqui se pega la noticia a los receptores
+        this.dao.insertarNoticiaXMiembros(idNoticia,receptores,idMovimiento);
         //Luego aqui llama actualizarNotificacionesMiembros
+        this.actualizarNotificacionesMiembros(receptores,null,idNoticia);
     }
     
     notificarReporte(tipo){
@@ -21,7 +25,11 @@ export default class CentroNotificacionesPublicador{
         //Pasa por el gestor de miembros y le dice que los miembros tienen idNoticia
     }
 
-    obtenerNoticias(idMiembro){
+    obtenerNoticias(idMiembro,idMovimiento){
         //Query para obtener las noticias del miembro
+        this.dao.noticiasMiembro(idMiembro,idMovimiento)
     }
 }
+
+//var centro=new CentroNotificacionesPublicador(new DAO());
+//centro.crearNoticia('117940925',"TITULO","DETALLES",'4000042145',1,1,123,"")
