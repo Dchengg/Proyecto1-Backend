@@ -1,11 +1,13 @@
 import Movimiento from './Movimiento.js';
 import ControladorLogin from './ControladorLogin'
 import DAO from './DAO'
+import CentroNotificacionesPublicador from './CentroNotificacionesPublicador.js';
 
 export default class Controlador{
     constructor(){
         this.movimientos = new Map();
         this.dao = new DAO();
+        this.centroNotificaciones=new CentroNotificacionesPublicador(this.dao);
     }
      
     async crearMovimiento(cedulaJuridica, idAsesor,nombre, direccionWeb, logo, pais, provincia, canton, distrito, senas, telefonos){
@@ -535,5 +537,20 @@ export default class Controlador{
         return grupo;
     }
 
-    
+    crearNoticia(idEmisor, detallesNoticia,idMovimiento, idZona, idRama, idGrupo){
+        var receptores=[];
+        if(idGrupo){
+            var grupo=this.consultarMiembrosGrupo(idMovimiento,idZona,idRama,idGrupo)
+            receptores=grupo;
+        }else if(idRama){
+            receptores=this.consultarMiembrosRama(idMovimiento,idZona,idRama)
+        }else if(idZona){
+            receptores=this.consultarMiembrosZona(idMovimiento,idZona)
+        }else if(idMovimiento){
+            receptores=this.consultarMiem
+        }else{
+            throw { message: "No se tiene la información necesaria para crear noticia."}
+        }
+        this.centroNotificaciones.crearNoticia(idEmisor,idMovimiento,idZona,idRama,idGrupo,detallesNoticia,null);
+    }    
 }
