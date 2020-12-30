@@ -468,9 +468,9 @@ app.post('/consultar-zonas-lider', function(req, res){
 })
 
 app.post('/consultar-ramas-lider', function(req, res){
-    const { idMovimiento, idMiembro} = req.body;
+    const { idMovimiento, idZona, idMiembro} = req.body;
     try{
-        controlador.consultarRamasLider(idMovimiento, idMiembro)
+        controlador.consultarRamasLider(idMovimiento, idZona, idMiembro)
         .then( ramas => {
             return res.json({success: true, ramas})
         })
@@ -498,6 +498,71 @@ app.post('/consultar-grupos-lider', function(req, res){
         return res.json({success: false, error: err})
     }
 })
+
+app.post('/consultar-zonas-miembro', function(req, res){
+    const { idMovimiento, idMiembro } = req.body;
+    try{
+        controlador.consultarZonasMiembro(idMovimiento, idMiembro)
+        .then( zonas => {
+            return res.json({success: true, zonas})
+        })
+        .catch(err => {
+            return res.json({success: false, error: {message: err.message}})
+        })
+    }catch(err){
+        console.log(err);
+        return res.json({success: false, error: err})
+    }
+})
+
+app.post('/consultar-grupos-miembro-alterno', function(req, res){
+    const { idMovimiento, idZona, idRama, idMiembro } = req.body;
+    try{
+        controlador.consultarGruposMiembro(idMovimiento, idZona, idRama, idMiembro)
+        .then( grupos => {
+            return res.json({success: true, grupos})
+        })
+        .catch(err => {
+            return res.json({success: false, error: {message: err.message}})
+        })
+    }catch(err){
+        console.log(err);
+        return res.json({success: false, error: err})
+    }
+})
+
+app.post('/consultar-todas-las-ramas-miembro', function(req, res){
+    const { idMovimiento, idZona, idMiembro} = req.body;
+    try{
+        controlador.consultarTodasLasRamasMiembro(idMovimiento, idZona, idMiembro)
+        .then( ramas => {
+            return res.json({success: true, ramas})
+        })
+        .catch(err => {
+            return res.json({success: false, error: {message: err.message}})
+        })
+    }catch(err){
+        console.log(err);
+        return res.json({success: false, error: err})
+    }
+})
+
+app.post('/consultar-todos-los-grupos-miembro', function(req, res){
+    const { idMovimiento, idMiembro} = req.body;
+    try{
+        controlador.consultarTodosLosGruposMiembro(idMovimiento, idMiembro)
+        .then( grupos=> {
+            return res.json({success: true, grupos})
+        })
+        .catch(err => {
+            return res.json({success: false, error: {message: err.message}})
+        })
+    }catch(err){
+        console.log(err);
+        return res.json({success: false, error: err})
+    }
+})
+
 
 app.post('/consultar-grupos-miembro', function(req, res){
     const { idMovimiento, idMiembro} = req.body;
