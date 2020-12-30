@@ -12,7 +12,7 @@ const connection = {
 };
 
 //export default class DAO{ ??
-class DAO{
+export default class DAO{
     constructor(){
         this.client = new Client(connection);
         try{
@@ -41,6 +41,17 @@ class DAO{
         .catch(err => {
             console.log(err)
         })
+    }
+
+    async getMovimientosXMiembro(pCedula){
+        return this.client.query(`select * from getmovimientosXmiembro('${pCedula}')`)
+            .then(res => {
+                console.table(res.rows);
+                return res.rows;
+            })
+            .catch(err => {
+                throw err
+            })
     }
 
     async getMovimientoXAsesor(id_asesor){
@@ -75,6 +86,10 @@ class DAO{
                 console.log(err)
                 this.client.end()
             })
+    }
+
+    async getZonasLider(pCedula, pIdMovimiento){
+
     }
 
 
@@ -634,6 +649,83 @@ class DAO{
             })
     }
 
+    async zonasDeLider(pCedula, pIdMovimiento){
+        return this.client.query("select * from zonasdelider('"+pCedula+"', '"+pIdMovimiento+"')")
+        .then(res => {
+            console.table(res.rows);
+            return res.rows;
+        })
+        .catch(err => {
+            throw err
+        })
+    }
+
+    async ramasDeLider(pCedula, pIdMovimiento, pIdZona){
+        return this.client.query("select * from ramasdelider('"+pCedula+"', '"+pIdMovimiento+"', "+pIdZona+")")
+        .then(res => {
+            console.table(res.rows);
+            return res.rows;
+        })
+        .catch(err => {
+            throw err
+        })
+    }
+
+    async zonasMiembro(pCedula, pIdMovimiento){
+        return this.client.query("select * from zonasdemiembro('"+pCedula+"', '"+pIdMovimiento+"')")
+        .then(res => {
+            console.table(res.rows);
+            return res.rows;
+        })
+        .catch(err => {
+            throw err
+        })
+    }
+
+    async todasRamasDeMiembro(pCedula, pIdMovimiento, pIdZona){
+        return this.client.query("select * from todasRamasdeMiembro('"+pCedula+"', '"+pIdMovimiento+"', "+pIdZona+")")
+        .then(res => {
+            console.table(res.rows);
+            return res.rows;
+        })
+        .catch(err => {
+            throw err
+        })
+    }
+
+    async todosGruposDeMiembro(pCedula, pIdMovimiento){
+        return this.client.query("select * from todosgruposdemiembro('"+pCedula+"', '"+pIdMovimiento+"')")
+        .then(res => {
+            console.table(res.rows);
+            return res.rows;
+        })
+        .catch(err => {
+            throw err
+        })
+    }
+
+    async gruposDeMiembro(pCedula, pIdMovimiento,pIdZona,pIdRama){
+        return this.client.query("select * from gruposdemiembro('"+pCedula+"', '"+pIdMovimiento+"', "+pIdZona+", "+pIdRama+")")
+        .then(res => {
+            console.table(res.rows);
+            return res.rows;
+        })
+        .catch(err => {
+            throw err
+        })
+    }
+
+    async gruposDeLider(pCedula, pIdMovimiento, pIdZona, pIdRama){
+        return this.client.query("select * from gruposdelider('"+pCedula+"', '"+pIdMovimiento+"', "+pIdZona+", "+pIdRama+")")
+        .then(res => {
+            console.table(res.rows);
+            return res.rows;
+        })
+        .catch(err => {
+            throw err
+        })
+    }
+
     async grupoDeMiembroEnRama(pIdMovimiento,pIdZona,pIdRama,pCedula){
         return this.client.query("select * from grupoDeMiembroEnRama('"+pIdMovimiento+"', "+pIdZona+", "+pIdRama+", '"+pCedula+"')")
             .then(res => {
@@ -644,6 +736,7 @@ class DAO{
                 throw err
             })
     }
+
 
     async agregarAsesor(pCanton,pCedula,pCelular,pContrasena,pDistrito,pNombre,pProvincia,pSenales,pEmail){
         return this.client.query("select * from agregarAsesor('"+pCanton+"', '"+pCedula+"', '"+pCelular+"', '"+pContrasena+"', '"+pDistrito+"', '"+pNombre+"', '"+pProvincia+"', '"+pSenales+"', '"+pEmail+"')")

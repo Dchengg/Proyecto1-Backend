@@ -354,10 +354,46 @@ export default class Controlador{
         return movimiento.gNodos.consultarRamas(idZona); 
     }
 
+    async consultarZonasLider(idMovimiento, idMiembro){
+        var zonas = await this.dao.zonasDeLider(idMiembro, idMovimiento);
+        return zonas;
+    }
+
+    async consultarRamasLider(idMovimiento, idZona, idMiembro){
+        var ramas = await this.dao.ramasDeLider(idMiembro, idMovimiento, idZona);
+        return ramas;
+    }
+
+    async consultarGruposLider(idMovimiento, idZona, idRama, idMiembro,){
+        var grupos = await this.dao.gruposDeLider(idMiembro, idMovimiento, idZona, idRama);
+        return grupos;
+    }
+
+    async consultarGruposMiembro(idMovimiento, idZona, idRama, idMiembro){
+        var grupos = await this.dao.gruposDeMiembro(idMiembro, idMovimiento, idZona, idRama)
+        return grupos
+    }
+
+    async consultarZonasMiembro(idMovimiento, idMiembro){
+        var zonas = await this.dao.zonasMiembro(idMiembro, idMovimiento);
+        return zonas;
+    }
+
     async consultarRamasMiembro(idMovimiento, idMiembro){
         var ramas = await this.dao.ramasDeMiembros(idMiembro, idMovimiento);
-        return ramas
+        return ramas;
     }
+
+    async consultarTodasLasRamasMiembro(idMovimiento, idMiembro, idZona){
+        var ramas = await this.dao.todasRamasDeMiembro(idMiembro, idMovimiento, idZona);
+        return ramas;
+    }
+
+    async consultarTodosLosGruposMiembro(idMovimiento, idMiembro){
+        var grupos = await this.dao.todosGruposDeMiembro(idMiembro, idMovimiento);
+        return grupos;
+    }
+
 
     async consultarRamasDisponibles(idMovimiento, idMiembro){
         try{
@@ -464,6 +500,16 @@ export default class Controlador{
         }
     }
 
+    async getMovimientosMiembro(idMiembro){
+        try{
+            var movimientos = await this.dao.getMovimientosXMiembro(idMiembro);
+            return movimientos;
+        }catch(err){
+            throw err;
+        }
+        
+    }
+
     getZona(idMovimiento, idZona){
         var movimiento = this.getMovimiento(idMovimiento);
         var zona = movimiento.gNodos.getZona(idZona);
@@ -491,20 +537,24 @@ export default class Controlador{
         return grupo;
     }
 
-    crearNoticia(idEmisor, detallesNoticia,idMovimiento, idZona, idRama, idGrupo){
-        var receptores=[];
+    crearNoticia(idEmisor, titulo, contenido,idMovimiento, idZona, idRama, idGrupo){
+        var movimiento = this.getMovimiento(idMovimiento);
+        var receptores;
         if(idGrupo){
-            var grupo=this.consultarMiembrosGrupo(idMovimiento,idZona,idRama,idGrupo)
-            receptores=grupo;
+            var grupo = this.getGrupo(idMovimiento, idZona, idRama, idGrupo);
+            receptores = movimiento.gNodos.consultarTodosLosMiembrosNodo(grupo)
         }else if(idRama){
-            receptores=this.consultarMiembrosRama(idMovimiento,idZona,idRama)
+            var rama = this.getRama(idMovimiento, idZona, idRama);
+            receptores = movimiento.gNodos.consultarTodosLosMiembrosNodo(rama)
         }else if(idZona){
-            receptores=this.consultarMiembrosZona(idMovimiento,idZona)
+            var zona = this.getZona(idMovimiento, idZona)
+            receptores = movimiento.gNodos.consultarTodosLosMiembrosNodo(zona)
         }else if(idMovimiento){
-            receptores=this.consultarMiem
+            receptores = movimiento.gNodos.consultarMiembrosMovimiento();
         }else{
             throw { message: "No se tiene la información necesaria para crear noticia."}
         }
-        this.centroNotificaciones.crearNoticia(idEmisor,tituloNoticia,detallesNoticia,idMovimiento,idZona,idRama,idGrupo,null);
+        console.log(receptores);
+        this.centroNotificaciones.crearNoticia(idEmisor,tituloNoticia,detallesNoticia,idMovimiento,idZona,idRama,idGrupo,receptores);
     }    
 }
