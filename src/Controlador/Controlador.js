@@ -537,20 +537,25 @@ export default class Controlador{
         return grupo;
     }
 
-    crearNoticia(idEmisor, detallesNoticia,idMovimiento, idZona, idRama, idGrupo){
-        var receptores=[];
+    crearNoticia(idEmisor, titulo, contenido,idMovimiento, idZona, idRama, idGrupo){
+        var movimiento = this.getMovimiento(idMovimiento);
+        var receptores;
         if(idGrupo){
-            var grupo=this.consultarMiembrosGrupo(idMovimiento,idZona,idRama,idGrupo)
-            receptores=grupo;
+            var grupo = this.getGrupo(idMovimiento, idZona, idRama, idGrupo);
+            receptores = movimiento.gNodos.consultarTodosLosMiembrosNodo(grupo)
         }else if(idRama){
-            receptores=this.consultarMiembrosRama(idMovimiento,idZona,idRama)
+            var rama = this.getRama(idMovimiento, idZona, idRama);
+            receptores = movimiento.gNodos.consultarTodosLosMiembrosNodo(rama)
         }else if(idZona){
-            receptores=this.consultarMiembrosZona(idMovimiento,idZona)
+            var zona = this.getZona(idMovimiento, idZona)
+            receptores = movimiento.gNodos.consultarTodosLosMiembrosNodo(zona)
         }else if(idMovimiento){
-            receptores=this.consultarMiem
+            receptores = movimiento.gNodos.consultarMiembrosMovimiento();
         }else{
             throw { message: "No se tiene la información necesaria para crear noticia."}
         }
-        this.centroNotificaciones.crearNoticia(idEmisor,idMovimiento,idZona,idRama,idGrupo,detallesNoticia,null);
+        console.log(receptores);
+        return receptores;
+        //this.centroNotificaciones.crearNoticia(idEmisor,idMovimiento,idZona,idRama,idGrupo,detallesNoticia,null);
     }    
 }

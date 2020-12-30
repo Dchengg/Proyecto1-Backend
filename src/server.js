@@ -169,6 +169,23 @@ app.post('/crear-grupo', function(req,res){
     }
 })
 
+app.post('/crear-noticia', function(req, res){
+    const {idMovimiento, idZona, idRama, idGrupo, idEmisor, titulo, contenido } = req.body;
+    try{
+        var miembros = controlador.crearNoticia(idEmisor, titulo, contenido, idMovimiento, idZona, idRama, idGrupo)
+        return res.json({ success: true, miembros: Object.fromEntries(miembros)})
+        /*.then( ( miembros ) => {
+            return res.json({ success: true, miembros})
+        })
+        .catch(err => {
+            return res.json({success: false, error:{message: err.message}})
+        })*/
+    }catch(err){
+        console.log(err);
+        return res.json({success: false, error: err})
+    }
+})
+
 
 //////////////////////////////
 ///   MODIFY
