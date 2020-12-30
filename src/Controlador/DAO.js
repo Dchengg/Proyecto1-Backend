@@ -698,4 +698,15 @@ export default class DAO{
                 throw err
             })
     }
+
+    async crearNoticia(pContenido, pIdMiembro, pIdMovimiento,pIdZona,pIdRama,pIdGrupo){
+        return this.client.query("Select * from crearNoticia('"+pContenido+"', '"+pIdMiembro+"', '"+pIdMovimiento+"', "+pIdZona+", "+pIdRama+", "+pIdGrupo+"')")
+            .then(res => {
+                console.table(res.rows);
+                return res.rows;
+            })
+            .catch(err => {
+                throw err
+            })
+    }
 }
