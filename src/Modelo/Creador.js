@@ -90,11 +90,28 @@ export default class Creador{
                     try{
                         var miembro =  res[i];
                         this.controlador.agregarMiembro(miembro.cedula, miembro.nombre, miembro.celular, miembro.email, miembro.provincia, miembro.canton, miembro.distrito, miembro.senales, miembro.b_monitor, idMovimiento, miembro.id_zona.toString(), miembro.id_rama.toString(), miembro.id_grupo.toString());
+                        
                     }catch(err){
                         console.log(err);
                     }
                 }
+                this.cargarNoticiasMiembros(idMovimiento);
             })
+    }
+
+    cargarNoticiasMiembros(idMovimiento){
+        var movimiento = this.controlador.getMovimiento(idMovimiento);
+        var miembros = movimiento.gMiembros.miembros;
+        var self = this;
+        miembros.forEach(function(value, key){
+            self.dao.noticiaRecibidasMiembro(idMovimiento, key)
+            .then( res => {
+                for(var i in res){
+                    var id = res[i].id_noticia;
+                    value.noticias.push(id);
+                }
+            })
+        })
     }
 
 }    

@@ -1,5 +1,6 @@
 export default class ReporteTipadoStrategy{
-    reportar(){
-        
+    async reportar(){
+        var dao=new DAO();
+        return await dao.getReporteTipo();
     }
 }

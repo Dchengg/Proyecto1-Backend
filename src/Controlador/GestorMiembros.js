@@ -30,6 +30,7 @@ export default class GestorMiembros{
         return miembro;
     }
 
+
     getMiembro(idMiembro){
         if(this.miembros.has(idMiembro)){
             return this.miembros.get(idMiembro);

@@ -12,7 +12,7 @@ const connection = {
 };
 
 //export default class DAO{ ??
-export default class DAO{
+ export default class DAO{
     constructor(){
         this.client = new Client(connection);
         try{
@@ -25,6 +25,7 @@ export default class DAO{
     async getMovimiento(idMovimiento){
         return this.client.query(`select * from Movimiento where cedula_juridica = '${idMovimiento}'`)
         .then(res => {
+            //console.table(res.rows)
             return res.rows;
         })
         .catch(err => {
@@ -45,7 +46,7 @@ export default class DAO{
     async getMovimientosXMiembro(pCedula){
         return this.client.query(`select * from getmovimientosXmiembro('${pCedula}')`)
             .then(res => {
-                console.table(res.rows);
+                //console.table(res.rows);
                 return res.rows;
             })
             .catch(err => {
@@ -83,7 +84,6 @@ export default class DAO{
             })
             .catch(err => {
                 console.log(err)
-                this.client.end()
             })
     }
 
@@ -100,7 +100,6 @@ export default class DAO{
             })
             .catch(err => {
                 console.log(err)
-                this.client.end()
             })
     }
 
@@ -108,12 +107,10 @@ export default class DAO{
         this.client.query("select * from Zona where id_zona = ''"+idZona)
             .then(res => {
                 console.table(res.rows)
-                this.client.end()
                 return res.rows;
             })
             .catch(err => {
                 console.log(err)
-                this.client.end()
             })
     }
 
@@ -121,12 +118,10 @@ export default class DAO{
         this.client.query("select * from Rama")
             .then(res => {
                 console.table(res.rows)
-                this.client.end()
                 return res.rows;
             })
             .catch(err => {
                 console.log(err)
-                this.client.end()
             })
     }
     
@@ -135,12 +130,10 @@ export default class DAO{
         this.client.query("select * from Rama where id_rama = "+idRama)
             .then(res => {
                 console.table(res.rows)
-                this.client.end()
                 return res.rows;
             })
             .catch(err => {
                 console.log(err)
-                this.client.end()
             })
     }
     
@@ -148,12 +141,10 @@ export default class DAO{
         this.client.query("select * from Rama where id_zona = "+idZona)
             .then(res => {
                 console.table(res.rows)
-                this.client.end()
                 return res.rows;
             })
             .catch(err => {
                 console.log(err)
-                this.client.end()
             })
     }
 
@@ -166,7 +157,6 @@ export default class DAO{
             })
             .catch(err => {
                 console.log(err)
-                this.client.end()
             })
     }
 
@@ -176,12 +166,10 @@ export default class DAO{
         this.client.query("select * from Grupo where id_grupo = "+idGrupo)
             .then(res => {
                 console.table(res.rows)
-                this.client.end()
                 return res.rows;
             })
             .catch(err => {
                 console.log(err)
-                this.client.end()
             })
     }
 
@@ -189,24 +177,21 @@ export default class DAO{
         this.client.query("select * from Grupo")
             .then(res => {
                 console.table(res.rows)
-                this.client.end()
                 return res.rows;
             })
             .catch(err => {
                 console.log(err)
-                this.client.end()
             })
     }
 
     getGrupoXRama(idRama){
-        return this.client.query(`select * from Grupo where id_rama = ''${idRama}`)
+        return this.client.query(`select * from Grupo where id_rama = '${idRama}'`)
             .then(res => {
                 console.table(res.rows)
                 return res.rows;
             })
             .catch(err => {
                 console.log(err)
-                this.client.end()
             })
     }
 
@@ -219,7 +204,6 @@ export default class DAO{
             })
             .catch(err => {
                 console.log(err)
-                this.client.end()
             })
     }
 
@@ -231,7 +215,6 @@ export default class DAO{
             })
             .catch(err => {
                 console.log(err)
-                this.client.end()
             })
     }
 
@@ -243,7 +226,6 @@ export default class DAO{
             })
             .catch(err => {
                 console.log(err)
-                this.client.end()
             })
     }
 
@@ -264,12 +246,10 @@ export default class DAO{
         this.client.query("select * from Miembro")
             .then(res => {
                 console.table(res.rows);
-                this.client.end()
                 return res.rows;
             })
             .catch(err => {
                 console.log(err)
-                this.client.end()
             })
     }
 /*
@@ -295,7 +275,6 @@ export default class DAO{
             })
             .catch(err => {
                 console.log(err)
-                this.client.end()
             })
     }
 
@@ -792,8 +771,140 @@ export default class DAO{
             })
     }
 
-    async crearNoticia(pContenido, pIdMiembro, pIdMovimiento,pIdZona,pIdRama,pIdGrupo){
-        return this.client.query("Select * from crearNoticia('"+pContenido+"', '"+pIdMiembro+"', '"+pIdMovimiento+"', "+pIdZona+", "+pIdRama+", "+pIdGrupo+"')")
+    async crearNoticia(pNombre,pContenido, pIdMiembro, pIdMovimiento,pIdZona,pIdRama,pIdGrupo){
+        return this.client.query("Select * from crearNoticia('"+pNombre+"', '"+pContenido+"', '"+pIdMiembro+"', '"+pIdMovimiento+"', "+pIdZona+", "+pIdRama+", "+pIdGrupo+")")
+            .then(res => {
+                console.table(res.rows);
+                return res.rows;
+            })
+            .catch(err => {
+                throw err
+            })
+    }
+
+    async getNoticias(){
+        return this.client.query("Select * from Noticia")
+            .then(res => {
+                console.table(res.rows);
+                return res.rows;
+            })
+            .catch(err => {
+                throw err
+            })
+    }
+
+    async getNoticia(idNoticia){
+        return this.client.query("Select * from Noticia where id_noticia="+idNoticia)
+            .then(res => {
+                console.table(res.rows);
+                return res.rows;
+            })
+            .catch(err => {
+                throw err
+            })
+    }
+
+    async insertarNoticiaXMiembros(pIdNoticia,pIdMiembros,pIdMovimiento){
+        return this.client.query("Select * from insertarNoticiaXMiembros("+pIdNoticia+", ARRAY["+pIdMiembros+"], '"+pIdMovimiento+"')")
+            .then(res => {
+                console.table(res.rows);
+                return res.rows;
+            })
+            .catch(err => {
+                throw err
+            })
+    }
+
+    async noticiasMiembro(pIdMovimiento,pIdMiembro){
+        return this.client.query("Select * from noticiasMiembro('"+pIdMovimiento+"', '"+pIdMiembro+"')")
+            .then(res => {
+                console.table(res.rows);
+                return res.rows;
+            })
+            .catch(err => {
+                throw err
+            })
+    }
+
+    async getAllReportes(){
+        return this.client.query("Select count(*) from Aporte")
+            .then(res => {
+                console.table(res.rows);
+                return res.rows;
+            })
+            .catch(err => {
+                throw err
+            })
+    }
+
+    async getReporteTipo(){
+        return this.client.query("Select Tipo,count(*) from Aporte group by Tipo")
+            .then(res => {
+                console.table(res.rows);
+                return res.rows;
+            })
+            .catch(err => {
+                throw err
+            })
+    }
+
+    async getAllNoticiasXMiembro(){
+        return this.client.query("Select * from NoticiasMiembro")
+            .then(res => {
+                console.table(res.rows);
+                return res.rows;
+            })
+            .catch(err => {
+                throw err
+            })
+    }
+
+    async noticiaRecibidasMiembro(pIdMovimiento,pIdMiembro){
+        return this.client.query("Select * from noticiaRecibidasMiembro('"+pIdMovimiento+"', '"+pIdMiembro+"')")
+            .then(res => {
+                console.table(res.rows);
+                return res.rows;
+            })
+            .catch(err => {
+                throw err
+            })
+    }
+
+    async insertarImagenNoticia(idNoticia,imagen){
+        return this.client.query("Select * from insertarImagen('"+idNoticia+"', '"+imagen+"')")
+            .then(res => {
+                console.table(res.rows);
+                return res.rows;
+            })
+            .catch(err => {
+                throw err
+            })
+    }
+
+    async getAllImagen(){
+        return this.client.query("Select * from ImagenesXNoticia")
+            .then(res => {
+                console.table(res.rows);
+                return res.rows;
+            })
+            .catch(err => {
+                throw err
+            })
+    }
+
+    async crearAporte(pTipo,pContenido,pIdEmisor,pIdMovimiento){
+        return this.client.query("Select * from crearAporte('"+pTipo+"', '"+pContenido+"', '"+pIdEmisor+"', '"+pIdMovimiento+"' )")
+            .then(res => {
+                console.table(res.rows);
+                return res.rows;
+            })
+            .catch(err => {
+                throw err
+            })
+    }
+
+    async getAllAportes(){
+        return this.client.query("Select * from Aporte")
             .then(res => {
                 console.table(res.rows);
                 return res.rows;
@@ -804,3 +915,35 @@ export default class DAO{
     }
 }
 
+
+
+// '117940925' │ '60283895' │     null      │ 'Desamparados' │ 'arielAraya193@gmail.com' │  'Ariel Araya Corrales'
+//var dao=new DAO();
+//dao.getMiembros();
+//dao.getallmov();
+//dao.getMovimiento('4000042145');
+//dao.getRamaXMovimiento('4000042145')
+//dao.getGrupoXRama("1");
+//dao.getNoticias();
+//dao.prueba();
+//dao.getAllNoticiasXMiembro();
+//dao.crearNoticia("TITULO2","DETALLES2",'117940925','4000042145',1,1,123);
+
+/*var imagenes=["imagen 1", "imagen 2", "imagen 3"]
+imagenes.forEach( async function(imagen){
+    var lola= await dao.insertarImagenNoticia(1,imagen);
+});
+*/
+
+//dao.getAllImagen();
+//dao.insertarImagenNoticia(1,"imaginese que es una imagen")
+//dao.noticiaRecibidasMiembro('4000042145','117940925')
+//dao.noticiaRecibidasMiembro('4000042145','117940925')
+//dao.getNoticiasMiembro('4000042145','117940925')
+//dao.insertarNoticiaXMiembros(2,['117940925','117520337'],'4000042145')
+//dao.getAllNoticiasXMiembro();
+
+
+
+//dao.crearAporte("Ofrecimiento","Ofrezco mi cuerpo",'117940925','4000042145')
+//dao.getAllReportes()

@@ -131,7 +131,7 @@ export default class Controlador{
         movimiento.gNodos.crearGrupo(idZona, idRama, idGrupo, nombre, idEncargado1, idEncargado2, isMonitor);
     }
 
-    agregarMiembro(idMiembro, nombre, celular, email, provincia, canton, distrito, senas, posible_monitor, idMovimiento, idZona, idRama, idGrupo) {
+    agregarMiembro(idMiembro, nombre, celular, email, provincia, canton, distrito, senas, posible_monitor, idMovimiento, idZona, idRama, idGrupo, noticias) {
         this.agregarMiembroAMovimiento(idMovimiento,idMiembro, nombre, celular, email, provincia, canton, distrito, senas, posible_monitor);
         this.agregarMiembroGrupo(idMovimiento, idZona, idRama, idGrupo, idMiembro);
     }
@@ -537,7 +537,7 @@ export default class Controlador{
         return grupo;
     }
 
-    crearNoticia(idEmisor, titulo, contenido,idMovimiento, idZona, idRama, idGrupo){
+    async crearNoticia(idEmisor, titulo, contenido, imagenes, idMovimiento, idZona, idRama, idGrupo){
         var movimiento = this.getMovimiento(idMovimiento);
         var receptores;
         if(idGrupo){
@@ -555,7 +555,28 @@ export default class Controlador{
             throw { message: "No se tiene la información necesaria para crear noticia."}
         }
         console.log(receptores);
-        return receptores;
-        //this.centroNotificaciones.crearNoticia(idEmisor,idMovimiento,idZona,idRama,idGrupo,detallesNoticia,null);
-    }    
+        var idNoticia= await this.centroNotificaciones.crearNoticia(idEmisor,titulo,contenido,idMovimiento,idZona,idRama,idGrupo,receptores,imagenes);
+        //gestorMiembros=movimiento.gMiembros;
+        return idNoticia
+        //centroNotificaciones.actualizarNotificacionesMiembros(receptores,gestorMiembros,idNoticia);
+    }
+
+    getNoticiasMiembro(idMiembro,idMovimiento){
+        return this.centroNotificaciones.getNoticiasMiembro(idMiembro,idMovimiento)
+    }
+
+    getNoticiasPublicadas(pIdMovimiento,pIdMiembro){
+        return this.centroNotificaciones.obtenerNoticiasPublicadas(pIdMovimiento,pIdMiembro);
+    }
+
+    async obtenerNoticias(idMovimiento, idMiembro){
+        var miembro = this.getMiembro(idMovimiento, idMiembro);
+        var resultado=[]
+        var arrayNoticias = miembro.noticias;
+        for(var i in arrayNoticias){
+            var noticia = await this.dao.getNoticia(arrayNoticias[i]);
+            resultado.push(noticia);
+        }
+        return resultado;
+    }
 }
