@@ -84,7 +84,6 @@ class DAO{
             })
             .catch(err => {
                 console.log(err)
-                this.client.end()
             })
     }
 
@@ -101,7 +100,6 @@ class DAO{
             })
             .catch(err => {
                 console.log(err)
-                this.client.end()
             })
     }
 
@@ -109,12 +107,10 @@ class DAO{
         this.client.query("select * from Zona where id_zona = ''"+idZona)
             .then(res => {
                 console.table(res.rows)
-                this.client.end()
                 return res.rows;
             })
             .catch(err => {
                 console.log(err)
-                this.client.end()
             })
     }
 
@@ -122,12 +118,10 @@ class DAO{
         this.client.query("select * from Rama")
             .then(res => {
                 console.table(res.rows)
-                this.client.end()
                 return res.rows;
             })
             .catch(err => {
                 console.log(err)
-                this.client.end()
             })
     }
     
@@ -136,12 +130,10 @@ class DAO{
         this.client.query("select * from Rama where id_rama = "+idRama)
             .then(res => {
                 console.table(res.rows)
-                this.client.end()
                 return res.rows;
             })
             .catch(err => {
                 console.log(err)
-                this.client.end()
             })
     }
     
@@ -149,12 +141,10 @@ class DAO{
         this.client.query("select * from Rama where id_zona = "+idZona)
             .then(res => {
                 console.table(res.rows)
-                this.client.end()
                 return res.rows;
             })
             .catch(err => {
                 console.log(err)
-                this.client.end()
             })
     }
 
@@ -167,7 +157,6 @@ class DAO{
             })
             .catch(err => {
                 console.log(err)
-                this.client.end()
             })
     }
 
@@ -177,12 +166,10 @@ class DAO{
         this.client.query("select * from Grupo where id_grupo = "+idGrupo)
             .then(res => {
                 console.table(res.rows)
-                this.client.end()
                 return res.rows;
             })
             .catch(err => {
                 console.log(err)
-                this.client.end()
             })
     }
 
@@ -190,12 +177,10 @@ class DAO{
         this.client.query("select * from Grupo")
             .then(res => {
                 console.table(res.rows)
-                this.client.end()
                 return res.rows;
             })
             .catch(err => {
                 console.log(err)
-                this.client.end()
             })
     }
 
@@ -207,7 +192,6 @@ class DAO{
             })
             .catch(err => {
                 console.log(err)
-                this.client.end()
             })
     }
 
@@ -220,7 +204,6 @@ class DAO{
             })
             .catch(err => {
                 console.log(err)
-                this.client.end()
             })
     }
 
@@ -232,7 +215,6 @@ class DAO{
             })
             .catch(err => {
                 console.log(err)
-                this.client.end()
             })
     }
 
@@ -244,7 +226,6 @@ class DAO{
             })
             .catch(err => {
                 console.log(err)
-                this.client.end()
             })
     }
 
@@ -265,12 +246,10 @@ class DAO{
         this.client.query("select * from Miembro")
             .then(res => {
                 console.table(res.rows);
-                this.client.end()
                 return res.rows;
             })
             .catch(err => {
                 console.log(err)
-                this.client.end()
             })
     }
 /*
@@ -296,7 +275,6 @@ class DAO{
             })
             .catch(err => {
                 console.log(err)
-                this.client.end()
             })
     }
 
@@ -880,6 +858,17 @@ class DAO{
 
     async noticiaRecibidasMiembro(pIdMovimiento,pIdMiembro){
         return this.client.query("Select * from noticiaRecibidasMiembro('"+pIdMovimiento+"', '"+pIdMiembro+"')")
+            .then(res => {
+                console.table(res.rows);
+                return res.rows;
+            })
+            .catch(err => {
+                throw err
+            })
+    }
+
+    async insertarImagenNoticia(idNoticia,imagen){
+        return this.client.query("Select * from insertarImagen('"+idNoticia+"', '"+imagen+"')")
             .then(res => {
                 console.table(res.rows);
                 return res.rows;

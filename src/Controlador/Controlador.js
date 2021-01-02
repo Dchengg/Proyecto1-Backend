@@ -537,7 +537,7 @@ export default class Controlador{
         return grupo;
     }
 
-    crearNoticia(idEmisor, titulo, contenido,idMovimiento, idZona, idRama, idGrupo){
+    crearNoticia(idEmisor, titulo, contenido,imagenes,idMovimiento, idZona, idRama, idGrupo){
         var movimiento = this.getMovimiento(idMovimiento);
         var receptores;
         if(idGrupo){
@@ -555,7 +555,7 @@ export default class Controlador{
             throw { message: "No se tiene la información necesaria para crear noticia."}
         }
         console.log(receptores);
-        idNoticia=this.centroNotificaciones.crearNoticia(idEmisor,titulo,contenido,idMovimiento,idZona,idRama,idGrupo,receptores);
+        idNoticia=this.centroNotificaciones.crearNoticia(idEmisor,titulo,contenido,idMovimiento,idZona,idRama,idGrupo,receptores,imagenes);
         gestorMiembros=movimiento.gMiembros;
         centroNotificaciones.actualizarNotificacionesMiembros(receptores,gestorMiembros,idNoticia);
     }

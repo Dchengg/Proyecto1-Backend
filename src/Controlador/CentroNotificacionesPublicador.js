@@ -8,12 +8,15 @@ export default class CentroNotificacionesPublicador{
         //this.reporteStrategy = pReporteStrategy;
     }
 
-    crearNoticia(idEmisor,tituloNoticia, detallesNoticia,idMovimiento, idZona, idRama, idGrupo,receptores){
+    crearNoticia(idEmisor,tituloNoticia, detallesNoticia,idMovimiento, idZona, idRama, idGrupo,receptores,imagenes){
         //Falta imagen
-        var resNoticia=this.dao.crearNoticia(tituloNoticia,detallesNoticia, idEmisor, idMovimiento,idZona,idRama,idGrupo);
+        var resNoticia=await this.dao.crearNoticia(tituloNoticia,detallesNoticia, idEmisor, idMovimiento,idZona,idRama,idGrupo);
         //Luego aqui se pega la noticia a los receptores
         var idNoticia=resNoticia[0].crearNoticia;
-        this.dao.insertarNoticiaXMiembros(idNoticia,receptores,idMovimiento);
+        await this.dao.insertarNoticiaXMiembros(idNoticia,receptores,idMovimiento);
+        imagenes.forEach( function(imagen){
+            await this.dao.insertarImagenNoticia(idNoticia,imagen);
+        });
         //this.actualizarNotificacionesMiembros(receptores,null,idNoticia);
         return idNoticia;
     }
@@ -34,11 +37,11 @@ export default class CentroNotificacionesPublicador{
 
     obtenerNoticias(idMiembro,idMovimiento){
         //Query para obtener las noticias del miembro
-        return this.dao.noticiaRecibidasMiembro(idMiembro,idMovimiento)
+        return await this.dao.noticiaRecibidasMiembro(idMiembro,idMovimiento)
     }
 
     obtenerNoticiasPublicadas(pIdMovimiento,pIdMiembro){
-        return this.dao.noticiasMiembro(pIdMovimiento,pIdMiembro)
+        return await this.dao.noticiasMiembro(pIdMovimiento,pIdMiembro)
     }
 }
 
