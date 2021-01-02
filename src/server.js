@@ -171,6 +171,29 @@ app.post('/crear-grupo', function(req,res){
     }
 })
 
+app.post('/crear-noticia', function(req, res){
+    const {idMovimiento, idZona, idRama, idGrupo, idEmisor, titulo, contenido, imagenes} = req.body;
+    try{
+        controlador.crearNoticia(idEmisor, titulo, contenido, imagenes, idMovimiento, idZona, idRama, idGrupo)
+        .then( (idNoticia) => {
+            console.log(idNoticia)
+            return res.json({success: true})
+        })
+        .catch(err => {
+            return res.json({success: false, error:{ message: err.message }})
+        })
+        /*.then( ( miembros ) => {
+            return res.json({ success: true, miembros})
+        })
+        .catch(err => {
+            return res.json({success: false, error:{message: err.message}})
+        })*/
+    }catch(err){
+        console.log(err);
+        return res.json({success: false, error: err})
+    }
+})
+
 
 //////////////////////////////
 ///   MODIFY
@@ -674,6 +697,22 @@ app.post('/consultar-monitores-zona', function(req, res) {
     }
 })
 
+
+app.post('/consultar-noticias-miembro', function(req, res){
+    const { idMovimiento, idMiembro } = req.body;
+    try{
+        controlador.obtenerNoticias(idMovimiento, idMiembro)
+        .then( noticias => {
+            return res.json({ success: true, noticias})
+        })
+        .catch( err => {
+            return res.json({ success: false})
+        })
+    }catch(err){
+        console.log(err);
+        return res.json({success: false, error: err})
+    }
+})
 
 
 

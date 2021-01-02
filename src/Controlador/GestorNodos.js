@@ -1,4 +1,5 @@
 import Nodo from '../Modelo/Nodo'
+import Miembro from '../Modelo/Miembro'
 
 export default class GestorNodos{
     constructor(){
@@ -58,6 +59,39 @@ export default class GestorNodos{
                 miembros.push(value.encargado2)
             }
         });
+        return miembros;
+    }
+
+    consultarTodosLosMiembrosNodo(nodo){
+        var miembros = new Map();
+        var nodos = nodo.composites;
+        if( nodos.values().next().value instanceof Miembro){
+           return nodos
+        }
+        var self = this;
+        nodos.forEach(function(value, key){
+            var miembrosNodo = self.consultarTodosLosMiembrosNodo(value);
+            miembrosNodo.forEach(function(value, key){
+                if(!miembros.has(key)){
+                    miembros.set(key,value);
+                }
+            })
+        })
+        console.log(miembros)
+        return miembros;
+    }
+
+    consultarMiembrosMovimiento(){
+        var miembros = new Map();
+        var self = this;
+        this.zonas.forEach(function(zona, Zonakey){
+            var miembrosNodo = self.consultarTodosLosMiembrosNodo(zona);
+            miembrosNodo.forEach(function(value, key){
+                if(!miembros.has(key)){
+                    miembros.set(key,value);
+                }
+            })
+        })
         return miembros;
     }
 
