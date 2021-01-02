@@ -8,7 +8,7 @@ export default class CentroNotificacionesPublicador{
         //this.reporteStrategy = pReporteStrategy;
     }
 
-    async crearNoticia(idEmisor,tituloNoticia, detallesNoticia,idMovimiento, idZona, idRama, idGrupo,receptores){
+    async crearNoticia(idEmisor,tituloNoticia, detallesNoticia,idMovimiento, idZona, idRama, idGrupo,receptores,imagenes){
         //Falta imagen
         var resNoticia = await this.dao.crearNoticia(tituloNoticia,detallesNoticia, idEmisor, idMovimiento,idZona,idRama,idGrupo);
         //Luego aqui se pega la noticia a los receptores
@@ -16,6 +16,9 @@ export default class CentroNotificacionesPublicador{
         var idMiembros = [ ...receptores.keys() ];
         await this.dao.insertarNoticiaXMiembros(idNoticia,idMiembros,idMovimiento);
         this.actualizarNotificacionesMiembros(receptores,idNoticia);
+        imagenes.forEach(async function (imagen){
+            await this.dao.insertarImagenNoticia(idNoticia,imagen)
+        });
         return idNoticia;
     }
     

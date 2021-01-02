@@ -12,7 +12,7 @@ const connection = {
 };
 
 //export default class DAO{ ??
-export default class DAO{
+ class DAO{
     constructor(){
         this.client = new Client(connection);
         try{
@@ -838,7 +838,14 @@ export default class DAO{
     }
 
     async getReporteTipo(){
-
+        return this.client.query("Select Tipo,count(*) from Aporte group by Tipo")
+            .then(res => {
+                console.table(res.rows);
+                return res.rows;
+            })
+            .catch(err => {
+                throw err
+            })
     }
 
     async getAllNoticiasXMiembro(){
@@ -911,7 +918,7 @@ export default class DAO{
 
 
 // '117940925' │ '60283895' │     null      │ 'Desamparados' │ 'arielAraya193@gmail.com' │  'Ariel Araya Corrales'
-//var dao=new DAO();
+var dao=new DAO();
 //dao.getMiembros();
 //dao.getallmov();
 //dao.getMovimiento('4000042145');
@@ -937,4 +944,4 @@ imagenes.forEach( async function(imagen){
 
 
 //dao.crearAporte("Ofrecimiento","Ofrezco mi cuerpo",'117940925','4000042145')
-dao.getAllReportes()
+dao.getReporteTipo()

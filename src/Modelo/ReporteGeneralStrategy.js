@@ -1,6 +1,6 @@
 export default class ReporteGeneralStrategy{
-    reportar(){
+    async reportar(){
         var dao=new DAO();
-        return dao.getAllNoticias();
+        return await dao.getAllReportes();
     }
 }
