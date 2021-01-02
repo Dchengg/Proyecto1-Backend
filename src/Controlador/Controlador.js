@@ -567,4 +567,13 @@ export default class Controlador{
     getNoticiasPublicadas(pIdMovimiento,pIdMiembro){
         return this.centroNotificaciones.obtenerNoticiasPublicadas(pIdMovimiento,pIdMiembro);
     }
+
+    async getArrayNoticias(){
+        var arrayNoticias=[1,2,3]
+        var resultado=[]
+        arrayNoticias.forEach(async function (idNoticia){
+            resultado.push(await this.dao.getNoticia(idNoticia))
+        });
+        return resultado;
+    }
 }

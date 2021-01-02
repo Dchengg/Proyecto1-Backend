@@ -827,7 +827,14 @@ class DAO{
     }
 
     async getAllReportes(){
-
+        return this.client.query("Select count(*) from Aporte")
+            .then(res => {
+                console.table(res.rows);
+                return res.rows;
+            })
+            .catch(err => {
+                throw err
+            })
     }
 
     async getReporteTipo(){
@@ -877,6 +884,28 @@ class DAO{
                 throw err
             })
     }
+
+    async crearAporte(pTipo,pContenido,pIdEmisor,pIdMovimiento){
+        return this.client.query("Select * from crearAporte('"+pTipo+"', '"+pContenido+"', '"+pIdEmisor+"', '"+pIdMovimiento+"' )")
+            .then(res => {
+                console.table(res.rows);
+                return res.rows;
+            })
+            .catch(err => {
+                throw err
+            })
+    }
+
+    async getAllAportes(){
+        return this.client.query("Select * from Aporte")
+            .then(res => {
+                console.table(res.rows);
+                return res.rows;
+            })
+            .catch(err => {
+                throw err
+            })
+    }
 }
 
 
@@ -902,7 +931,10 @@ imagenes.forEach( async function(imagen){
 //dao.getAllImagen();
 //dao.insertarImagenNoticia(1,"imaginese que es una imagen")
 //dao.noticiaRecibidasMiembro('4000042145','117940925')
-//dao.noticiaRecibidasMiembro('4000042145','117940925')
-dao.getNoticiasMiembro('4000042145','117940925')
 //dao.insertarNoticiaXMiembros(2,['117940925','117520337'],'4000042145')
 //dao.getAllNoticiasXMiembro();
+
+
+
+//dao.crearAporte("Ofrecimiento","Ofrezco mi cuerpo",'117940925','4000042145')
+dao.getAllReportes()
