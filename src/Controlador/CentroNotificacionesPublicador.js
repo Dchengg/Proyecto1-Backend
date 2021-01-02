@@ -8,7 +8,7 @@ export default class CentroNotificacionesPublicador{
         //this.reporteStrategy = pReporteStrategy;
     }
 
-    crearNoticia(idEmisor,tituloNoticia, detallesNoticia,idMovimiento, idZona, idRama, idGrupo,receptores,imagenes){
+    async crearNoticia(idEmisor,tituloNoticia, detallesNoticia,idMovimiento, idZona, idRama, idGrupo,receptores,imagenes){
         //Falta imagen
         var resNoticia=await this.dao.crearNoticia(tituloNoticia,detallesNoticia, idEmisor, idMovimiento,idZona,idRama,idGrupo);
         //Luego aqui se pega la noticia a los receptores
@@ -35,12 +35,12 @@ export default class CentroNotificacionesPublicador{
         //Pasa por el gestor de miembros y le dice que los miembros tienen idNoticia
     }
 
-    obtenerNoticias(idMiembro,idMovimiento){
+    async obtenerNoticias(idMiembro,idMovimiento){
         //Query para obtener las noticias del miembro
         return await this.dao.noticiaRecibidasMiembro(idMiembro,idMovimiento)
     }
 
-    obtenerNoticiasPublicadas(pIdMovimiento,pIdMiembro){
+    async obtenerNoticiasPublicadas(pIdMovimiento,pIdMiembro){
         return await this.dao.noticiasMiembro(pIdMovimiento,pIdMiembro)
     }
 }
