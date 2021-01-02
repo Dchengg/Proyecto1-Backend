@@ -170,9 +170,9 @@ app.post('/crear-grupo', function(req,res){
 })
 
 app.post('/crear-noticia', function(req, res){
-    const {idMovimiento, idZona, idRama, idGrupo, idEmisor, titulo, contenido } = req.body;
+    const {idMovimiento, idZona, idRama, idGrupo, idEmisor, titulo, contenido, imagenes} = req.body;
     try{
-        controlador.crearNoticia(idEmisor, titulo, contenido, idMovimiento, idZona, idRama, idGrupo)
+        controlador.crearNoticia(idEmisor, titulo, contenido, imagenes, idMovimiento, idZona, idRama, idGrupo)
         .then( (idNoticia) => {
             console.log(idNoticia)
             return res.json({success: true})

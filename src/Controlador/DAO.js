@@ -12,7 +12,7 @@ const connection = {
 };
 
 //export default class DAO{ ??
- class DAO{
+ export default class DAO{
     constructor(){
         this.client = new Client(connection);
         try{
@@ -918,7 +918,7 @@ const connection = {
 
 
 // '117940925' │ '60283895' │     null      │ 'Desamparados' │ 'arielAraya193@gmail.com' │  'Ariel Araya Corrales'
-var dao=new DAO();
+//var dao=new DAO();
 //dao.getMiembros();
 //dao.getallmov();
 //dao.getMovimiento('4000042145');

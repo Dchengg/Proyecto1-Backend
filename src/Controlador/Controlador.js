@@ -537,7 +537,7 @@ export default class Controlador{
         return grupo;
     }
 
-    async crearNoticia(idEmisor, titulo, contenido,idMovimiento, idZona, idRama, idGrupo,imagenes){
+    async crearNoticia(idEmisor, titulo, contenido, imagenes, idMovimiento, idZona, idRama, idGrupo){
         var movimiento = this.getMovimiento(idMovimiento);
         var receptores;
         if(idGrupo){

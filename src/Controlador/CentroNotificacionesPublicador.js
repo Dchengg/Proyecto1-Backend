@@ -10,15 +10,16 @@ export default class CentroNotificacionesPublicador{
 
     async crearNoticia(idEmisor,tituloNoticia, detallesNoticia,idMovimiento, idZona, idRama, idGrupo,receptores,imagenes){
         //Falta imagen
-        var resNoticia = await this.dao.crearNoticia(tituloNoticia,detallesNoticia, idEmisor, idMovimiento,idZona,idRama,idGrupo);
+        var resNoticia = await this.dao.crearNoticia(tituloNoticia,detallesNoticia, idEmisor, idMovimiento,idZona,idRama,idGrupo, imagenes);
         //Luego aqui se pega la noticia a los receptores
         var idNoticia=resNoticia[0].crearnoticia;
         var idMiembros = [ ...receptores.keys() ];
         await this.dao.insertarNoticiaXMiembros(idNoticia,idMiembros,idMovimiento);
         this.actualizarNotificacionesMiembros(receptores,idNoticia);
-        imagenes.forEach(async function (imagen){
-            await this.dao.insertarImagenNoticia(idNoticia,imagen)
-        });
+        console.log(imagenes[0])
+        for(var i in imagenes){
+            await this.dao.insertarImagenNoticia(idNoticia,imagenes[i])
+        }
         return idNoticia;
     }
     
