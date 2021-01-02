@@ -12,7 +12,7 @@ const connection = {
 };
 
 //export default class DAO{ ??
-class DAO{
+export default class DAO{
     constructor(){
         this.client = new Client(connection);
         try{
@@ -25,7 +25,7 @@ class DAO{
     async getMovimiento(idMovimiento){
         return this.client.query(`select * from Movimiento where cedula_juridica = '${idMovimiento}'`)
         .then(res => {
-            console.table(res.rows)
+            //console.table(res.rows)
             return res.rows;
         })
         .catch(err => {
@@ -46,7 +46,7 @@ class DAO{
     async getMovimientosXMiembro(pCedula){
         return this.client.query(`select * from getmovimientosXmiembro('${pCedula}')`)
             .then(res => {
-                console.table(res.rows);
+                //console.table(res.rows);
                 return res.rows;
             })
             .catch(err => {
@@ -911,7 +911,7 @@ class DAO{
 
 
 // '117940925' │ '60283895' │     null      │ 'Desamparados' │ 'arielAraya193@gmail.com' │  'Ariel Araya Corrales'
-var dao=new DAO();
+//var dao=new DAO();
 //dao.getMiembros();
 //dao.getallmov();
 //dao.getMovimiento('4000042145');

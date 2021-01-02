@@ -8,16 +8,14 @@ export default class CentroNotificacionesPublicador{
         //this.reporteStrategy = pReporteStrategy;
     }
 
-    async crearNoticia(idEmisor,tituloNoticia, detallesNoticia,idMovimiento, idZona, idRama, idGrupo,receptores,imagenes){
+    async crearNoticia(idEmisor,tituloNoticia, detallesNoticia,idMovimiento, idZona, idRama, idGrupo,receptores){
         //Falta imagen
-        var resNoticia=await this.dao.crearNoticia(tituloNoticia,detallesNoticia, idEmisor, idMovimiento,idZona,idRama,idGrupo);
+        var resNoticia = await this.dao.crearNoticia(tituloNoticia,detallesNoticia, idEmisor, idMovimiento,idZona,idRama,idGrupo);
         //Luego aqui se pega la noticia a los receptores
-        var idNoticia=resNoticia[0].crearNoticia;
-        await this.dao.insertarNoticiaXMiembros(idNoticia,receptores,idMovimiento);
-        imagenes.forEach( async function(imagen){
-            await this.dao.insertarImagenNoticia(idNoticia,imagen);
-        });
-        //this.actualizarNotificacionesMiembros(receptores,null,idNoticia);
+        var idNoticia=resNoticia[0].crearnoticia;
+        var idMiembros = [ ...receptores.keys() ];
+        await this.dao.insertarNoticiaXMiembros(idNoticia,idMiembros,idMovimiento);
+        this.actualizarNotificacionesMiembros(receptores,idNoticia);
         return idNoticia;
     }
     
@@ -31,8 +29,10 @@ export default class CentroNotificacionesPublicador{
         }
     }
 
-    actualizarNotificacionesMiembros(miembros,gestorMiembros,idNoticia){
-        //Pasa por el gestor de miembros y le dice que los miembros tienen idNoticia
+    actualizarNotificacionesMiembros(miembros,idNoticia){
+        miembros.forEach(function(value, key){
+            value.noticias.push(idNoticia);
+        })
     }
 
     async obtenerNoticias(idMiembro,idMovimiento){
