@@ -579,4 +579,14 @@ export default class Controlador{
         }
         return resultado;
     }
+    
+    async publicarAporte(pTipo,pContenido,pIdEmisor,pIdMovimiento){
+        //Tipo= Agradecimiento || Petitoria || Ofrecimiento
+        return await this.dao.crearAporte(pTipo,pContenido,pIdEmisor,pIdMovimiento)
+    }
+
+    async getReporte(pTipo){
+        //General o Tipado
+        return this.centroNotificaciones.notificarReporte(pTipo);
+    }
 }
