@@ -14,7 +14,7 @@ export default class CentroNotificacionesPublicador{
         //Luego aqui se pega la noticia a los receptores
         var idNoticia=resNoticia[0].crearNoticia;
         await this.dao.insertarNoticiaXMiembros(idNoticia,receptores,idMovimiento);
-        imagenes.forEach( function(imagen){
+        imagenes.forEach( async function(imagen){
             await this.dao.insertarImagenNoticia(idNoticia,imagen);
         });
         //this.actualizarNotificacionesMiembros(receptores,null,idNoticia);
