@@ -815,6 +815,17 @@ class DAO{
             })
     }
 
+    async getNoticia(idNoticia){
+        return this.client.query("Select * from Noticia where id_noticia="+idNoticia)
+            .then(res => {
+                console.table(res.rows);
+                return res.rows;
+            })
+            .catch(err => {
+                throw err
+            })
+    }
+
     async insertarNoticiaXMiembros(pIdNoticia,pIdMiembros,pIdMovimiento){
         return this.client.query("Select * from insertarNoticiaXMiembros("+pIdNoticia+", ARRAY["+pIdMiembros+"], '"+pIdMovimiento+"')")
             .then(res => {
@@ -893,7 +904,7 @@ var dao=new DAO();
 //dao.getAllNoticiasXMiembro();
 //dao.crearNoticia("TITULO2","DETALLES2",'117940925','4000042145',1,1,123);
 
+//dao.noticiaRecibidasMiembro('4000042145','117940925')
 dao.noticiaRecibidasMiembro('4000042145','117940925')
-
 //dao.insertarNoticiaXMiembros(1,['117940925'],'4000042145')
 //dao.getAllNoticiasXMiembro();
