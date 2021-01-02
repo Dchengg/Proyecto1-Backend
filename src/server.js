@@ -172,8 +172,14 @@ app.post('/crear-grupo', function(req,res){
 app.post('/crear-noticia', function(req, res){
     const {idMovimiento, idZona, idRama, idGrupo, idEmisor, titulo, contenido } = req.body;
     try{
-        var miembros = controlador.crearNoticia(idEmisor, titulo, contenido, idMovimiento, idZona, idRama, idGrupo)
-        return res.json({ success: true, miembros: Object.fromEntries(miembros)})
+        controlador.crearNoticia(idEmisor, titulo, contenido, idMovimiento, idZona, idRama, idGrupo)
+        .then( (idNoticia) => {
+            console.log(idNoticia)
+            return res.json({success: true})
+        })
+        .catch(err => {
+            return res.json({success: false, error:{ message: err.message }})
+        })
         /*.then( ( miembros ) => {
             return res.json({ success: true, miembros})
         })
@@ -689,6 +695,17 @@ app.post('/consultar-monitores-zona', function(req, res) {
     }
 })
 
+
+app.post('/consultar-noticias-miembro', function(req, res){
+    const { idMovimiento, idMiembro } = req.body;
+    try{
+        var noticias = controlador.getNoticiasMiembro()
+        return res.json({ success: true, idNoticia})
+    }catch(err){
+        console.log(err);
+        return res.json({success: false, error: err})
+    }
+})
 
 
 
