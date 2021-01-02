@@ -36,6 +36,10 @@ export default class CentroNotificacionesPublicador{
         //Query para obtener las noticias del miembro
         return this.dao.getNoticiasMiembro(idMiembro,idMovimiento)
     }
+
+    obtenerNoticiasPublicadas(pIdMovimiento,pIdMiembro){
+        return this.dao.noticiasMiembro(pIdMovimiento,pIdMiembro)
+    }
 }
 
 //var centro=new CentroNotificacionesPublicador(new DAO());

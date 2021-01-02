@@ -563,4 +563,8 @@ export default class Controlador{
     getNoticiasMiembro(idMiembro,idMovimiento){
         return this.centroNotificaciones.getNoticiasMiembro(idMiembro,idMovimiento)
     }
+
+    getNoticiasPublicadas(pIdMovimiento,pIdMiembro){
+        return this.centroNotificaciones.obtenerNoticiasPublicadas(pIdMovimiento,pIdMiembro);
+    }
 }
