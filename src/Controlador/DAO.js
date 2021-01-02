@@ -931,6 +931,8 @@ imagenes.forEach( async function(imagen){
 //dao.getAllImagen();
 //dao.insertarImagenNoticia(1,"imaginese que es una imagen")
 //dao.noticiaRecibidasMiembro('4000042145','117940925')
+//dao.noticiaRecibidasMiembro('4000042145','117940925')
+//dao.getNoticiasMiembro('4000042145','117940925')
 //dao.insertarNoticiaXMiembros(2,['117940925','117520337'],'4000042145')
 //dao.getAllNoticiasXMiembro();
 
