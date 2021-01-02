@@ -555,6 +555,12 @@ export default class Controlador{
             throw { message: "No se tiene la información necesaria para crear noticia."}
         }
         console.log(receptores);
-        this.centroNotificaciones.crearNoticia(idEmisor,tituloNoticia,detallesNoticia,idMovimiento,idZona,idRama,idGrupo,receptores);
-    }    
+        idNoticia=this.centroNotificaciones.crearNoticia(idEmisor,titulo,contenido,idMovimiento,idZona,idRama,idGrupo,receptores);
+        gestorMiembros=movimiento.gMiembros;
+        centroNotificaciones.actualizarNotificacionesMiembros(receptores,gestorMiembros,idNoticia);
+    }
+
+    getNoticiasMiembro(idMiembro,idMovimiento){
+        return this.centroNotificaciones.getNoticiasMiembro(idMiembro,idMovimiento)
+    }
 }

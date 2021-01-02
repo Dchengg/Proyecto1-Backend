@@ -10,11 +10,12 @@ export default class CentroNotificacionesPublicador{
 
     crearNoticia(idEmisor,tituloNoticia, detallesNoticia,idMovimiento, idZona, idRama, idGrupo,receptores){
         //Falta imagen
-        var idNoticia=this.dao.crearNoticia(tituloNoticia,detallesNoticia, idEmisor, idMovimiento,idZona,idRama,idGrupo);
+        var resNoticia=this.dao.crearNoticia(tituloNoticia,detallesNoticia, idEmisor, idMovimiento,idZona,idRama,idGrupo);
         //Luego aqui se pega la noticia a los receptores
+        var idNoticia=resNoticia[0].crearNoticia;
         this.dao.insertarNoticiaXMiembros(idNoticia,receptores,idMovimiento);
-        //Luego aqui llama actualizarNotificacionesMiembros
-        this.actualizarNotificacionesMiembros(receptores,null,idNoticia);
+        //this.actualizarNotificacionesMiembros(receptores,null,idNoticia);
+        return idNoticia;
     }
     
     notificarReporte(tipo){
@@ -33,7 +34,7 @@ export default class CentroNotificacionesPublicador{
 
     obtenerNoticias(idMiembro,idMovimiento){
         //Query para obtener las noticias del miembro
-        this.dao.noticiasMiembro(idMiembro,idMovimiento)
+        return this.dao.getNoticiasMiembro(idMiembro,idMovimiento)
     }
 }
 

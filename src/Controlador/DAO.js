@@ -12,7 +12,7 @@ const connection = {
 };
 
 //export default class DAO{ ??
-export default class DAO{
+class DAO{
     constructor(){
         this.client = new Client(connection);
         try{
@@ -826,8 +826,8 @@ export default class DAO{
             })
     }
 
-    async noticiasMiembro(pIdMovimiento,pIdMiembro){
-        return this.client.query("Select * from noticiasMiembro('"+pIdMovimiento+", '"+pIdMiembro+"')")
+    async getNoticiasMiembro(pIdMovimiento,pIdMiembro){
+        return this.client.query("Select * from noticiasMiembro where id_movimiento = '"+pIdMovimiento+"' and id_miembro = '"+pIdMiembro+"'")
             .then(res => {
                 console.table(res.rows);
                 return res.rows;
@@ -837,14 +837,27 @@ export default class DAO{
             })
     }
 
-    async getAllNoticias(){
+    async getAllReportes(){
 
     }
 
-    async getNoticiasTipo(){
+    async getReporteTipo(){
 
+    }
+
+    async getAllNoticiasXMiembro(){
+        return this.client.query("Select * from NoticiasMiembro")
+            .then(res => {
+                console.table(res.rows);
+                return res.rows;
+            })
+            .catch(err => {
+                throw err
+            })
     }
 }
+
+
 
 // '117940925' │ '60283895' │     null      │ 'Desamparados' │ 'arielAraya193@gmail.com' │  'Ariel Araya Corrales'
 var dao=new DAO();
@@ -853,5 +866,12 @@ var dao=new DAO();
 //dao.getMovimiento('4000042145');
 //dao.getRamaXMovimiento('4000042145')
 //dao.getGrupoXRama("1");
-dao.getNoticias();
-//dao.crearNoticia("TITULO","DETALLES",'117940925','4000042145',1,1,123);
+//dao.getNoticias();
+//dao.prueba();
+//dao.getAllNoticiasXMiembro();
+//dao.crearNoticia("TITULO2","DETALLES2",'117940925','4000042145',1,1,123);
+
+dao.getNoticiasMiembro('4000042145','117940925')
+
+//dao.insertarNoticiaXMiembros(1,['117940925'],'4000042145')
+//dao.getAllNoticiasXMiembro();
