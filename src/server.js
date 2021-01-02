@@ -699,8 +699,13 @@ app.post('/consultar-monitores-zona', function(req, res) {
 app.post('/consultar-noticias-miembro', function(req, res){
     const { idMovimiento, idMiembro } = req.body;
     try{
-        var noticias = controlador.getNoticiasMiembro()
-        return res.json({ success: true, idNoticia})
+        controlador.obtenerNoticias(idMovimiento, idMiembro)
+        .then( noticias => {
+            return res.json({ success: true, noticias})
+        })
+        .catch( err => {
+            return res.json({ success: false})
+        })
     }catch(err){
         console.log(err);
         return res.json({success: false, error: err})

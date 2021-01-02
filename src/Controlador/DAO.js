@@ -939,4 +939,4 @@ imagenes.forEach( async function(imagen){
 
 
 //dao.crearAporte("Ofrecimiento","Ofrezco mi cuerpo",'117940925','4000042145')
-dao.getAllReportes()
+//dao.getAllReportes()
