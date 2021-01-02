@@ -34,7 +34,7 @@ export default class CentroNotificacionesPublicador{
 
     obtenerNoticias(idMiembro,idMovimiento){
         //Query para obtener las noticias del miembro
-        return this.dao.getNoticiasMiembro(idMiembro,idMovimiento)
+        return this.dao.noticiaRecibidasMiembro(idMiembro,idMovimiento)
     }
 
     obtenerNoticiasPublicadas(pIdMovimiento,pIdMiembro){

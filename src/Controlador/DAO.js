@@ -866,6 +866,17 @@ class DAO{
                 throw err
             })
     }
+
+    async noticiaRecibidasMiembro(pIdMovimiento,pIdMiembro){
+        return this.client.query("Select * from noticiaRecibidasMiembro('"+pIdMovimiento+"', '"+pIdMiembro+"')")
+            .then(res => {
+                console.table(res.rows);
+                return res.rows;
+            })
+            .catch(err => {
+                throw err
+            })
+    }
 }
 
 
@@ -882,7 +893,7 @@ var dao=new DAO();
 //dao.getAllNoticiasXMiembro();
 //dao.crearNoticia("TITULO2","DETALLES2",'117940925','4000042145',1,1,123);
 
-dao.noticiasMiembro('4000042145','117940925')
+dao.noticiaRecibidasMiembro('4000042145','117940925')
 
 //dao.insertarNoticiaXMiembros(1,['117940925'],'4000042145')
 //dao.getAllNoticiasXMiembro();
