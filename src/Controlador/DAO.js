@@ -782,6 +782,17 @@ const connection = {
             })
     }
 
+    async noticiaLeida(pIdNoticia, pIdMiembro){
+        return this.client.query("Select * from noticiaLeida("+pIdNoticia+", '"+pIdMiembro+"')")
+        .then(res => {
+            console.table(res.rows);
+            return res.rows;
+        })
+        .catch(err => {
+            throw err
+        })
+    }
+
     async getNoticias(){
         return this.client.query("Select * from Noticia")
             .then(res => {
