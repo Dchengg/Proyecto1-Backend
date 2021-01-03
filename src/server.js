@@ -721,7 +721,7 @@ app.post('/consultar-noticias-miembro', function(req, res){
             return res.json({ success: true, noticias})
         })
         .catch( err => {
-            return res.json({ success: false})
+            return res.json({ success: false,error: {message: err.message}})
         })
     }catch(err){
         console.log(err);

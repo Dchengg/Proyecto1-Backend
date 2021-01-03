@@ -575,10 +575,11 @@ export default class Controlador{
 
     async obtenerNoticias(idMovimiento, idMiembro){
         var miembro = this.getMiembro(idMovimiento, idMiembro);
+        var id = miembro.id;
         var resultado=[]
         var arrayNoticias = miembro.noticias;
         for(var i in arrayNoticias){
-            var noticia = await this.dao.getNoticia(arrayNoticias[i]);
+            var noticia = await this.dao.getNoticiaMiembro(arrayNoticias[i], id);
             resultado.push(noticia);
         }
         return resultado;
