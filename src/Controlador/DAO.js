@@ -12,7 +12,7 @@ const connection = {
 };
 
 //export default class DAO{ ??
- export default class DAO{
+ class DAO{
     constructor(){
         this.client = new Client(connection);
         try{
@@ -804,6 +804,17 @@ const connection = {
             })
     }
 
+    async getNoticiaXMiembro(idNoticia,idMiembro){
+        return this.client.query("Select * from Noticia inner join noticiasmiembro on Noticia.id_Noticia=noticiasmiembro.id_noticia where Noticia.id_noticia="+idNoticia+"and noticiasmiembro.id_miembro='"+idMiembro+"'")
+            .then(res => {
+                console.table(res.rows);
+                return res.rows;
+            })
+            .catch(err => {
+                throw err
+            })
+    }
+
     async insertarNoticiaXMiembros(pIdNoticia,pIdMiembros,pIdMovimiento){
         return this.client.query("Select * from insertarNoticiaXMiembros("+pIdNoticia+", ARRAY["+pIdMiembros+"], '"+pIdMovimiento+"')")
             .then(res => {
@@ -918,7 +929,7 @@ const connection = {
 
 
 // '117940925' │ '60283895' │     null      │ 'Desamparados' │ 'arielAraya193@gmail.com' │  'Ariel Araya Corrales'
-//var dao=new DAO();
+var dao=new DAO();
 //dao.getMiembros();
 //dao.getallmov();
 //dao.getMovimiento('4000042145');
@@ -947,3 +958,4 @@ imagenes.forEach( async function(imagen){
 
 //dao.crearAporte("Ofrecimiento","Ofrezco mi cuerpo",'117940925','4000042145')
 //dao.getAllReportes()
+dao.getNoticiaXMiembro(1,'117940925')
