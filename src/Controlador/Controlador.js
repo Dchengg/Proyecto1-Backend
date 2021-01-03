@@ -384,7 +384,7 @@ export default class Controlador{
         return ramas;
     }
 
-    async consultarTodasLasRamasMiembro(idMovimiento, idMiembro, idZona){
+    async consultarTodasLasRamasMiembro(idMovimiento, idZona, idMiembro){
         var ramas = await this.dao.todasRamasDeMiembro(idMiembro, idMovimiento, idZona);
         return ramas;
     }
