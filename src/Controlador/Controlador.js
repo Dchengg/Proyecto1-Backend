@@ -384,7 +384,7 @@ export default class Controlador{
         return ramas;
     }
 
-    async consultarTodasLasRamasMiembro(idMovimiento, idMiembro, idZona){
+    async consultarTodasLasRamasMiembro(idMovimiento, idZona, idMiembro){
         var ramas = await this.dao.todasRamasDeMiembro(idMiembro, idMovimiento, idZona);
         return ramas;
     }
@@ -578,5 +578,15 @@ export default class Controlador{
             resultado.push(noticia);
         }
         return resultado;
+    }
+    
+    async publicarAporte(pTipo,pContenido,pIdEmisor,pIdMovimiento){
+        //Tipo= Agradecimiento || Petitoria || Ofrecimiento
+        return await this.dao.crearAporte(pTipo,pContenido,pIdEmisor,pIdMovimiento)
+    }
+
+    async getReporte(pTipo){
+        //General o Tipado
+        return this.centroNotificaciones.notificarReporte(pTipo);
     }
 }
