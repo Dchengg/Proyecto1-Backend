@@ -805,7 +805,7 @@ const connection = {
     }
 
     async getNoticiaMiembro(idNoticia, idMiembro){
-        return this.client.query("Select * from Noticia inner join noticiasmiembro on Noticia.id_noticia = noticiasmiembro.id_noticia where Noticia.id_noticia="+idNoticia+"AND Noticia.id_miembro='"+idMiembro+"'")
+        return this.client.query("Select Noticia.id_noticia, contenido, Noticia.id_miembro, fecha_publicacion, Noticia.id_movimiento, id_zona, id_rama, id_grupo, nombre, leido from Noticia inner join noticiasmiembro on Noticia.id_noticia = noticiasmiembro.id_noticia where Noticia.id_noticia="+idNoticia+"AND noticiasmiembro.id_miembro='"+idMiembro+"'")
             .then(res => {
                 console.table(res.rows);
                 return res.rows;
