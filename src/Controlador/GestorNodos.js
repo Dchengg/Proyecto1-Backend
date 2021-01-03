@@ -77,7 +77,6 @@ export default class GestorNodos{
                 }
             })
         })
-        console.log(miembros)
         return miembros;
     }
 

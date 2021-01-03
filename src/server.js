@@ -172,9 +172,10 @@ app.post('/crear-grupo', function(req,res){
 })
 
 app.post('/crear-noticia', function(req, res){
-    const {idMovimiento, idZona, idRama, idGrupo, idEmisor, titulo, contenido, imagenes} = req.body;
+    //tipo = MOVIMIENTO | ZONA | RAMA | GRUPO 
+    const {idMovimiento, idZona, idRama, idGrupo, idEmisor, titulo, contenido, imagenes, tipo} = req.body;
     try{
-        controlador.crearNoticia(idEmisor, titulo, contenido, imagenes, idMovimiento, idZona, idRama, idGrupo)
+        controlador.crearNoticia(idEmisor, titulo, contenido, imagenes, idMovimiento, idZona, idRama, idGrupo, tipo)
         .then( (idNoticia) => {
             console.log(idNoticia)
             return res.json({success: true})
@@ -188,6 +189,22 @@ app.post('/crear-noticia', function(req, res){
         .catch(err => {
             return res.json({success: false, error:{message: err.message}})
         })*/
+    }catch(err){
+        console.log(err);
+        return res.json({success: false, error: err})
+    }
+})
+
+app.post('/leer-noticia', function(req, res){
+    const { idNoticia, idMiembro } = req.body;
+    try{
+        controlador.leerNoticia(idNoticia, idMiembro)
+        .then( () => {
+            return res.json({success: true})
+        })
+        .catch(err => {
+            return res.json({success: false, error:{ message: err.message }})
+        })
     }catch(err){
         console.log(err);
         return res.json({success: false, error: err})
