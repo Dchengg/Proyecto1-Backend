@@ -442,6 +442,22 @@ app.post('/get-miembro', function(req, res){
     }
 })
 
+app.post('/get-imagenes-noticia', function(req, res){
+    const { idNoticia } = req.body;
+    try{
+        controlador.getImagenesNoticia(idNoticia)
+        .then( imagenes => {
+            return res.json({success: true, imagenes})
+        })
+        .catch( err => {
+            return res.json({success: false, error: { message: err.message}})
+        })
+    }catch(err){
+        console.log(err);
+        return res.json({success: false, error:err})
+    }
+})
+
 app.post('/get-reporte', function(req,res){
     const { idMovimiento } = req.body
     try{

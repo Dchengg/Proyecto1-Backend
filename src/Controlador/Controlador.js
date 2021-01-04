@@ -580,6 +580,7 @@ export default class Controlador{
         var arrayNoticias = miembro.noticias;
         for(var i in arrayNoticias){
             var noticia = await this.dao.getNoticiaMiembro(arrayNoticias[i], id);
+            var imagenes = await this.dao.imagenesNoticia(arrayNoticias[i]);
             resultado.push(noticia);
         }
         return resultado;
