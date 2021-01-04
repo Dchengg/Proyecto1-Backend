@@ -537,28 +537,32 @@ export default class Controlador{
         return grupo;
     }
 
-    async crearNoticia(idEmisor, titulo, contenido, imagenes, idMovimiento, idZona, idRama, idGrupo){
+    async crearNoticia(idEmisor, titulo, contenido, imagenes, idMovimiento, idZona, idRama, idGrupo, tipo){
         var movimiento = this.getMovimiento(idMovimiento);
         var receptores;
-        if(idGrupo){
+        if(tipo == "GRUPO"){
+            console.log("GRUPO")
             var grupo = this.getGrupo(idMovimiento, idZona, idRama, idGrupo);
             receptores = movimiento.gNodos.consultarTodosLosMiembrosNodo(grupo)
-        }else if(idRama){
+            console.log(receptores);
+        }else if(tipo == "RAMA"){
             var rama = this.getRama(idMovimiento, idZona, idRama);
             receptores = movimiento.gNodos.consultarTodosLosMiembrosNodo(rama)
-        }else if(idZona){
+        }else if(tipo == "ZONA"){
             var zona = this.getZona(idMovimiento, idZona)
             receptores = movimiento.gNodos.consultarTodosLosMiembrosNodo(zona)
-        }else if(idMovimiento){
+        }else if(tipo == "MOVIMIENTO"){
             receptores = movimiento.gNodos.consultarMiembrosMovimiento();
         }else{
             throw { message: "No se tiene la información necesaria para crear noticia."}
         }
         console.log(receptores);
         var idNoticia= await this.centroNotificaciones.crearNoticia(idEmisor,titulo,contenido,idMovimiento,idZona,idRama,idGrupo,receptores,imagenes);
-        //gestorMiembros=movimiento.gMiembros;
         return idNoticia
-        //centroNotificaciones.actualizarNotificacionesMiembros(receptores,gestorMiembros,idNoticia);
+    }
+
+    async leerNoticia(idNoticia, idMiembro){
+        await this.dao.noticiaLeida(idNoticia, idMiembro)
     }
 
     getNoticiasMiembro(idMiembro,idMovimiento){
@@ -571,10 +575,11 @@ export default class Controlador{
 
     async obtenerNoticias(idMovimiento, idMiembro){
         var miembro = this.getMiembro(idMovimiento, idMiembro);
+        var id = miembro.id;
         var resultado=[]
         var arrayNoticias = miembro.noticias;
         for(var i in arrayNoticias){
-            var noticia = await this.dao.getNoticia(arrayNoticias[i]);
+            var noticia = await this.dao.getNoticiaMiembro(arrayNoticias[i], id);
             resultado.push(noticia);
         }
         return resultado;
