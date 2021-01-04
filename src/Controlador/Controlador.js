@@ -541,8 +541,10 @@ export default class Controlador{
         var movimiento = this.getMovimiento(idMovimiento);
         var receptores;
         if(tipo == "GRUPO"){
+            console.log("GRUPO")
             var grupo = this.getGrupo(idMovimiento, idZona, idRama, idGrupo);
             receptores = movimiento.gNodos.consultarTodosLosMiembrosNodo(grupo)
+            console.log(receptores);
         }else if(tipo == "RAMA"){
             var rama = this.getRama(idMovimiento, idZona, idRama);
             receptores = movimiento.gNodos.consultarTodosLosMiembrosNodo(rama)
@@ -556,9 +558,7 @@ export default class Controlador{
         }
         console.log(receptores);
         var idNoticia= await this.centroNotificaciones.crearNoticia(idEmisor,titulo,contenido,idMovimiento,idZona,idRama,idGrupo,receptores,imagenes);
-        gestorMiembros=movimiento.gMiembros;
         return idNoticia
-        //centroNotificaciones.actualizarNotificacionesMiembros(receptores,gestorMiembros,idNoticia);
     }
 
     async leerNoticia(idNoticia, idMiembro){

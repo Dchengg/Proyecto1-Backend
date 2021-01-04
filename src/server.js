@@ -181,12 +181,6 @@ app.post('/crear-noticia', function(req, res){
         .catch(err => {
             return res.json({success: false, error:{ message: err.message }})
         })
-        /*.then( ( miembros ) => {
-            return res.json({ success: true, miembros})
-        })
-        .catch(err => {
-            return res.json({success: false, error:{message: err.message}})
-        })*/
     }catch(err){
         console.log(err);
         return res.json({success: false, error: err})
