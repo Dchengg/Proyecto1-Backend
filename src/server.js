@@ -203,6 +203,22 @@ app.post('/leer-noticia', function(req, res){
     }
 })
 
+app.post('/crear-aporte', function(req, res){
+    const { tipo, contenido, idEmisor, idMovimiento} = req.body;
+    try{
+        controlador.publicarAporte(tipo,contenido,idEmisor,idMovimiento)
+        .then( (idNoticia) => {
+            console.log(idNoticia)
+            return res.json({success: true})
+        })
+        .catch(err => {
+            return res.json({success: false, error:{ message: err.message }})
+        })
+    }catch(err){
+        console.log(err);
+        return res.json({success: false, error: err})
+    }
+})
 
 //////////////////////////////
 ///   MODIFY
@@ -426,6 +442,27 @@ app.post('/get-miembro', function(req, res){
     }
 })
 
+app.post('/get-reporte', function(req,res){
+    const { idMovimiento } = req.body
+    try{
+        var reporte = controlador.getReporte("General",idMovimiento)
+        return res.json({ success: true ,reporte})
+    }catch(err){
+        console.log(err);
+        return res.json({success: false, error: err})
+    }
+})
+
+app.post('/get-reporte', function(req,res){
+    const {idMovimiento} = req.body
+    try{
+        var reporte = controlador.getReporte("Tipado",idMovimiento)
+        return res.json({ success: true ,reporte})
+    }catch(err){
+        console.log(err);
+        return res.json({success: false, error: err})
+    }
+})
 //////////////////////////////
 ///   CONSULTS
 ///   Returns an array of values
@@ -723,6 +760,22 @@ app.post('/consultar-noticias-miembro', function(req, res){
     }
 })
 
+
+app.post('/consultar-imagenes-noticia', function(req, res){
+    const { idNoticia } = req.body;
+    try{
+        controlador.getImagenesNoticia(idNoticia)
+        .then( imagenes => {
+            return res.json({ success: true, imagenes})
+        })
+        .catch( err => {
+            return res.json({ success: false})
+        })
+    }catch(err){
+        console.log(err);
+        return res.json({success: false, error: err})
+    }
+})
 
 
 //////////////////////////////
