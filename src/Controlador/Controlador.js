@@ -580,6 +580,7 @@ export default class Controlador{
         var arrayNoticias = miembro.noticias;
         for(var i in arrayNoticias){
             var noticia = await this.dao.getNoticiaMiembro(arrayNoticias[i], id);
+            var imagenes = await this.dao.imagenesNoticia(arrayNoticias[i]);
             resultado.push(noticia);
         }
         return resultado;
@@ -590,8 +591,12 @@ export default class Controlador{
         return await this.dao.crearAporte(pTipo,pContenido,pIdEmisor,pIdMovimiento)
     }
 
-    async getReporte(pTipo){
+    async getReporte(pTipo,idMovimiento){
         //General o Tipado
-        return this.centroNotificaciones.notificarReporte(pTipo);
+        return this.centroNotificaciones.notificarReporte(pTipo,idMovimiento);
+    }
+
+    async getImagenesNoticia(pIdNoticia){
+        return this.dao.imagenesNoticia(pIdNoticia)
     }
 }

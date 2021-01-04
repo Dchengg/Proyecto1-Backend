@@ -1,6 +1,6 @@
 export default class ReporteTipadoStrategy{
-    async reportar(){
+    async reportar(idMovimiento){
         var dao=new DAO();
-        return await dao.getReporteTipo();
+        return await dao.getReporteTipo(idMovimiento);
     }
 }
