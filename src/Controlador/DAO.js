@@ -11,8 +11,8 @@ const connection = {
     ssl: true
 };
 
-//export default class DAO{ ??
- class DAO{
+export default class DAO{
+// class DAO{
     constructor(){
         this.client = new Client(connection);
         try{
@@ -837,8 +837,8 @@ const connection = {
             })
     }
 
-    async getAllReportes(){
-        return this.client.query("Select count(*) from Aporte")
+    async getAllReportes(idMovimiento){
+        return this.client.query("Select count(*) from Aporte where id_movimiento='"+idMovimiento+"'")
             .then(res => {
                 console.table(res.rows);
                 return res.rows;
@@ -848,8 +848,8 @@ const connection = {
             })
     }
 
-    async getReporteTipo(){
-        return this.client.query("Select Tipo,count(*) from Aporte group by Tipo")
+    async getReporteTipo(idMovimiento){
+        return this.client.query("Select Tipo,count(*) from Aporte where id_movimiento='"+idMovimiento+"' group by Tipo")
             .then(res => {
                 console.table(res.rows);
                 return res.rows;
@@ -893,7 +893,7 @@ const connection = {
     }
 
     async getAllImagen(){
-        return this.client.query("Select * from ImagenesXNoticia")
+        return this.client.query("Select id_noticia from ImagenesXNoticia")
             .then(res => {
                 console.table(res.rows);
                 return res.rows;
@@ -924,12 +924,23 @@ const connection = {
                 throw err
             })
     }
+
+    async imagenesNoticia(pIdNoticia){
+        return this.client.query("Select * from imagenesNoticia("+pIdNoticia+")")
+            .then(res => {
+                console.table(res.rows);
+                return res.rows;
+            })
+            .catch(err => {
+                throw err
+            })
+    }
 }
 
 
 
 // '117940925' │ '60283895' │     null      │ 'Desamparados' │ 'arielAraya193@gmail.com' │  'Ariel Araya Corrales'
-var dao=new DAO();
+//var dao=new DAO();
 //dao.getMiembros();
 //dao.getallmov();
 //dao.getMovimiento('4000042145');
@@ -957,5 +968,8 @@ imagenes.forEach( async function(imagen){
 
 
 //dao.crearAporte("Ofrecimiento","Ofrezco mi cuerpo",'117940925','4000042145')
-//dao.getAllReportes()
-dao.getNoticiaXMiembro(1,'117940925')
+//dao.getAllReportes('4000042145')
+//dao.getReporteTipo('4000042145')
+//dao.getAllImagen()
+//dao.imagenesNoticia(1)
+//dao.getNoticiaXMiembro(1,'117940925')

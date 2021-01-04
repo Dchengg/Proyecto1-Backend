@@ -23,13 +23,13 @@ export default class CentroNotificacionesPublicador{
         return idNoticia;
     }
     
-    notificarReporte(tipo){
+    notificarReporte(tipo,idMovimiento){
         if(tipo=="General"){
             var reporte=new ReporteGeneralStrategy();
-            return reporte.reportar();
+            return reporte.reportar(idMovimiento);
         }else{
             var reporte=new ReporteTipadoStrategy();
-            return reporte.reportar();
+            return reporte.reportar(idMovimiento);
         }
     }
 

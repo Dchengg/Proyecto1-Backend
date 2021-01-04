@@ -585,8 +585,12 @@ export default class Controlador{
         return await this.dao.crearAporte(pTipo,pContenido,pIdEmisor,pIdMovimiento)
     }
 
-    async getReporte(pTipo){
+    async getReporte(pTipo,idMovimiento){
         //General o Tipado
-        return this.centroNotificaciones.notificarReporte(pTipo);
+        return this.centroNotificaciones.notificarReporte(pTipo,idMovimiento);
+    }
+
+    async getImagenesNoticia(pIdNoticia){
+        return this.dao.imagenesNoticia(pIdNoticia)
     }
 }
