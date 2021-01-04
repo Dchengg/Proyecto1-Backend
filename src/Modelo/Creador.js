@@ -16,7 +16,7 @@ export default class Creador{
                 try{
                     this.dao.getTelefonoMovimiento(movimiento.cedula_juridica)
                     .then(telefono => {
-                        this.controlador.agregarMovimiento(movimiento.cedula_juridica, movimiento._id_asesor, movimiento.nombre, movimiento.direccion_web, movimiento.logo, movimiento.pais, movimiento.provincia, movimiento.canton, movimiento.distrito, movimiento.senales, telefono);
+                        this.controlador.agregarMovimiento(movimiento.cedula_juridica, movimiento.id_asesor, movimiento.nombre, movimiento.direccion_web, movimiento.logo, movimiento.pais, movimiento.provincia, movimiento.canton, movimiento.distrito, movimiento.senales, telefono);
                         /*var mov = this.controlador.getMovimiento(movimiento.cedula_juridica);
                         for(var i in telefono){
                             mov.telefonos.push(telefono[i].celular);
@@ -27,6 +27,18 @@ export default class Creador{
                         .then(res=> {
                             var miembro =  res[0];
                             this.controlador.agregarMiembroAMovimiento(cedula_juridica,miembro.cedula, miembro.nombre, miembro.celular, miembro.email, miembro.provincia, miembro.canton, miembro.distrito, miembro.senales, miembro.b_monitor);
+                            this.dao.getNoticiasXAsesor(miembro.cedula)
+                            .then(resNoticias => {
+                                var asesor = this.controlador.getMiembro(cedula_juridica, miembro.cedula)
+                                for(var i in resNoticias){
+                                    asesor.noticias.push(resNoticias[i].id_noticia)
+                                }
+                            })
+                            .catch(err => {
+                                console.log("_________________________________________")
+                                console.log(err)
+                                console.log("_________________________________________")
+                            })
                         })
                 }catch(err){
                     console.log(err);

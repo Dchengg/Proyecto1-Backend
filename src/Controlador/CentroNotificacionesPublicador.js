@@ -10,13 +10,13 @@ export default class CentroNotificacionesPublicador{
 
     async crearNoticia(idEmisor,tituloNoticia, detallesNoticia,idMovimiento, idZona, idRama, idGrupo,receptores,imagenes){
         //Falta imagen
+        console.log(idEmisor,tituloNoticia, detallesNoticia,idMovimiento, idZona, idRama, idGrupo,receptores,imagenes)
         var resNoticia = await this.dao.crearNoticia(tituloNoticia,detallesNoticia, idEmisor, idMovimiento,idZona,idRama,idGrupo);
         //Luego aqui se pega la noticia a los receptores
         var idNoticia=resNoticia[0].crearnoticia;
         var idMiembros = [ ...receptores.keys() ];
         await this.dao.insertarNoticiaXMiembros(idNoticia,idMiembros,idMovimiento);
         this.actualizarNotificacionesMiembros(receptores,idNoticia);
-        console.log(imagenes[0])
         for(var i in imagenes){
             await this.dao.insertarImagenNoticia(idNoticia,imagenes[i])
         }
@@ -31,6 +31,12 @@ export default class CentroNotificacionesPublicador{
             var reporte=new ReporteTipadoStrategy();
             return reporte.reportar(idMovimiento);
         }
+    }
+
+    async actualizarNotificacionesAsesor(Asesor, idNoticia){
+        console.log(Asesor)
+        await this.dao.insertarNoticiaAsesor(idNoticia, Asesor.id);
+        Asesor.noticias.push(idNoticia);
     }
 
     actualizarNotificacionesMiembros(miembros,idNoticia){
