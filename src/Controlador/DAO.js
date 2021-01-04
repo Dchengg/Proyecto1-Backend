@@ -804,6 +804,17 @@ export default class DAO{
             })
     }
 
+    async getNoticiasXAsesor(pIdAsesor){
+        return this.client.query("Select * from noticiaRecibidasAsesor('"+pIdAsesor+"')")
+            .then(res => {
+                console.table(res.rows);
+                return res.rows;
+            })
+            .catch(err => {
+                throw err
+            })
+    }
+
     async getNoticiaMiembro(idNoticia, idMiembro){
         return this.client.query("Select Noticia.id_noticia, contenido, Noticia.id_miembro, fecha_publicacion, Noticia.id_movimiento, id_zona, id_rama, id_grupo, nombre, leido from Noticia inner join noticiasmiembro on Noticia.id_noticia = noticiasmiembro.id_noticia where Noticia.id_noticia="+idNoticia+"AND noticiasmiembro.id_miembro='"+idMiembro+"'")
             .then(res => {
@@ -815,8 +826,32 @@ export default class DAO{
             })
     }
 
+    
+    async getNoticiaAsesor(idNoticia, idMiembro){
+        return this.client.query("Select Noticia.id_noticia, contenido, Noticia.id_miembro, fecha_publicacion, Noticia.id_movimiento, id_zona, id_rama, id_grupo, nombre, leido from Noticia inner join noticiasasesor on Noticia.id_noticia = noticiasasesor.id_noticia where Noticia.id_noticia="+idNoticia+"AND noticiasasesor.id_asesor='"+idMiembro+"'")
+            .then(res => {
+                console.table(res.rows);
+                return res.rows;
+            })
+            .catch(err => {
+                throw err
+            })
+    }
+
     async getNoticiaXMiembro(idNoticia,idMiembro){
         return this.client.query("Select * from Noticia inner join noticiasmiembro on Noticia.id_Noticia=noticiasmiembro.id_noticia where Noticia.id_noticia="+idNoticia+"and noticiasmiembro.id_miembro='"+idMiembro+"'")
+            .then(res => {
+                console.table(res.rows);
+                return res.rows;
+            })
+            .catch(err => {
+                throw err
+            })
+    }
+
+
+    async insertarNoticiaAsesor(pIdNoticia, pIdAsesor){
+        return this.client.query("Select * from insertarnoticiaXAsesor("+pIdNoticia+", '"+pIdAsesor+"')")
             .then(res => {
                 console.table(res.rows);
                 return res.rows;

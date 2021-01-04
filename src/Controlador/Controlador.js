@@ -556,8 +556,11 @@ export default class Controlador{
         }else{
             throw { message: "No se tiene la información necesaria para crear noticia."}
         }
-        console.log(receptores);
         var idNoticia= await this.centroNotificaciones.crearNoticia(idEmisor,titulo,contenido,idMovimiento,idZona,idRama,idGrupo,receptores,imagenes);
+        if(tipo == "MOVIMIENTO"){
+            var asesor = this.getMiembro(idMovimiento, movimiento.idAsesor); 
+            this.centroNotificaciones.actualizarNotificacionesAsesor(asesor, idNoticia);
+        }
         return idNoticia
     }
 
@@ -580,7 +583,18 @@ export default class Controlador{
         var arrayNoticias = miembro.noticias;
         for(var i in arrayNoticias){
             var noticia = await this.dao.getNoticiaMiembro(arrayNoticias[i], id);
-            var imagenes = await this.dao.imagenesNoticia(arrayNoticias[i]);
+            resultado.push(noticia);
+        }
+        return resultado;
+    }
+
+    async obtenerNoticiasAsesor(idMovimiento, idMiembro){
+        var miembro = this.getMiembro(idMovimiento, idMiembro);
+        var id = miembro.id;
+        var resultado=[]
+        var arrayNoticias = miembro.noticias;
+        for(var i in arrayNoticias){
+            var noticia = await this.dao.getNoticiaAsesor(arrayNoticias[i], id);
             resultado.push(noticia);
         }
         return resultado;

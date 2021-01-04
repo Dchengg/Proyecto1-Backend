@@ -778,6 +778,23 @@ app.post('/consultar-noticias-miembro', function(req, res){
     }
 })
 
+app.post('/consultar-noticias-asesor', function(req, res){
+    const { idMovimiento, idMiembro } = req.body;
+    try{
+        controlador.obtenerNoticiasAsesor(idMovimiento, idMiembro)
+        .then( noticias => {
+            return res.json({ success: true, noticias})
+        })
+        .catch( err => {
+            return res.json({ success: false,error: {message: err.message}})
+        })
+    }catch(err){
+        console.log(err);
+        return res.json({success: false, error: err})
+    }
+})
+
+
 
 app.post('/consultar-imagenes-noticia', function(req, res){
     const { idNoticia } = req.body;
