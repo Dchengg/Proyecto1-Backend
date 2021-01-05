@@ -1,4 +1,5 @@
 import ReporteGeneralStrategy from "../Modelo/ReporteGeneralStrategy";
+import ReporteTipadoStrategy from "../Modelo/ReporteTipadoStrategy";
 
 //import DAO from './DAO'
 export default class CentroNotificacionesPublicador{

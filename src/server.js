@@ -453,7 +453,6 @@ app.post('/get-reporte', function(req,res){
             .finally(() => {
                 return res.json({ success: true, reporte})
             })
-        //return res.json({ success: true ,reporte})
     }catch(err){
         console.log(err);
         return res.json({success: false, error: err})
