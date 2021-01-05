@@ -12,7 +12,7 @@ const connection = {
 };
 
 export default class DAO{
-// class DAO{
+//class DAO{
     constructor(){
         this.client = new Client(connection);
         try{
@@ -936,6 +936,39 @@ export default class DAO{
             })
     }
 
+    async getAportesMov(idMovimiento){
+        return this.client.query("Select * from Aporte where id_movimiento='"+idMovimiento+"'")
+            .then(res => {
+                console.table(res.rows);
+                return res.rows;
+            })
+            .catch(err => {
+                throw err
+            })
+    }
+
+    async getAporteId(idAporte){
+        return this.client.query("Select * from Aporte where id_aporte="+idAporte)
+            .then(res => {
+                console.table(res.rows);
+                return res.rows;
+            })
+            .catch(err => {
+                throw err
+            })
+    }
+
+    async deleteAportesMov(idMovimiento){
+        return this.client.query("Delete from Aporte where id_movimiento='"+idMovimiento+"'")
+            .then(res => {
+                console.table(res.rows);
+                return res.rows;
+            })
+            .catch(err => {
+                throw err
+            })
+    }
+
     async imagenesNoticia(pIdNoticia){
         return this.client.query("Select * from imagenesNoticia("+pIdNoticia+")")
             .then(res => {
@@ -952,6 +985,7 @@ export default class DAO{
 
 // '117940925' │ '60283895' │     null      │ 'Desamparados' │ 'arielAraya193@gmail.com' │  'Ariel Araya Corrales'
 //var dao=new DAO();
+//dao.crearAporte('Agradecimiento','Agradezco a jesucristo el robot del futuro','117940925','4000042145')
 //dao.getMiembros();
 //dao.getallmov();
 //dao.getMovimiento('4000042145');
@@ -967,8 +1001,9 @@ imagenes.forEach( async function(imagen){
     var lola= await dao.insertarImagenNoticia(1,imagen);
 });
 */
-
-//dao.getAllImagen();
+//dao.getAportesMov('4000042145')
+//dao.deleteAportesMov('4000042145')
+//dao.getAllAportes();
 //dao.insertarImagenNoticia(1,"imaginese que es una imagen")
 //dao.noticiaRecibidasMiembro('4000042145','117940925')
 //dao.noticiaRecibidasMiembro('4000042145','117940925')
