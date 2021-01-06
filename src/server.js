@@ -209,9 +209,9 @@ app.post('/crear-aporte', function(req, res){
     const { tipo, contenido, idEmisor, idMovimiento} = req.body;
     try{
         controlador.publicarAporte(tipo,contenido,idEmisor,idMovimiento)
-        .then( (idNoticia) => {
-            console.log(idNoticia)
-            return res.json({success: true})
+        .then( (idAporte) => {
+            console.log(idAporte)
+            return res.json({success: true,idAporte})
         })
         .catch(err => {
             return res.json({success: false, error:{ message: err.message }})
@@ -463,24 +463,69 @@ app.post('/get-imagenes-noticia', function(req, res){
 app.post('/get-reporte', function(req,res){
     const { idMovimiento } = req.body
     try{
-        var reporte = controlador.getReporte("General",idMovimiento)
-        return res.json({ success: true ,reporte})
+        var reporte;
+        var reportePromise = controlador.getReporte("General",idMovimiento).then(res => {
+            reporte = res;
+        })
+        Promise.resolve(reportePromise)
+            .finally(() => {
+                return res.json({ success: true, reporte})
+            })
     }catch(err){
         console.log(err);
         return res.json({success: false, error: err})
     }
 })
 
-app.post('/get-reporte', function(req,res){
+app.post('/get-reporte-tipado', function(req,res){
     const {idMovimiento} = req.body
     try{
-        var reporte = controlador.getReporte("Tipado",idMovimiento)
-        return res.json({ success: true ,reporte})
+        var reporte;
+        var reportePromise = controlador.getReporte("Tipado",idMovimiento).then(res => {
+            reporte = res;
+        })
+        Promise.resolve(reportePromise)
+            .finally(() => {
+                return res.json({ success: true, reporte})
+            })
     }catch(err){
         console.log(err);
         return res.json({success: false, error: err})
     }
 })
+
+app.post('/get-aportes', function(req,res){
+    const {idMovimiento} = req.body
+    try{
+        var aportes;
+        var aportesPromise = controlador.getAportes(idMovimiento).then(res => {
+            aportes = res;
+        })
+        Promise.resolve(aportesPromise)
+            .finally(() => {
+                return res.json({ success: true, aportes})
+            })
+    }catch(err){
+        console.log(err);
+        return res.json({success: false, error: err})
+    }
+})
+
+//////////////////////////////
+///   Delete
+//////////////////////////////
+
+app.post('/limpiar-aportes', function(req,res){
+    const {idMovimiento} = req.body
+    try{
+        controlador.limpiarAportes(idMovimiento)
+        return res.json({ success: true})
+    }catch(err){
+        console.log(err);
+        return res.json({success: false, error: err})
+    }
+})
+
 //////////////////////////////
 ///   CONSULTS
 ///   Returns an array of values
