@@ -11,8 +11,8 @@ const connection = {
     ssl: true
 };
 
-export default class DAO{
-//class DAO{
+//export default class DAO{
+class DAO{
     constructor(){
         this.client = new Client(connection);
         try{
@@ -86,11 +86,6 @@ export default class DAO{
                 console.log(err)
             })
     }
-
-    async getZonasLider(pCedula, pIdMovimiento){
-
-    }
-
 
     getZonaXMovimiento(idMovimiento){
         return this.client.query("Select * from getZonas('"+idMovimiento+"')")
@@ -983,24 +978,17 @@ export default class DAO{
 
 
 
-// '117940925' │ '60283895' │     null      │ 'Desamparados' │ 'arielAraya193@gmail.com' │  'Ariel Araya Corrales'
-//var dao=new DAO();
+// '117940925' │ '60283895' │  'helado123'  │ 'Desamparados' │ 'arielAraya193@gmail.com' │  'Ariel Araya Corrales'
+var dao=new DAO();
+//dao.getMiembros();
+dao.getNoticias();
+//var res= dao.getAllReportes('4000042145')
 //dao.crearAporte('Agradecimiento','Agradezco a jesucristo el robot del futuro','117940925','4000042145')
 //dao.getMiembros();
 //dao.getallmov();
 //dao.getMovimiento('4000042145');
 //dao.getRamaXMovimiento('4000042145')
-//dao.getGrupoXRama("1");
-//dao.getNoticias();
-//dao.prueba();
-//dao.getAllNoticiasXMiembro();
-//dao.crearNoticia("TITULO2","DETALLES2",'117940925','4000042145',1,1,123);
 
-/*var imagenes=["imagen 1", "imagen 2", "imagen 3"]
-imagenes.forEach( async function(imagen){
-    var lola= await dao.insertarImagenNoticia(1,imagen);
-});
-*/
 //dao.getAportesMov('4000042145')
 //dao.deleteAportesMov('4000042145')
 //dao.getAllAportes();
@@ -1012,10 +1000,10 @@ imagenes.forEach( async function(imagen){
 //dao.getAllNoticiasXMiembro();
 
 
-
 //dao.crearAporte("Ofrecimiento","Ofrezco mi cuerpo",'117940925','4000042145')
 //dao.getAllReportes('4000042145')
 //dao.getReporteTipo('4000042145')
 //dao.getAllImagen()
 //dao.imagenesNoticia(1)
 //dao.getNoticiaXMiembro(1,'117940925')
+
