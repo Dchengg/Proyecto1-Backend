@@ -12,7 +12,7 @@ const connection = {
 };
 
 //export default class DAO{
-class DAO{
+export default class DAO{
     constructor(){
         this.client = new Client(connection);
         try{
@@ -1014,9 +1014,9 @@ class DAO{
 
 
 // '117940925' │ '60283895' │  'helado123'  │ 'Desamparados' │ 'arielAraya193@gmail.com' │  'Ariel Araya Corrales'
-var dao=new DAO();
+//var dao=new DAO();
 //dao.getMiembros();
-dao.getNoticias();
+//dao.getNoticias();
 //var res= dao.getAllReportes('4000042145')
 //dao.crearAporte('Agradecimiento','Agradezco a jesucristo el robot del futuro','117940925','4000042145')
 //dao.getMiembros();
