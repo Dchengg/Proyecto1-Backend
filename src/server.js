@@ -459,7 +459,7 @@ app.post('/get-imagenes-noticia', function(req, res){
 })
 
 app.post('/get-reporte', function(req,res){
-    const { idMovimiento } = req.body
+    const { idMovimiento,idEmisor } = req.body
     try{
         var reporte;
         var reportePromise = controlador.getReporte("General",idMovimiento).then(res => {
@@ -467,7 +467,15 @@ app.post('/get-reporte', function(req,res){
         })
         Promise.resolve(reportePromise)
             .finally(() => {
-                return res.json({ success: true, reporte})
+                var cantidad=reporte[0].count
+                controlador.crearNoticia(idEmisor, "Reporte General", "Se han recibido "+cantidad+" reportes", [], idMovimiento, 0, 0, 0,  "MOVIMIENTO")
+                .then( (idNoticia) => {
+                    console.log(idNoticia)
+                    return res.json({ success: true, reporte,idNoticia})
+                })
+                .catch(err => {
+                    return res.json({success: false, error:{ message: err.message }})
+                })
             })
     }catch(err){
         console.log(err);
@@ -476,7 +484,7 @@ app.post('/get-reporte', function(req,res){
 })
 
 app.post('/get-reporte-tipado', function(req,res){
-    const {idMovimiento} = req.body
+    const {idMovimiento,idEmisor} = req.body
     try{
         var reporte;
         var reportePromise = controlador.getReporte("Tipado",idMovimiento).then(res => {
@@ -484,7 +492,32 @@ app.post('/get-reporte-tipado', function(req,res){
         })
         Promise.resolve(reportePromise)
             .finally(() => {
-                return res.json({ success: true, reporte})
+                var cantidad=reporte.length
+                var texto=""
+                if(cantidad==0){
+                    texto="No se han recibido reportes"
+                }else{
+                    texto+="Se han recibido la siguiente cantidad de reportes: "
+                    var i=0
+                    while(i<(cantidad-1)){
+                        texto+=reporte[i].count
+                        texto+=" de "
+                        texto+=reporte[i].tipo
+                        texto+=", "
+                        i++;
+                    }
+                    texto+=reporte[i].count
+                    texto+=" de "
+                    texto+=reporte[i].tipo
+                }
+                controlador.crearNoticia(idEmisor, "Reporte por Tipos", texto, [], idMovimiento, 0, 0, 0,  "MOVIMIENTO")
+                .then( (idNoticia) => {
+                    console.log(idNoticia)
+                    return res.json({ success: true, reporte,idNoticia})
+                })
+                .catch(err => {
+                    return res.json({success: false, error:{ message: err.message }})
+                })
             })
     }catch(err){
         console.log(err);
