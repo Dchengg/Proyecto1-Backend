@@ -788,6 +788,17 @@ export default class DAO{
         })
     }
 
+    async noticiaLeidaAsesor(pIdNoticia, pIdAsesor){
+        return this.client.query("Select * from noticiaLeidaAsesor("+pIdNoticia+", '"+pIdAsesor+"')")
+        .then(res => {
+            console.table(res.rows);
+            return res.rows;
+        })
+        .catch(err => {
+            throw err
+        })
+    }
+
     async getNoticias(){
         return this.client.query("Select * from Noticia")
             .then(res => {
@@ -799,7 +810,7 @@ export default class DAO{
             })
     }
 
-    async getNoticiasXAsesor(pIdAsesor){
+    async getNoticiasXAsesor(pIdAsesor){    
         return this.client.query("Select * from noticiaRecibidasAsesor('"+pIdAsesor+"')")
             .then(res => {
                 console.table(res.rows);

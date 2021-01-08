@@ -29,6 +29,9 @@ export default class Creador{
                             this.controlador.agregarMiembroAMovimiento(cedula_juridica,miembro.cedula, miembro.nombre, miembro.celular, miembro.email, miembro.provincia, miembro.canton, miembro.distrito, miembro.senales, miembro.b_monitor);
                             this.dao.getNoticiasXAsesor(miembro.cedula)
                             .then(resNoticias => {
+                                console.log("_-------------------------------------------------------_")
+                                console.table(resNoticias);
+                                console.log("_-------------------------------------------------------_")
                                 var asesor = this.controlador.getMiembro(cedula_juridica, miembro.cedula)
                                 for(var i in resNoticias){
                                     asesor.noticias.push(resNoticias[i].id_noticia)
