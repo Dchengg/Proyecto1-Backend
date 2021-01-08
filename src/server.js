@@ -452,7 +452,7 @@ app.post('/get-reporte', function(req,res){
         Promise.resolve(reportePromise)
             .finally(() => {
                 var cantidad=reporte[0].count
-                controlador.crearNoticia(idEmisor, "Reporte General", "Se han recibido "+cantidad+" reportes", [], idMovimiento, 0, 0, 0,  "MOVIMIENTO")
+                controlador.crearNoticia(idEmisor, "Reporte General", "Se han recibido "+cantidad+" aportes", [], idMovimiento, 0, 0, 0,  "MOVIMIENTO")
                 .then( (idNoticia) => {
                     console.log(idNoticia)
                     return res.json({ success: true, reporte,idNoticia})
@@ -479,9 +479,9 @@ app.post('/get-reporte-tipado', function(req,res){
                 var cantidad=reporte.length
                 var texto=""
                 if(cantidad==0){
-                    texto="No se han recibido reportes"
+                    texto="No se han recibido aportes"
                 }else{
-                    texto+="Se han recibido la siguiente cantidad de reportes: "
+                    texto+="Se han recibido la siguiente cantidad de aportes: "
                     var i=0
                     while(i<(cantidad-1)){
                         texto+=reporte[i].count
