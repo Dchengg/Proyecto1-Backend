@@ -559,13 +559,17 @@ export default class Controlador{
         var idNoticia= await this.centroNotificaciones.crearNoticia(idEmisor,titulo,contenido,idMovimiento,idZona,idRama,idGrupo,receptores,imagenes);
         if(tipo == "MOVIMIENTO"){
             var asesor = this.getMiembro(idMovimiento, movimiento.idAsesor); 
-            this.centroNotificaciones.actualizarNotificacionesAsesor(asesor, idNoticia);
+            await this.centroNotificaciones.actualizarNotificacionesAsesor(asesor, idNoticia);
         }
         return idNoticia
     }
 
     async leerNoticia(idNoticia, idMiembro){
         await this.dao.noticiaLeida(idNoticia, idMiembro)
+    }
+
+    async leerNoticiaAsesor(idNoticia, idAsesor){
+        await this.dao.noticiaLeidaAsesor(idNoticia, idAsesor);
     }
 
     getNoticiasMiembro(idMiembro,idMovimiento){

@@ -203,6 +203,22 @@ app.post('/leer-noticia', function(req, res){
     }
 })
 
+app.post('/leer-noticia-asesor', function(req, res){
+    const { idNoticia, idAsesor } = req.body;
+    try{
+        controlador.leerNoticiaAsesor(idNoticia, idAsesor)
+        .then( () => {
+            return res.json({success: true})
+        })
+        .catch(err => {
+            return res.json({success: false, error:{ message: err.message }})
+        })
+    }catch(err){
+        console.log(err);
+        return res.json({success: false, error: err})
+    }
+})
+
 app.post('/crear-aporte', function(req, res){
     const { tipo, contenido, idEmisor, idMovimiento} = req.body;
     try{
